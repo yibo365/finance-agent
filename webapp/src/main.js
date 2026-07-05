@@ -1,7 +1,7 @@
 import './style.css';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import { shouldOpenSettingsOnStartup } from './startup.js';
+import { APP_TITLE, deriveSessionTitles, shouldOpenSettingsOnStartup } from './startup.js';
 
 const $ = id => document.getElementById(id);
 const log = $('log'), form = $('form'), input = $('input'), send = $('send');
@@ -54,9 +54,19 @@ function turnFor(id) {
 }
 
 function upsertSession(id, title) {
+  const titles = deriveSessionTitles(title);
   const found = sessions.find(s => s.id === id);
-  if (found) { if (title && !found.title) found.title = title; }
-  else sessions.unshift({ id, title: title || id, ts: Date.now() });
+  if (found) {
+    if (titles.sidebar && (!found.title || found.title === id)) found.title = titles.sidebar;
+    if (titles.header && !found.headerTitle) found.headerTitle = titles.header;
+  } else {
+    sessions.unshift({
+      id,
+      title: titles.sidebar || id,
+      headerTitle: titles.header || '',
+      ts: Date.now(),
+    });
+  }
   store.save(sessions);
 }
 
@@ -144,7 +154,12 @@ function providerLabel() {
   if (!serverInfo.base_url) return 'OpenAI';
   try { return new URL(serverInfo.base_url).host; } catch { return serverInfo.base_url; }
 }
+function activeSessionTitle() {
+  const sess = sessions.find(s => s.id === activeId);
+  return sess?.headerTitle || sess?.title || APP_TITLE;
+}
 function renderHeader(workspaceDir) {
+  $('sessionTitle').textContent = activeId ? activeSessionTitle() : APP_TITLE;
   const base = `${providerLabel()} · ${serverInfo.model}`;
   $('sessionInfo').textContent = activeId
     ? `会话 ${activeId} ｜ ${base}${workspaceDir ? ' ｜ ' + workspaceDir : ''}`
@@ -322,7 +337,12 @@ async function loadHistory(id) {
     if (m.role === 'user') {
       addMsg('user', m.text);
       const sess = sessions.find(s => s.id === id);
-      if (sess && (!sess.title || sess.title === id)) { sess.title = m.text.slice(0, 30); store.save(sessions); renderSessionList(); }
+      if (sess && (!sess.headerTitle || !sess.title || sess.title === id)) {
+        const titles = deriveSessionTitles(m.text);
+        if (!sess.title || sess.title === id) sess.title = titles.sidebar || sess.title;
+        if (!sess.headerTitle) sess.headerTitle = titles.header;
+        store.save(sessions); renderSessionList(); renderHeader();
+      }
     }
     if (m.role === 'assistant') addMdMsg(m.text);
   }
@@ -455,7 +475,7 @@ form.addEventListener('submit', async e => {
             turn.id = ev.session_id;
             liveTurns[turn.id] = turn;
             pendingTurn = null;
-            upsertSession(turn.id, text.slice(0, 30));
+            upsertSession(turn.id, text);
             if (epoch === viewEpoch) {        // 用户还停在发起时的视图才接管它
               activeId = turn.id; store.active = activeId;
               renderHeader();

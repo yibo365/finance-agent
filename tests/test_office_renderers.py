@@ -1,5 +1,8 @@
 """office 三渲染器单测：渲染 → 用对应库重新打开 → 断言结构与公式。"""
 
+from xml.etree import ElementTree as ET
+from zipfile import ZipFile
+
 import pandas as pd
 import pytest
 from docx import Document
@@ -8,6 +11,8 @@ from pptx import Presentation
 
 from finance_agent.artifacts.spec import ArtifactSpec
 from finance_agent.workspace import Workspace
+
+_W_NS = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 
 @pytest.fixture()
@@ -29,6 +34,17 @@ def ws(tmp_path):
     workspace.evidence.record("market_data", source_url="https://example.com/gold", excerpt="60 行")
     workspace.save_evidence()
     return workspace
+
+
+def _docx_xml(path, member: str):
+    with ZipFile(path) as zf:
+        return ET.fromstring(zf.read(member))
+
+
+def _style_rfonts(styles, style_id: str):
+    style = styles.find(f".//{_W_NS}style[@{_W_NS}styleId='{style_id}']")
+    assert style is not None, style_id
+    return style.find(f"./{_W_NS}rPr/{_W_NS}rFonts")
 
 
 def test_xlsx_backtest_formulas_and_sheets(ws):
@@ -206,6 +222,33 @@ def test_docx_structure_and_appendix(ws):
     assert any("ev-s-20260703-office-1" in t for t in texts)   # 正文溯源标记 + 附录
     assert any("不构成投资建议" in t for t in texts)
     assert len(doc.tables) == 2  # 数据说明 + 变化点明细
+
+
+def test_docx_uses_chinese_report_fonts(ws):
+    spec = ArtifactSpec.model_validate({
+        "artifact_id": "font-report",
+        "kind": "docx",
+        "title": "中文字体测试",
+        "blocks": [
+            {"type": "heading", "text": "一、摘要"},
+            {"type": "narrative", "text": "正文里的中文、Ticker GC=F 和数字 2026 应该使用统一报告字体。"},
+        ],
+    })
+    version = ws.render_artifact(spec)
+    docx_path = ws.dir / version.file
+
+    styles = _docx_xml(docx_path, "word/styles.xml")
+    settings = _docx_xml(docx_path, "word/settings.xml")
+    for style_id in ("Normal", "Title", "Heading1"):
+        rfonts = _style_rfonts(styles, style_id)
+        assert rfonts is not None, style_id
+        assert rfonts.attrib[f"{_W_NS}eastAsia"] == "PingFang SC"
+        assert rfonts.attrib[f"{_W_NS}ascii"] == "Helvetica Neue"
+        assert rfonts.attrib[f"{_W_NS}hAnsi"] == "Helvetica Neue"
+
+    theme_lang = settings.find(f".//{_W_NS}themeFontLang")
+    assert theme_lang is not None
+    assert theme_lang.attrib[f"{_W_NS}eastAsia"] == "zh-CN"
 
 
 def test_docx_rejects_slide_block(ws):

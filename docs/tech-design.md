@@ -208,6 +208,7 @@ report-builder（判断，自由）      ArtifactSpec（结构化 IR）        �
 - **block 类型库**由各渲染器声明支持集合：通用（heading/narrative/table/footnote）+ 专用（kline_chart/event_card/slide/formula_sheet/pivot_summary…）。遇到不支持的 block 显式报错，不静默丢弃。
 - **spec 里没有文件路径**：`data_ref` 是 dataset_id（经工作区 `data/index.json` 注册表解析），渲染器经 WorkspaceFS 取数——LLM 产出的 spec 无法表达"读工作区外的文件"。
 - **skill 与 spec 的关系**：skill 的 SKILL.md 告诉 report-builder"这类产物惯常怎么组织论证、有哪些 block 可用、评级怎么呈现"（方法论），templates/assets 提供渲染骨架（Plotly 交互外壳、docx 样式集）——**内容结构在 spec 里，每次都是新的**。
+- **Office 样式由渲染器固化**：docx 渲染器显式设置正文/标题的中文与西文字体，并指定 East Asia 语言，避免不同 Word/WPS 环境把中文回退到 MS 明朝等默认主题字体。
 - **修改 = spec 定点变更 + 重渲染**：`read_artifact` 读回当前 spec → report-builder 只改目标 block → `update_artifact` 校验、渲染、版本 +1、写 manifest。未涉及的 block 原样保留，"定点生效"由此保证，且两版 spec 的 diff 就是改动审计记录。
 - **可测试性**：渲染器用 spec fixture 做单测（断言 HTML 含标注锚点、xlsx 公式存在、pptx 页数正确），完全不依赖 LLM。
 

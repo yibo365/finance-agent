@@ -10,6 +10,8 @@ from collections.abc import Mapping
 from datetime import UTC, datetime
 
 from docx import Document
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from docx.shared import Pt, RGBColor
 
 from finance_agent.artifacts.spec import (
@@ -25,6 +27,9 @@ from finance_agent.skills.loader import SkillInfo
 SUPPORTED_BLOCKS = {"heading", "narrative", "table", "changepoint_table"}
 
 _MUTED = RGBColor(0x6B, 0x77, 0x8C)
+_FONT_LATIN = "Helvetica Neue"
+_FONT_EA = "PingFang SC"
+_DOCX_EA_LANG = "zh-CN"
 
 _CP_KIND_LABELS = {
     "trend_up": "趋势拐头向上", "trend_down": "趋势拐头向下",
@@ -35,6 +40,44 @@ _CP_KIND_LABELS = {
 
 class RenderError(RuntimeError):
     pass
+
+
+def _get_or_add(parent, tag: str):
+    child = parent.find(qn(tag))
+    if child is None:
+        child = OxmlElement(tag)
+        parent.insert(0, child)
+    return child
+
+
+def _set_rfonts(rfonts) -> None:
+    for attr in ("w:asciiTheme", "w:eastAsiaTheme", "w:hAnsiTheme", "w:cstheme"):
+        rfonts.attrib.pop(qn(attr), None)
+    rfonts.set(qn("w:ascii"), _FONT_LATIN)
+    rfonts.set(qn("w:hAnsi"), _FONT_LATIN)
+    rfonts.set(qn("w:cs"), _FONT_LATIN)
+    rfonts.set(qn("w:eastAsia"), _FONT_EA)
+    rfonts.set(qn("w:hint"), "eastAsia")
+
+
+def _set_style_fonts(doc: Document) -> None:
+    styles = doc.styles.element
+    doc_defaults = _get_or_add(styles, "w:docDefaults")
+    rpr_default = _get_or_add(doc_defaults, "w:rPrDefault")
+    rpr = _get_or_add(rpr_default, "w:rPr")
+    _set_rfonts(_get_or_add(rpr, "w:rFonts"))
+
+    for style_id in ("Normal", "Title", "Heading 1", "Heading 2", "Heading 3", "List Bullet"):
+        style = doc.styles[style_id]
+        rpr = style.element.get_or_add_rPr()
+        _set_rfonts(rpr.get_or_add_rFonts())
+
+    theme_font_lang = doc.settings.element.find(qn("w:themeFontLang"))
+    if theme_font_lang is None:
+        theme_font_lang = OxmlElement("w:themeFontLang")
+        doc.settings.element.append(theme_font_lang)
+    theme_font_lang.set(qn("w:val"), "en-US")
+    theme_font_lang.set(qn("w:eastAsia"), _DOCX_EA_LANG)
 
 
 def _evidence_mark(paragraph, refs: list[str]) -> None:
@@ -78,6 +121,7 @@ def render_docx(
         raise RenderError(f"docx 渲染器不支持 block 类型：{sorted(unsupported)}")
 
     doc = Document()
+    _set_style_fonts(doc)
     doc.add_heading(spec.title, level=0)
     meta = doc.add_paragraph()
     run = meta.add_run(
