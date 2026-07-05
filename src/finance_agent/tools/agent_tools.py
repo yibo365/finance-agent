@@ -76,7 +76,7 @@ def fetch_market_data_impl(app: AppContext, ticker: str, start: str, end: str) -
 
 
 def detect_changepoints_impl(
-    app: AppContext, dataset_id: str, min_severity: int = 1
+    app: AppContext, dataset_id: str, min_severity: int = 1, max_points: int = 40
 ) -> dict[str, Any]:
     df = app.workspace.load_dataset(dataset_id)
     entry = app.workspace.dataset_index()[dataset_id]
@@ -86,19 +86,24 @@ def detect_changepoints_impl(
     )
     app.workspace.save_evidence()
     evidence_id = result.evidence.id if result.evidence else ""
+    filtered = [p for p in result.points if p.severity >= min_severity]
+    # 确定性硬上限：severity 降序、同级按时间——大列表原样穿过 LLM 输出会撞
+    # max_tokens 截断（真实事故：五年 150 个变化点截断 JSON）
+    capped = sorted(filtered, key=lambda p: (-p.severity, p.date))[:max_points]
     points = [
         ChangepointOut(
             date=p.date, kind=p.kind, rule=p.rule, severity=p.severity,
-            window=p.window, evidence_refs=[evidence_id] if evidence_id else [],
+            window=list(p.window), evidence_refs=[evidence_id] if evidence_id else [],
         ).model_dump()
-        for p in result.points
-        if p.severity >= min_severity
+        for p in sorted(capped, key=lambda p: p.date)
     ]
     return {
         "dataset_id": dataset_id,
         "evidence_id": evidence_id,
         "total_detected": len(result.points),
+        "after_min_severity": len(filtered),
         "returned": len(points),
+        "omitted": len(filtered) - len(points),
         "min_severity": min_severity,
         "changepoints": points,
     }
@@ -118,15 +123,20 @@ def fetch_market_data(ctx: RunContextWrapper[AppContext], ticker: str, start: st
 
 @function_tool
 def run_changepoint_detection(
-    ctx: RunContextWrapper[AppContext], dataset_id: str, min_severity: int = 1
+    ctx: RunContextWrapper[AppContext], dataset_id: str,
+    min_severity: int = 1, max_points: int = 40,
 ) -> str:
     """对已缓存的 dataset 执行确定性变化点检测（趋势拐头/加速/回撤反弹/量能异常）。
 
+    返回列表有硬上限（severity 降序截取），总检出/过滤/省略数照实报告——
+    长区间请用 min_severity=2 起步。
+
     Args:
         dataset_id: fetch_market_data 返回的 dataset_id。
-        min_severity: 仅返回不低于该严重度（1-3）的变化点；总检出数照实报告。
+        min_severity: 仅返回不低于该严重度（1-3）的变化点。
+        max_points: 返回条数上限（默认 40）。
     """
-    return _json(detect_changepoints_impl(ctx.context, dataset_id, min_severity))
+    return _json(detect_changepoints_impl(ctx.context, dataset_id, min_severity, max_points))
 
 
 # ---------- event-researcher 工具 ----------

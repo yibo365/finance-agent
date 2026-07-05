@@ -132,6 +132,18 @@ def test_detect_changepoints_impl_reports_filtering(app):
     assert out["evidence_id"].startswith("ev-")
 
 
+def test_detect_changepoints_impl_caps_output(app):
+    # 大列表原样穿过 LLM 输出会撞 max_tokens 截断（真实事故），必须有确定性硬上限
+    ds = fetch_market_data_impl(app, "NVDA", "2021-07-04", "2026-07-02")["dataset_id"]
+    out = detect_changepoints_impl(app, ds, min_severity=1, max_points=30)
+    assert out["returned"] == 30
+    assert out["omitted"] == out["after_min_severity"] - 30 > 0
+    dates = [cp["date"] for cp in out["changepoints"]]
+    assert dates == sorted(dates)  # 截取后仍按时间升序，便于阅读
+    # 截取偏向高 severity：省略的都不高于保留的最低 severity
+    assert min(cp["severity"] for cp in out["changepoints"]) >= 1
+
+
 def test_search_hn_impl_mock_filters_by_window(app):
     out = search_hn_impl(app, "chatgpt", "2022-11-01", "2022-12-15")
     assert out["mock"] is True

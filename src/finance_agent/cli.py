@@ -31,6 +31,12 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+ONESHOT_NOTE = (
+    "\n\n［一次性执行模式：用户已离线、无法回答任何追问。"
+    "请基于合理默认假设直接完成全流程，所有假设在最终回复中声明。］"
+)
+
+
 def _print_artifacts(delta: list[dict]) -> None:
     for item in delta:
         print(f"  ✔ [{item['artifact_id']} v{item['current_version']}] "
@@ -84,7 +90,7 @@ def main() -> None:
 
         serve(core, port=args.port)
     elif args.prompt:
-        asyncio.run(_run_once(core, args.prompt))
+        asyncio.run(_run_once(core, args.prompt + ONESHOT_NOTE))
         print(f"\n会话 {core.workspace.session_id} 已保存，"
               f"可用 finance-agent --resume {core.workspace.session_id} 继续修改。")
     else:
