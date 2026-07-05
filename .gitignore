@@ -16,3 +16,6 @@ node_modules/
 
 # macOS
 .DS_Store
+
+# 运行产物：会话工作区不入库（交付样例经 samples/ 显式收录）
+outputs/s-*
