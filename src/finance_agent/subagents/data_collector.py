@@ -9,7 +9,7 @@ from agents import Agent, ModelSettings
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
 from finance_agent.contracts import MarketData
-from finance_agent.llm import get_model
+from finance_agent.llm import get_model, output_schema_note
 from finance_agent.tools.agent_tools import fetch_market_data, run_changepoint_detection
 
 _INSTRUCTIONS = """\
@@ -38,7 +38,8 @@ _INSTRUCTIONS = """\
 def build_data_collector(settings: Settings) -> Agent[AppContext]:
     return Agent[AppContext](
         name="data-collector",
-        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat())
+        + output_schema_note(MarketData),
         tools=[fetch_market_data, run_changepoint_detection],
         output_type=MarketData,
         model=get_model(settings),

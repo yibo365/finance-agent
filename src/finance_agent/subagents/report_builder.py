@@ -13,7 +13,7 @@ from agents import Agent, ModelSettings
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
 from finance_agent.contracts import ArtifactRefs
-from finance_agent.llm import get_model
+from finance_agent.llm import get_model, output_schema_note
 from finance_agent.tools.agent_tools import (
     list_artifacts,
     list_skills,
@@ -68,7 +68,8 @@ spec 纪律：
 def build_report_builder(settings: Settings) -> Agent[AppContext]:
     return Agent[AppContext](
         name="report-builder",
-        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat())
+        + output_schema_note(ArtifactRefs),
         tools=[load_material, list_skills, load_skill, list_artifacts, read_artifact,
                render_artifact, update_artifact],
         output_type=ArtifactRefs,

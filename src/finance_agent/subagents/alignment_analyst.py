@@ -14,7 +14,7 @@ from agents import Agent, ModelSettings
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
 from finance_agent.contracts import AlignmentMatrix
-from finance_agent.llm import get_model
+from finance_agent.llm import get_model, output_schema_note
 from finance_agent.tools.agent_tools import load_material
 
 _INSTRUCTIONS = """\
@@ -43,7 +43,8 @@ _INSTRUCTIONS = """\
 def build_alignment_analyst(settings: Settings) -> Agent[AppContext]:
     return Agent[AppContext](
         name="alignment-analyst",
-        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat())
+        + output_schema_note(AlignmentMatrix),
         tools=[load_material],
         output_type=AlignmentMatrix,
         model=get_model(settings),

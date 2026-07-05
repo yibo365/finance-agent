@@ -13,7 +13,8 @@ def clean_env(monkeypatch):
     monkeypatch.setattr(config, "load_dotenv", lambda *args, **kwargs: None)
     for var in ("OPENAI_API_KEY", "OPENROUTER_API_KEY", "OPENAI_BASE_URL",
                 "FINANCE_AGENT_MODEL", "FINANCE_AGENT_MOCK", "FINANCE_AGENT_BASE_URL",
-                "FINANCE_AGENT_WEB_MAX_RESULTS", "TAVILY_API_KEY"):
+                "FINANCE_AGENT_WEB_MAX_RESULTS", "TAVILY_API_KEY",
+                "FINANCE_AGENT_JSON_MODE"):
         monkeypatch.delenv(var, raising=False)
 
 
@@ -131,3 +132,36 @@ def test_configure_llm_disables_tracing_for_gateway(monkeypatch):
     calls.clear()
     llm.configure_llm(Settings(api_key="sk-a"))
     assert calls == []
+
+
+def test_json_mode_default_and_override(monkeypatch):
+    assert Settings.from_env().json_mode == "object"          # 网关兼容的最大公约数
+    monkeypatch.setenv("FINANCE_AGENT_JSON_MODE", "schema")
+    assert Settings.from_env().json_mode == "schema"
+    monkeypatch.setenv("FINANCE_AGENT_JSON_MODE", "不合法")
+    assert Settings.from_env().json_mode == "object"          # 非法值回落默认
+
+
+def test_rewrite_response_format_modes():
+    from finance_agent.llm import rewrite_response_format
+
+    schema_rf = {"type": "json_schema", "json_schema": {"name": "X", "schema": {}}}
+    # object：降级（Kimi/DeepSeek 只认 json_object）
+    out = rewrite_response_format({"response_format": dict(schema_rf)}, "object")
+    assert out["response_format"] == {"type": "json_object"}
+    # off：整体移除
+    out = rewrite_response_format({"response_format": dict(schema_rf)}, "off")
+    assert "response_format" not in out
+    # schema：原样透传
+    out = rewrite_response_format({"response_format": dict(schema_rf)}, "schema")
+    assert out["response_format"]["type"] == "json_schema"
+    # 非 json_schema 请求（如 orchestrator 无 output_type）不受影响
+    assert rewrite_response_format({"messages": []}, "object") == {"messages": []}
+
+
+def test_output_schema_note_carries_contract():
+    from finance_agent.contracts import EventList
+    from finance_agent.llm import output_schema_note
+
+    note = output_schema_note(EventList)
+    assert "coverage_notes" in note and "单个 JSON 对象" in note

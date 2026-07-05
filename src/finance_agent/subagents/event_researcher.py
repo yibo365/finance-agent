@@ -12,7 +12,7 @@ from agents import Agent, ModelSettings
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
 from finance_agent.contracts import EventList
-from finance_agent.llm import get_model
+from finance_agent.llm import get_model, output_schema_note
 from finance_agent.tools.agent_tools import (
     search_hn_news,
     search_yahoo_finance_news,
@@ -71,7 +71,8 @@ def build_event_researcher(settings: Settings) -> Agent[AppContext]:
         tools.append(web_search)
     return Agent[AppContext](
         name="event-researcher",
-        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat())
+        + output_schema_note(EventList),
         tools=tools,
         output_type=EventList,
         model=get_model(settings),

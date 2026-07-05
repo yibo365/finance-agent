@@ -34,6 +34,10 @@ class Settings:
     tavily_api_key: str = ""
     web_max_results: int = 5          # 联网搜索每次返回的结果条数
     search_budget: int = 36           # 单次 subagent 运行的检索次数预算（确定性收敛闸）
+    # 结构化输出的 response_format 策略（仅网关路径）：object=降级为 json_object
+    # （Kimi/DeepSeek 等通吃）| schema=原样 json_schema（OpenRouter 等支持时更严格）
+    # | off=不发。schema 说明始终随提示词下达。
+    json_mode: str = "object"
     max_output_tokens: int = 12000    # 单次调用输出上限：控成本，部分网关按此做预算检查
     mock_mode: bool = False
 
@@ -57,6 +61,11 @@ class Settings:
             tavily_api_key=os.environ.get("TAVILY_API_KEY", ""),
             web_max_results=int(os.environ.get("FINANCE_AGENT_WEB_MAX_RESULTS", "5")),
             search_budget=int(os.environ.get("FINANCE_AGENT_SEARCH_BUDGET", "36")),
+            json_mode=(
+                os.environ.get("FINANCE_AGENT_JSON_MODE", "").strip().lower()
+                if os.environ.get("FINANCE_AGENT_JSON_MODE", "").strip().lower()
+                in ("object", "schema", "off") else "object"
+            ),
             max_output_tokens=int(os.environ.get("FINANCE_AGENT_MAX_TOKENS", "12000")),
             mock_mode=os.environ.get("FINANCE_AGENT_MOCK", "") == "1",
         )
