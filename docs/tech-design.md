@@ -149,7 +149,7 @@ evidence.json    # 溯源记录
 - **注册表原子写**：manifest.json 与 data/index.json 用临时文件 + `os.replace` 更新，进程中断不产生半写状态；
 - 单文件大小上限，防失控输出撑爆磁盘。
 
-skill 静态资产（如 plotly.min.js）由渲染器从 `skills/<name>/assets/` 按白名单复制进产物目录，agent 无法指定来源路径。
+skill 静态资产（如 plotly.min.js）由渲染器从内置 skill 的 `assets/` 按白名单复制进产物目录，agent 无法指定来源路径。源码树（含 skill 资产）在运行期只读，`outputs/` 是唯一写入区。
 
 **如实陈述的剩余风险**：工具与渲染器本身是可信代码（纯库调用，无 shell/exec/eval）；威胁面是 LLM 生成的参数与外部数据内容，分别被"逻辑标识 + pydantic 校验"与"转义 + 白名单"拦截。若未来产物需要执行用户自定义代码（如自定义指标脚本），必须补真沙箱——明确 out of scope。
 
@@ -190,15 +190,18 @@ report-builder（判断，自由）      ArtifactSpec（结构化 IR）        �
 ## 7. 自研 skill 机制
 
 ```
-skills/<name>/
-├── SKILL.md          # frontmatter(name/description/kind/blocks) + 方法论正文
-├── templates/        # 渲染骨架（HTML 交互外壳、文档样式定义）——非内容模板
-└── assets/           # 静态资产（如 vendored plotly.min.js）
+src/finance_agent/skills/           # 机制代码：扫描、索引、加载
+└── builtin/<name>/                 # 内置 skill 资产（包数据，随包分发）
+    ├── SKILL.md          # frontmatter(name/description/kind/blocks) + 方法论正文
+    ├── templates/        # 渲染骨架（HTML 交互外壳、文档样式定义）——非内容模板
+    └── assets/           # 静态资产（如 vendored plotly.min.js）
 ```
+
+**资产放包内而非仓库根**：skill 资产是产品内置能力，与机制代码、渲染器同生命周期、同测试、同交付；经 `importlib.resources` 定位，任何安装方式与 CWD 下都可靠（放仓库根则要靠向上爬目录猜仓库位置，非 editable 安装即断）。用户扩展诉求分离处理：`FINANCE_AGENT_SKILLS_DIR` 可追加外部 skill 目录，扫描时与内置资产合并索引。
 
 **渐进式披露**（控制上下文成本）：
 
-1. 启动时扫描 `skills/`，仅把 frontmatter 索引（每个 skill 一行）注入 orchestrator/report-builder 的 prompt；
+1. 启动时扫描内置 `builtin/` 与 `FINANCE_AGENT_SKILLS_DIR`（如设置），仅把 frontmatter 索引（每个 skill 一行）注入 orchestrator/report-builder 的 prompt；
 2. report-builder 判断需要某 skill 后调 `load_skill(name)` 读入完整方法论；
 3. 产物落地统一走 `render_artifact(spec)`——渲染是确定性 tool，skill 里不放可执行代码，杜绝"从仓库读文本当代码跑"的注入面。
 
