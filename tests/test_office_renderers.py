@@ -48,7 +48,8 @@ def test_xlsx_backtest_formulas_and_sheets(ws):
     })
     version = ws.render_artifact(spec)
     wb = load_workbook(ws.dir / version.file)
-    assert {"说明", "黄金", "比特币", "参数", "对齐", "指标", "汇总", "图表", "溯源"} <= set(wb.sheetnames)
+    assert {"说明", "黄金", "比特币", "参数", "对齐", "指标", "汇总", "年度收益",
+            "图表", "溯源"} <= set(wb.sheetnames)
     # 参数化：窗口值在参数 sheet，指标公式引用它（OFFSET 联动）
     assert wb["参数"]["B2"].value == 20
     vol_formula = wb["指标"]["E30"].value  # 黄金滚动波动列
@@ -56,13 +57,43 @@ def test_xlsx_backtest_formulas_and_sheets(ws):
     # 日收益、回撤是公式非数值
     assert str(wb["指标"]["B3"].value).startswith("=")
     assert "MAX(" in wb["指标"]["D10"].value
-    # 汇总含相关系数公式
-    summary_formulas = [row[1].value for row in wb["汇总"].iter_rows(min_row=2)]
-    assert any(isinstance(v, str) and "CORREL" in v for v in summary_formulas)
+    # 汇总：核心指标齐全且全为公式（真实事故：模型只能靠 table 写"公式"占位）
+    summary = {row[0].value: row[1].value for row in wb["汇总"].iter_rows(min_row=2)}
+    for name in ("区间总收益", "年化收益率（CAGR）", "年化波动率（全样本）",
+                 "夏普比率（rf=0）", "最大回撤", "正收益天数占比", "日收益相关系数"):
+        assert name in summary and str(summary[name]).startswith("="), name
+    assert "CORREL" in summary["日收益相关系数"]
+    assert "POWER" in summary["年化收益率（CAGR）"]
+
+    # 年度收益：按对齐数据真实年份逐年 + 全周期 + 差额列，公式引用对齐 sheet
+    annual = wb["年度收益"]
+    aligned_last = wb["对齐"].max_row
+    year_rows = {row[0].value: row for row in annual.iter_rows(min_row=2)
+                 if row[0].value and str(row[0].value) != "注：年度收益以上一年最后共同交易日收盘为基准（首年度以区间首日为基准）；首末年度可能为区间内的部分年度。"}
+    assert "2024" in year_rows and "全周期" in year_rows   # 夹具数据全在 2024
+    y2024 = year_rows["2024"]
+    assert y2024[1].value == f"='对齐'!B{aligned_last}/'对齐'!B2-1"   # 首年以区间首日为基准
+    assert y2024[3].value.startswith("=C") and "-B" in y2024[3].value  # 差额列
+    full_row = year_rows["全周期"]
+    assert full_row[2].value == f"='对齐'!C{aligned_last}/'对齐'!C2-1"
     # 对齐 sheet 行数 = 共同交易日（工作日 60 天 ⊂ 自然日 80 天中的工作日）
     assert wb["对齐"].max_row - 1 <= 60
     # 溯源 sheet 有记录
     assert wb["溯源"].max_row >= 2
+
+
+def test_xlsx_rejects_placeholder_table_cells(ws):
+    # 真实事故：年度收益/核心指标两个 table 全是字面量"公式"，产物看似成功实为空壳
+    spec = ArtifactSpec.model_validate({
+        "artifact_id": "placeholder-backtest", "kind": "xlsx", "title": "占位符",
+        "blocks": [
+            {"type": "data_sheet", "sheet_name": "黄金", "data_ref": "ds-gold", "ticker": "GC=F"},
+            {"type": "table", "caption": "年度收益对比", "headers": ["年份", "收益"],
+             "rows": [["2024", "公式"]]},
+        ],
+    })
+    with pytest.raises(Exception, match="占位符"):
+        ws.render_artifact(spec)
 
 
 def test_xlsx_requires_data_sheet(ws):

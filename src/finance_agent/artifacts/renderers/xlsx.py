@@ -37,6 +37,30 @@ class RenderError(RuntimeError):
     pass
 
 
+# 占位符黑名单：模型在 table 里写"公式"等占位、指望渲染器代填的失败模式
+# （真实事故：年度收益/核心指标两个 sheet 全是字面量"公式"）
+_PLACEHOLDER_CELLS = {"公式", "待填", "待补", "占位", "tbd", "todo", "placeholder"}
+
+
+def _reject_placeholder_tables(spec: ArtifactSpec) -> None:
+    for block in spec.blocks:
+        if not isinstance(block, TableBlock):
+            continue
+        bad = [
+            str(cell).strip()
+            for row in block.rows for cell in row
+            if str(cell).strip().lower() in _PLACEHOLDER_CELLS
+        ]
+        if bad:
+            raise RenderError(
+                f"table「{block.caption or '未命名'}」含 {len(bad)} 个占位符单元格"
+                f"（如 {bad[0]!r}）。可计算指标不要用 table 手写：年度收益与核心风险"
+                "收益指标由 metrics_sheet 自动生成（「年度收益」「汇总」sheet，全公式）；"
+                "table 仅承载真实的定性内容（事件清单、口径对照等）。"
+                "请删除该 table 或改为真实内容后重试。"
+            )
+
+
 def _write_header(ws, headers: list[str]) -> None:
     ws.append(headers)
     for cell in ws[1]:
@@ -117,23 +141,80 @@ def _metrics_sheets(
         mx.append(row)
     mx.freeze_panes = "A2"
 
-    # 汇总 sheet：区间指标（同样全公式）
+    # 汇总 sheet：区间核心指标（同样全公式）。行号被夏普公式引用，用变量跟踪
     sm = wb.create_sheet("汇总")
     _write_header(sm, ["指标"] + list(labels))
     def _cols(offset: int) -> list[str]:
         return [get_column_letter(2 + a * 4 + offset) for a in range(n_assets)]
+    def _al_cols() -> list[str]:
+        return [get_column_letter(2 + a) for a in range(n_assets)]
 
-    sm.append(["区间总收益"] + [
-        f"='对齐'!{get_column_letter(2 + a)}{last}/'对齐'!{get_column_letter(2 + a)}2-1"
-        for a in range(n_assets)
+    _PCT = "0.00%"
+
+    def _sm_row(name: str, formulas: list[str], fmt: str | None = _PCT) -> int:
+        sm.append([name] + formulas)
+        r = sm.max_row
+        if fmt:
+            for cell in sm[r][1:]:
+                cell.number_format = fmt
+        return r
+
+    n_ret = last - 2   # 日收益样本数（首行无收益）
+    _sm_row("区间总收益", [f"='对齐'!{c}{last}/'对齐'!{c}2-1" for c in _al_cols()])
+    r_cagr = _sm_row("年化收益率（CAGR）", [
+        f"=POWER('对齐'!{c}{last}/'对齐'!{c}2,'参数'!$B$3/{n_ret})-1" for c in _al_cols()
     ])
-    sm.append(["最大回撤"] + [f"=MIN('指标'!{c}3:{c}{last})" for c in _cols(2)])
-    sm.append(["年化波动率（全样本）"] + [
+    r_vol = _sm_row("年化波动率（全样本）", [
         f"=STDEV('指标'!{c}3:{c}{last})*SQRT('参数'!$B$3)" for c in _cols(0)
+    ])
+    _sm_row("夏普比率（rf=0）", [
+        f"={get_column_letter(2 + a)}{r_cagr}/{get_column_letter(2 + a)}{r_vol}"
+        for a in range(n_assets)
+    ], fmt="0.00")
+    _sm_row("最大回撤", [f"=MIN('指标'!{c}3:{c}{last})" for c in _cols(2)])
+    _sm_row("正收益天数占比", [
+        f'=COUNTIF(\'指标\'!{c}3:{c}{last},">0")/COUNT(\'指标\'!{c}3:{c}{last})'
+        for c in _cols(0)
     ])
     if n_assets == 2:
         c0, c1 = _cols(0)
-        sm.append(["日收益相关系数", f"=CORREL('指标'!{c0}3:{c0}{last},'指标'!{c1}3:{c1}{last})", ""])
+        _sm_row("日收益相关系数",
+                [f"=CORREL('指标'!{c0}3:{c0}{last},'指标'!{c1}3:{c1}{last})", ""],
+                fmt="0.00")
+
+    # 年度收益 sheet：按对齐数据的真实年份边界生成公式（确定性代码定行号）。
+    # 真实事故：模型想给"年度收益对比"却只能在 table 里写"公式"占位——
+    # 可计算内容必须是渲染器能力，不靠 LLM 手写。
+    yr = wb.create_sheet("年度收益")
+    headers = ["年份"] + [f"{label}收益" for label in labels]
+    if n_assets == 2:
+        headers.append(f"差额（{labels[1]}−{labels[0]}）")
+    _write_header(yr, headers)
+    dates = aligned["date"].astype(str)
+    year_bounds: list[tuple[str, int, int]] = []   # (年, 首行, 末行)——sheet 行号
+    for year in sorted(dates.str[:4].unique()):
+        idx = aligned.index[dates.str[:4] == year]
+        year_bounds.append((year, int(idx[0]) + 2, int(idx[-1]) + 2))
+    prev_end: int | None = None
+    for year, _first, year_end in year_bounds:
+        base = 2 if prev_end is None else prev_end   # 上一年最后共同交易日收盘为基准
+        row: list = [year] + [f"='对齐'!{c}{year_end}/'对齐'!{c}{base}-1" for c in _al_cols()]
+        if n_assets == 2:
+            r = yr.max_row + 1
+            row.append(f"=C{r}-B{r}")
+        yr.append(row)
+        prev_end = year_end
+    full: list = ["全周期"] + [f"='对齐'!{c}{last}/'对齐'!{c}2-1" for c in _al_cols()]
+    if n_assets == 2:
+        r = yr.max_row + 1
+        full.append(f"=C{r}-B{r}")
+    yr.append(full)
+    for cells in yr.iter_rows(min_row=2, max_row=yr.max_row, min_col=2):
+        for cell in cells:
+            cell.number_format = _PCT
+    yr.append([])
+    yr.append(["注：年度收益以上一年最后共同交易日收盘为基准（首年度以区间首日为基准）；"
+               "首末年度可能为区间内的部分年度。"])
 
     # 图表 sheet：归一化净值曲线
     chart_ws = wb.create_sheet("图表")
@@ -198,6 +279,7 @@ def render_xlsx(
     unsupported = {b.type for b in spec.blocks} - SUPPORTED_BLOCKS
     if unsupported:
         raise RenderError(f"xlsx 渲染器不支持 block 类型：{sorted(unsupported)}")
+    _reject_placeholder_tables(spec)
     data_blocks = [b for b in spec.blocks if isinstance(b, DataSheetBlock)]
     if not data_blocks:
         raise RenderError("xlsx-backtest 至少需要 1 个 data_sheet block")
