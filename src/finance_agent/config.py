@@ -9,7 +9,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SKILLS_DIR = PROJECT_ROOT / "skills"
+PACKAGE_ROOT = Path(__file__).resolve().parent
+BUILTIN_SKILLS_DIR = PACKAGE_ROOT / "skills" / "builtin"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
 

@@ -14,7 +14,7 @@
 | 文件安全 | **无 OS 沙箱，应用层 WorkspaceFS 约束**（§5） | 时间盒取舍：容器/seccomp 级隔离做不完且收益有限——本项目不执行 LLM 生成的代码，威胁面是"LLM 生成的参数"，用"只传逻辑标识不传路径 + 路径守卫"在参数层拦截更对症。 |
 | 语言/工程 | Python 3.12 + uv；`src/` 布局 | docx/pptx/xlsx 生态最成熟；uv 保证评审者一键复现。 |
 | 图表 | Plotly 2.35（本地 vendor） | 沿用已验证的原型资产；本地 vendor 解决 CDN 依赖安全/跨域/断网问题。 |
-| 行情源 | Yahoo Chart API → Stooq → 本地缓存 | 全部免 key。放弃原型中的 Nasdaq API：需伪装 UA，反爬不稳定，评审复跑易挂。 |
+| 行情源 | Yahoo Chart API（query1→query2 双前端主机）→ 本地缓存 | 全部免 key。放弃原型中的 Nasdaq API：需伪装 UA，反爬不稳定；原计划的 Stooq 在 M1 实测已加 JS 工作量证明反爬（返回验证页而非 CSV），移出默认链（实现保留，见 market.py 注释）。 |
 | 资讯源 | HN Algolia + Yahoo 资讯 + hosted WebSearchTool | HN Algolia 支持按时间范围查历史（适合"ChatGPT 发布"这类回溯）；三路互补，且同时覆盖"自定义 function tool"与"SDK 托管工具"两种形态。 |
 
 ## 2. 总体架构
@@ -213,7 +213,7 @@ src/finance_agent/skills/           # 机制代码：扫描、索引、加载
 
 | 工具 | 输入 → 输出 | 要点 |
 |---|---|---|
-| `fetch_ohlcv` | ticker, start, end → 数据摘要 + **dataset_id** + evidence_id | 降级链 Yahoo→Stooq→本地缓存；三源解析统一 schema；记录实际命中源；数据落工作区 data/ 并登记 index.json，后续环节以 dataset_id 引用 |
+| `fetch_ohlcv` | ticker, start, end → 数据摘要 + **dataset_id** + evidence_id | 降级链 Yahoo query1→query2→本地缓存；多源解析统一 schema；记录实际命中源；数据落工作区 data/ 并登记 index.json，后续环节以 dataset_id 引用 |
 | `search_hn_news` | query, date_range → 条目[{title,url,points,date}] + evidence_id | Algolia `search_by_date` + `numericFilters` 查历史 |
 | `fetch_yahoo_news` | ticker/keyword → 条目 + evidence_id | 财经视角补充 |
 | `web_search` | query → 摘要+来源 | SDK hosted WebSearchTool，供 event-researcher 补漏与交叉验证 |
