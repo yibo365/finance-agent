@@ -75,3 +75,10 @@
 ## 提交历史即过程记录
 
 每个里程碑一个提交，提交信息包含该阶段的设计意图与测试状态，`git log` 可完整回放开发过程。
+
+## 文档演进说明
+
+设计期的 PRD / 技术设计 / 流程图解与 Web UI 迭代 PRD 完成了历史使命，其内容
+已按"产品 / 技术 / 架构"重构为 [product.md](product.md)、[technical.md](technical.md)、
+[architecture.md](architecture.md) 三篇并与实现对齐（过程性的中间态描述不再保留，
+演进脉络可从 git 历史完整回放）。本文作为 AI 辅助开发的过程记录保留原貌。

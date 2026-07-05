@@ -1,4 +1,4 @@
-"""ArtifactSpec：产物的结构化中间表示（tech-design §6）。
+"""ArtifactSpec：产物的结构化中间表示（docs/architecture.md §6）。
 
 report-builder（LLM 判断）产出 spec，渲染器（确定性代码）把 spec 变成文件。
 产物有几章、哪些图表、几个 sheet 完全由 spec 的 block 树决定——skill 只提供

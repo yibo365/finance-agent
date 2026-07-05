@@ -1,6 +1,6 @@
 """orchestrator：主 agent——意图路由、任务拆解、subagent 调度、终检与回复。
 
-编排模式为 agents-as-tools（tech-design §4），但不用裸 as_tool：
+编排模式为 agents-as-tools（docs/architecture.md §2），但不用裸 as_tool：
 每个 subagent 经自定义 function_tool 包装（内部嵌套 Runner.run），
 参数 schema 即 TaskBrief——强制携带用户原话，治理传话失真。
 """

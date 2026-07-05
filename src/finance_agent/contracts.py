@@ -1,4 +1,4 @@
-"""主/子 agent 间的结构化契约（architecture-and-flow §6）。
+"""主/子 agent 间的结构化契约（docs/architecture.md §2）。
 
 环节间不传自由文本：
 - 下行：orchestrator → subagent 一律 TaskBrief（强制携带用户原话，治理传话失真）；

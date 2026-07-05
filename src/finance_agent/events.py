@@ -1,6 +1,6 @@
 """事件流协议（FR-18）：把 SDK 运行流翻译成面向前端/CLI 的结构化事件。
 
-协议（prd-web-ui-v2.md §二.1）：
+协议（docs/technical.md §5 事件协议）：
     session / agent_start / tool_call / tool_result / agent_end / delta / done / error
 
 Web（SSE）与 CLI 消费同一 stream_turn 产出的同一串事件——协议只增不改，

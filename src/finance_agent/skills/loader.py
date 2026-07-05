@@ -1,4 +1,4 @@
-"""skill 机制：扫描、索引、按需加载（tech-design §7）。
+"""skill 机制：扫描、索引、按需加载（docs/technical.md §2）。
 
 skill = 一个目录：SKILL.md（frontmatter + 方法论正文）+ templates/（渲染骨架）
 + assets/（静态资产）。内置 skill 随包分发（builtin/），外部扩展经

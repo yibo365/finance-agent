@@ -41,7 +41,7 @@ def tool_names(agent):
     return {getattr(t, "name", type(t).__name__) for t in agent.tools}
 
 
-# ---------- 权限矩阵（architecture-and-flow §5 的可执行版本） ----------
+# ---------- 权限矩阵（architecture.md §2 权限矩阵的可执行版本） ----------
 
 def test_permission_matrix_data_collector():
     assert tool_names(build_data_collector(MOCK)) == {
