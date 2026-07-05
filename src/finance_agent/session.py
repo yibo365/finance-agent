@@ -42,7 +42,20 @@ class SessionCore:
     ) -> "SessionCore":
         return cls(settings, Workspace.open(outputs_dir or OUTPUTS_DIR, session_id))
 
+    def _ensure_workspace_alive(self) -> None:
+        """工作区目录被外部删除时快速失败并给出可理解的报错。
+
+        真实事故：运行中会话目录被误删，SQLiteSession 从 SDK 深处抛出晦涩的
+        'unable to open database file'，排障绕了很大弯。
+        """
+        if not self.workspace.dir.is_dir():
+            raise RuntimeError(
+                f"会话工作区已不存在：{self.workspace.dir}。"
+                "目录可能被外部删除——本会话无法继续，请新开会话。"
+            )
+
     async def run_turn(self, user_input: str) -> str:
+        self._ensure_workspace_alive()
         result = await Runner.run(
             self.orchestrator,
             user_input,
@@ -55,6 +68,8 @@ class SessionCore:
     async def stream_turn(self, user_input: str):
         """流式执行一轮：产出 status（工具/子agent进度）、delta（文本增量）、done。"""
         from openai.types.responses import ResponseTextDeltaEvent
+
+        self._ensure_workspace_alive()
 
         result = Runner.run_streamed(
             self.orchestrator,

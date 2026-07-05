@@ -79,3 +79,12 @@ def test_chat_surfaces_errors_as_events(core, client, monkeypatch):
     with client.stream("POST", "/api/chat", json={"message": "任务"}) as resp:
         body = "".join(resp.iter_text())
     assert '"error"' in body and "模拟失败" in body
+
+
+def test_run_turn_fails_fast_when_workspace_deleted(core):
+    import asyncio
+    import shutil
+
+    shutil.rmtree(core.workspace.dir)
+    with pytest.raises(RuntimeError, match="工作区已不存在"):
+        asyncio.run(core.run_turn("任意输入"))
