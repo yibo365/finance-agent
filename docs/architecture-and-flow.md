@@ -296,7 +296,33 @@ flowchart TB
 - **mock 模式**：`FINANCE_AGENT_MOCK=1` 时工具层换为录制数据实现，agent 层不感知——集成测试跑全流水线不烧 API。
 - **护栏**：每层 Runner 设 `max_turns`；工具抛结构化错误时，重试决策在持有该工具的 subagent，orchestrator 只见最终成败与原因。
 
-## 7. 模块与文件对照
+## 7. LLM 调用清单（一次"新建研究"到底调了多少次模型）
+
+只有两类地方会调 LLM，其余全部是纯代码（渲染器、拐点检测、行情/资讯抓取、
+工作区、溯源——零 LLM）：
+
+**① 五个 agent 的 Runner 循环**——每个 turn 一次 chat completion（模型产出 →
+执行工具 → 结果回填 → 再进模型）。典型次数（受 max_turns 硬顶）：
+
+| 循环 | 典型次数 | max_turns 上限 | 每 turn 在做什么 |
+|---|---|---|---|
+| orchestrator | 6–10 | 30 | 意图解析、每个 subagent 返回后的推进决策、终检、最终回复 |
+| data-collector | 3–5 | 12 | 定抓取参数 → 看结果 → 触发检测 → 组装结构化输出 |
+| event-researcher | 8–20 | 20 | 每次检索工具调用前后各占 turn（上下文最脏、调用最多的环节） |
+| alignment-analyst | 1–2 | 4 | 无工具，一次推理直接产出对齐矩阵 |
+| report-builder | 3–6 | 16 | 读方法论 → 组 spec → 渲染（失败自我修正）→ 输出 |
+
+**② 工具内部的 LLM 调用（仅一处）**：OpenRouter 模式的 `web_search`——
+每次调用会用 `search_model` + web 插件发起一次独立的 chat completion
+（这是把"联网搜索"外包给一次带检索的模型调用）。OpenAI 直连模式的托管
+WebSearchTool 则计在 researcher 自己的 turn 里，无独立调用。
+
+合计：一次完整的场景 A ≈ **25–50 次模型调用**；输入 token 占大头（orchestrator
+与 researcher 的上下文随工具结果累积）。成本护栏：每次调用 max_tokens 上限
+（`FINANCE_AGENT_MAX_TOKENS`）、每层 max_turns、意图路由保证非研究类输入
+只消耗 orchestrator 一两个 turn。
+
+## 8. 模块与文件对照
 
 | 模块 | 文件 | 里程碑 |
 |---|---|---|
