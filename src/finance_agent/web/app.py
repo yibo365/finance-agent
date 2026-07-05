@@ -271,7 +271,12 @@ def create_app(
         return {"session_id": session_id, "stopped": registry.stop(session_id)}
 
     @app.get("/api/sessions/{session_id}/artifacts/{artifact_id}/file")
-    def artifact_file(session_id: str, artifact_id: str, version: int | None = None) -> FileResponse:
+    def artifact_file(
+        session_id: str,
+        artifact_id: str,
+        version: int | None = None,
+        download: bool = False,
+    ) -> FileResponse:
         workspace = registry.workspace(session_id)
         record = workspace.manifest().get(artifact_id)
         if record is None:
@@ -281,7 +286,8 @@ def create_app(
         if not matches:
             raise HTTPException(404, f"版本不存在：{artifact_id} v{v}")
         path = workspace.dir / matches[0].file
-        return FileResponse(path, filename=path.name)
+        disposition = "attachment" if download or record.kind != "html" else "inline"
+        return FileResponse(path, filename=path.name, content_disposition_type=disposition)
 
     if (dist / "assets").is_dir():  # Vite 构建产物的静态资源
         app.mount("/assets", StaticFiles(directory=dist / "assets"), name="assets")
