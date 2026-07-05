@@ -1,0 +1,283 @@
+{
+  "run_id": "s-20260704-ca47",
+  "items": [
+    {
+      "id": "ev-s-20260704-ca47-1",
+      "kind": "market_data",
+      "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?period1=1625356800&period2=1783209600&interval=1d&events=history",
+      "query": {
+        "ticker": "NVDA",
+        "start": "2021-07-04",
+        "end": "2026-07-04",
+        "source": "Yahoo Finance (query1)"
+      },
+      "fetched_at": "2026-07-04T02:09:40+00:00",
+      "excerpt": "1254 行日线，2021-07-06 至 2026-07-02，来源 Yahoo Finance (query1)"
+    },
+    {
+      "id": "ev-s-20260704-ca47-2",
+      "kind": "computation",
+      "source_url": "evidence:ev-s-20260704-ca47-1",
+      "query": {
+        "params": {
+          "trend_window": 20,
+          "trend_min_slope": 0.001,
+          "zscore_window": 21,
+          "zscore_threshold": 2.0,
+          "swing_threshold": 0.15,
+          "volume_window": 60,
+          "volume_multiple": 3.0,
+          "merge_window_days": 10
+        },
+        "rows": 1254
+      },
+      "fetched_at": "2026-07-04T02:09:42+00:00",
+      "excerpt": "150 个变化点：2021-08-06 trend_up(s1)；2021-08-19 accel_up(s2)；2021-08-23 rally(s3)；2021-09-20 accel_down(s2)；2021-09-21 trend_down(s1)；2021-10-04 accel_down(s2)；2021-10-05 accel_up(s2)；2021-10-20 trend_up(s1)"
+    },
+    {
+      "id": "ev-s-20260704-ca47-3",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581022000146/nvda-20220826.htm",
+      "query": {
+        "query": "US export controls Nvidia A100 H100 China August 31 2022 source SEC filing",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:11:40+00:00",
+      "excerpt": "nvda-20220826；EDGAR Filing Documents for 0001045810-22-000146；nvda-20220831；U.S. officials order Nvidia to halt sales of top AI chips to China By Reuters"
+    },
+    {
+      "id": "ev-s-20260704-ca47-4",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing",
+      "query": {
+        "query": "Nvidia Blackwell B200 GB200 announced GTC March 18 2024 source",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:11:57+00:00",
+      "excerpt": "NVIDIA Blackwell Platform Arrives to Power a New Era of Computing | NVIDIA Newsroom；See the Future at GTC 2024: NVIDIA’s Jensen Huang to Unveil Latest Breakthroughs in Accelerated Computing, Generative AI and Robotics | NVIDIA Newsroom；NVIDIA Launches Blackwell-Powered DGX SuperPOD for Generative AI Supercomputing at Trillion-Parameter Scale | NVIDIA Newsroom；‘We Created a Processor for the Generative AI Era,’ NVIDIA CEO Says | NVIDIA Blog"
+    },
+    {
+      "id": "ev-s-20260704-ca47-5",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2023/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2024/",
+      "query": {
+        "query": "Nvidia earnings guidance May 24 2023 data center AI demand stock surged May 25 2023 source",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:11:58+00:00",
+      "excerpt": "\n\tNVIDIA Corporation - NVIDIA Announces Financial Results for First Quarter Fiscal 2024\n；Nvidia's results spark nearly $300 billion rally in AI stocks By Reuters；Chip giant Nvidia nears trillion-dollar status on AI bet By Reuters；Wall Street ends higher as Nvidia sparks rush for AI stocks By Reuters"
+    },
+    {
+      "id": "ev-s-20260704-ca47-6",
+      "kind": "search",
+      "source_url": "https://openai.com/index/chatgpt/?c_correlation_id=d595e22b5b2b4e9c8b9346b2b44cf9e3&c_tenant_id=src_1kYsAcdpfzbZ8UlNLYht1RPg3m2",
+      "query": {
+        "query": "OpenAI ChatGPT launched November 30 2022 source",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:12:04+00:00",
+      "excerpt": "Introducing ChatGPT | OpenAI；How People Use ChatGPT；ChatGPT is released to the public | HISTORY"
+    },
+    {
+      "id": "ev-s-20260704-ca47-7",
+      "kind": "search",
+      "source_url": "https://www.axios.com/2025/01/27/deepseek-ai-model-china-openai-rival?utm_source=openai",
+      "query": {
+        "query": "DeepSeek R1 release January 20 2025 Nvidia stock January 27 2025 source",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:12:25+00:00",
+      "excerpt": "Stunning breakthroughs from China's DeepSeek AI alarm U.S. rivals；GitHub - deepseek-ai/DeepSeek-R1 · GitHub；DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning；How major US stock indexes fared Monday, 1/27/2025；Nvidia sheds $589 billion in market cap on DeepSeek concerns, most in history By Investing.com"
+    },
+    {
+      "id": "ev-s-20260704-ca47-8",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=DeepSeek+R1+NVIDIA+GPU+stock&tags=story&hitsPerPage=10&numericFilters=created_at_i%3E%3D1737331200%2Ccreated_at_i%3C%3D1738627199",
+      "query": {
+        "query": "DeepSeek R1 NVIDIA GPU stock",
+        "start": "2025-01-20",
+        "end": "2025-02-03",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T02:12:42+00:00",
+      "excerpt": "（无结果）"
+    },
+    {
+      "id": "ev-s-20260704-ca47-9",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=NVIDIA+ChatGPT+OpenAI+GPU&tags=story&hitsPerPage=10&numericFilters=created_at_i%3E%3D1669161600%2Ccreated_at_i%3C%3D1670457599",
+      "query": {
+        "query": "NVIDIA ChatGPT OpenAI GPU",
+        "start": "2022-11-23",
+        "end": "2022-12-07",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T02:12:42+00:00",
+      "excerpt": "（无结果）"
+    },
+    {
+      "id": "ev-s-20260704-ca47-10",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=NVIDIA+Blackwell+B200+GB200+GTC&tags=story&hitsPerPage=10&numericFilters=created_at_i%3E%3D1710115200%2Ccreated_at_i%3C%3D1711411199",
+      "query": {
+        "query": "NVIDIA Blackwell B200 GB200 GTC",
+        "start": "2024-03-11",
+        "end": "2024-03-25",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T02:12:42+00:00",
+      "excerpt": "（无结果）"
+    },
+    {
+      "id": "ev-s-20260704-ca47-11",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=NVIDIA+export+controls+A100+H100+China&tags=story&hitsPerPage=10&numericFilters=created_at_i%3E%3D1660867200%2Ccreated_at_i%3C%3D1662595199",
+      "query": {
+        "query": "NVIDIA export controls A100 H100 China",
+        "start": "2022-08-19",
+        "end": "2022-09-07",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T02:12:42+00:00",
+      "excerpt": "（无结果）"
+    },
+    {
+      "id": "ev-s-20260704-ca47-12",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=NVIDIA+earnings+AI+data+center+H100+guidance&tags=story&hitsPerPage=10&numericFilters=created_at_i%3E%3D1684281600%2Ccreated_at_i%3C%3D1685577599",
+      "query": {
+        "query": "NVIDIA earnings AI data center H100 guidance",
+        "start": "2023-05-17",
+        "end": "2023-05-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T02:12:42+00:00",
+      "excerpt": "（无结果）"
+    },
+    {
+      "id": "ev-s-20260704-ca47-13",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-preliminary-financial-resultsfor-second-quarter-fiscal-2023",
+      "query": {
+        "query": "Nvidia preliminary second quarter results August 8 2022 gaming revenue miss stock",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:13:51+00:00",
+      "excerpt": "NVIDIA Announces Preliminary Financial Results for Second Quarter Fiscal 2023 | NVIDIA Newsroom；Nvidia warns of lower second-quarter revenue on gaming weakness By Reuters；NVIDIA Announces Financial Results for Second Quarter Fiscal 2023 | NVIDIA Newsroom"
+    },
+    {
+      "id": "ev-s-20260704-ca47-14",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2023/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2024/",
+      "query": {
+        "query": "Nvidia August 23 2023 earnings guidance AI data center stock surge",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:14:27+00:00",
+      "excerpt": "\n\tNVIDIA Corporation - NVIDIA Announces Financial Results for First Quarter Fiscal 2024\n；\n\tNVIDIA Corporation - NVIDIA Announces Financial Results for Second Quarter Fiscal 2024\n；Nvidia's forecast lifts AI stocks and Nasdaq futures By Reuters；Nvidia adds jet fuel to AI optimism with record results, $25 billion buyback By Reuters；How major US stock indexes fared Thursday, 8/24/2023"
+    },
+    {
+      "id": "ev-s-20260704-ca47-15",
+      "kind": "search",
+      "source_url": "https://regulations.justia.com/regulations/fedreg/2023/10/25/2023-23055.html",
+      "query": {
+        "query": "Nvidia October 17 2023 US export restrictions China A800 H800 stock",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:14:47+00:00",
+      "excerpt": " Implementation of Additional Export Controls: Certain Advanced Computing Items; Supercomputer and Semiconductor End Use; Updates and Corrections, 73458-73517 [2023-23055]  :: Department Of Commerce :: Regulation Tracker :: Justia；Nvidia details advanced AI chips blocked by new export controls By Reuters；Lock；nvda-20231017；Nvidia Shares Slump as US Strengthens AI Chip Export to China__财经头条"
+    },
+    {
+      "id": "ev-s-20260704-ca47-16",
+      "kind": "search",
+      "source_url": "https://newsroom.arm.com/news/nvidia-to-acquire-arm-for-40-billion-creating-worlds-premier-computing-company-for-the-age-of-ai?utm_source=openai",
+      "query": {
+        "query": "Nvidia February 2022 earnings gaming data center stock guidance ARM deal terminated February 2022",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:15:08+00:00",
+      "excerpt": "NVIDIA to Acquire Arm for $40 Billion, Creating World’s Premier Computing Company for the Age of AI - Arm Newsroom；NVIDIA and SoftBank Group Announce Termination of NVIDIA’s Acquisition of Arm Limited | NVIDIA Newsroom；Statement Regarding Termination of Nvidia Corp.’s Attempted Acquisition of Arm Ltd. | Federal Trade Commission；Document；0001045810-22-000005"
+    },
+    {
+      "id": "ev-s-20260704-ca47-17",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2023/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2023/",
+      "query": {
+        "query": "Nvidia February 22 2023 earnings AI data center guidance stock",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:15:16+00:00",
+      "excerpt": "\n\tNVIDIA Corporation - NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2023\n；Nvidia Stock Jumps Following Q4 Beat, Above-Consensus Guidance; CEO Touts AI Opportunity - NVIDIA (NASDAQ:NVDA) - Benzinga；Nvidia (NVDA) Q4 2023 Earnings Call Transcript | The Motley Fool"
+    },
+    {
+      "id": "ev-s-20260704-ca47-18",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2024/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2025/default.aspx",
+      "query": {
+        "query": "Nvidia May 22 2024 earnings 10-for-1 stock split dividend Blackwell stock May 23 2024",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:16:15+00:00",
+      "excerpt": "\n\tNVIDIA Corporation - NVIDIA Announces Financial Results for First Quarter Fiscal 2025\n；Nvidia forecasts quarterly revenue above estimates, unveils stock split | Company News - Business Standard；Microsoft Word - NVIDIA 2024 Stock Split_FAQ_Investors (June 11, 2024)；Nvidia, Synopsys rise; Live Nation, V.F. Corp. fall, Thursday, 5/23/2024 | AP News"
+    },
+    {
+      "id": "ev-s-20260704-ca47-19",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000028/nvda-20240221.htm",
+      "query": {
+        "query": "Nvidia February 21 2024 earnings results guidance data center AI stock February 22 2024",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:16:19+00:00",
+      "excerpt": "nvda-20240221；\n\tNVIDIA Corporation - NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2024\n；Q4FY24 CFO Commentary；Nvidia adds record $277 billion in stock market value By Reuters；S&P 500, Dow surge to record closing highs as Nvidia sparks AI frenzy By Reuters"
+    },
+    {
+      "id": "ev-s-20260704-ca47-20",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000082/nvda-20250409.htm",
+      "query": {
+        "query": "Nvidia April 15 2025 H20 export license China charge stock April 2025",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:16:47+00:00",
+      "excerpt": "nvda-20250409；NVIDIA Corporation - NVIDIA Announces Financial Results for First Quarter Fiscal 2026；Nvidia faces $5.5 billion charge as US restricts chip sales to China By Reuters；https://nvidianews.nvidia.com/_gallery/download_pdf/6837703d3d63320fddb3a9ee/"
+    },
+    {
+      "id": "ev-s-20260704-ca47-21",
+      "kind": "search",
+      "source_url": "https://www.ces.tech/press-releases/nvidia-ceo-jensen-huang-to-deliver-ces-2025-keynote",
+      "query": {
+        "query": "Nvidia January 7 2025 CES GeForce RTX 50 Blackwell AI PC keynote stock",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:17:48+00:00",
+      "excerpt": "NVIDIA CEO Jensen Huang to Deliver CES 2025 Keynote；\n\tNVIDIA Corporation - NVIDIA Blackwell GeForce RTX 50 Series Opens New World of AI Computer Graphics\n；\n\tNVIDIA Corporation - NVIDIA Launches AI Foundation Models for RTX AI PCs\n；CES 2025: AI Advancing at ‘Incredible Pace,’ NVIDIA CEO Says | NVIDIA Blog；\n\tNVIDIA Corporation - NVIDIA Puts Grace Blackwell on Every Desk and at Every AI Developer’s Fingertips\n"
+    },
+    {
+      "id": "ev-s-20260704-ca47-22",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2024/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2025/default.aspx",
+      "query": {
+        "query": "Nvidia August 28 2024 earnings Blackwell delay guidance stock drop September 3 2024",
+        "model": "openai/gpt-5.5",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T02:18:32+00:00",
+      "excerpt": "\n\tNVIDIA Corporation - NVIDIA Announces Financial Results for First Quarter Fiscal 2025\n；Nvidia Blackwell GPUs allegedly delayed due to design flaws — launch expected to be pushed back by three months or more | Tom's Hardware；https://nvidianews.nvidia.com/_gallery/download_pdf/66cf872bed6ae51c7417f273/；0001045810-24-000264；Nvidia fails to impress growth-hungry investors, shares fall By Reuters"
+    }
+  ]
+}

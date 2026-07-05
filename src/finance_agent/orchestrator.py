@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from agents import Agent, RunContextWrapper, Runner, function_tool
+from agents import Agent, ModelSettings, RunContextWrapper, Runner, function_tool
 
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
@@ -180,4 +180,5 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
             read_artifact,
         ],
         model=settings.model,
+        model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
     )

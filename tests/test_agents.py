@@ -90,6 +90,14 @@ def test_subagents_declare_structured_output():
         assert build(MOCK).output_type is not None
 
 
+def test_all_agents_cap_output_tokens():
+    # 控成本 + OpenRouter 按 max_tokens 做预算检查（未设置时按模型最大值预留，低额度 key 会 402）
+    for build in (build_data_collector, build_event_researcher, build_alignment_analyst,
+                  build_report_builder, build_orchestrator):
+        agent = build(MOCK)
+        assert agent.model_settings.max_tokens == MOCK.max_output_tokens
+
+
 # ---------- 动态 instructions ----------
 
 def test_orchestrator_instructions_inject_workspace_state(app):

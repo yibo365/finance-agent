@@ -33,6 +33,7 @@ class Settings:
     base_url: str | None = None       # openrouter / 自建网关时使用
     search_model: str = "gpt-5.5"     # openrouter web 插件所用模型（默认同主模型）
     web_max_results: int = 5          # openrouter web 插件的检索结果条数
+    max_output_tokens: int = 12000    # 单次调用输出上限：控成本，且 OpenRouter 按此做预算检查
     mock_mode: bool = False
 
     @classmethod
@@ -57,6 +58,7 @@ class Settings:
             base_url=base_url,
             search_model=os.environ.get("FINANCE_AGENT_SEARCH_MODEL", model),
             web_max_results=int(os.environ.get("FINANCE_AGENT_WEB_MAX_RESULTS", "5")),
+            max_output_tokens=int(os.environ.get("FINANCE_AGENT_MAX_TOKENS", "12000")),
             mock_mode=os.environ.get("FINANCE_AGENT_MOCK", "") == "1",
         )
 
