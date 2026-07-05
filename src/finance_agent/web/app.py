@@ -67,6 +67,27 @@ def create_app(core: SessionCore) -> FastAPI:
     return app
 
 
+def ensure_port_available(port: int, host: str = "127.0.0.1") -> None:
+    """启动前预检端口，占用时给出可操作的报错。
+
+    放在建会话之前调用：否则 uvicorn 绑定失败时已经留下一个空会话工作区。
+    """
+    import errno
+    import socket
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        try:
+            sock.bind((host, port))
+        except OSError as exc:
+            if exc.errno != errno.EADDRINUSE:
+                raise
+            raise SystemExit(
+                f"端口 {port} 已被占用（可能有上一个 --web 进程还在运行）。\n"
+                f"  换端口启动：finance-agent --web --port {port + 1}\n"
+                f"  或找到占用进程：lsof -i :{port}"
+            ) from exc
+
+
 def serve(core: SessionCore, port: int = 8765) -> None:
     import uvicorn
 

@@ -51,7 +51,7 @@
 |---|---|---|---|
 | FR-1 | 自然语言任务入口 | 交互式会话（REPL）为默认形态，`-p "<任务>"` 一次性模式便于快速验收；agent 自行解析标的、时间范围、产物类型，不设写死的子命令 | P0 |
 | FR-2 | 行情采集 | OHLCV 日线，多源降级链（Yahoo Chart API query1→query2 → 本地缓存；Stooq 因反爬移出默认链，实现保留），覆盖股票/期货/加密（NVDA、GC=F、BTC-USD） | P0 |
-| FR-3 | 资讯采集 | 三路：HN Algolia（按时间范围+关键词查历史）、Yahoo 资讯、联网搜索（OpenAI hosted WebSearchTool） | P0 |
+| FR-3 | 资讯采集 | 三路：HN Algolia（按时间范围+关键词查历史）、Yahoo 资讯、联网搜索（OpenAI 直连用 hosted WebSearchTool；OpenRouter 用其 web 插件，citations 登记 evidence） | P0 |
 | FR-4 | 变化点检测 | 确定性算法识别拐点/加速/回撤/量能异常，每个变化点能说明触发规则与触发数据窗口 | P0 |
 | FR-5 | 事件研究与评级 | 去重、筛选大事件、影响评级（如 高/中/低 + 方向），每条事件带原始来源 URL | P0 |
 | FR-6 | 拐点↔事件对齐 | 时间窗口吻合 + 影响逻辑论证；无法解释的拐点须如实标注"未找到对应事件"，不得强行归因 | P0 |
@@ -85,7 +85,7 @@
 
 ## 6. 约束
 
-- **密钥安全**：唯一密钥是 `OPENAI_API_KEY`，走环境变量/.env（gitignore），不入库、不出现在任何产物中；
+- **密钥安全**：唯一密钥是 LLM 供应方密钥（`OPENAI_API_KEY` 或 `OPENROUTER_API_KEY`），走环境变量/.env（gitignore），不入库、不出现在任何产物中；
 - **数据源免 key**：行情与资讯源全部选用无需注册密钥的公开接口，保证评审者可复跑；
 - **前端依赖安全与跨域**：HTML 产物不引用 CDN，Plotly 本地 vendor 随产物分发；数据内嵌，双击 file:// 打开即可用，无跨域请求；
 - **文件安全（无沙箱取舍）**：时间盒内不引入 OS 级沙箱（容器/seccomp），代之以应用层约束——LLM 只传逻辑标识（artifact_id/dataset_id）不传路径、WorkspaceFS 路径守卫、版本文件 append-only、注册表原子写；产物不含可执行内容。若未来需要执行用户自定义代码（如自定义指标脚本），必须补真沙箱，属明确的范围外；

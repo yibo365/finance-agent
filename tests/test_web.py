@@ -81,6 +81,30 @@ def test_chat_surfaces_errors_as_events(core, client, monkeypatch):
     assert '"error"' in body and "模拟失败" in body
 
 
+def test_ensure_port_available_rejects_occupied_port():
+    import socket
+
+    from finance_agent.web.app import ensure_port_available
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as occupier:
+        occupier.bind(("127.0.0.1", 0))
+        occupier.listen(1)
+        port = occupier.getsockname()[1]
+        with pytest.raises(SystemExit, match=f"--port {port + 1}"):
+            ensure_port_available(port)
+
+
+def test_ensure_port_available_passes_on_free_port():
+    import socket
+
+    from finance_agent.web.app import ensure_port_available
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.bind(("127.0.0.1", 0))
+        free_port = probe.getsockname()[1]
+    ensure_port_available(free_port)  # 不应抛出
+
+
 def test_run_turn_fails_fast_when_workspace_deleted(core):
     import asyncio
     import shutil

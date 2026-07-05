@@ -80,6 +80,10 @@ def main() -> None:
 
     settings = Settings.from_env()
     settings.require_api_key()
+    if args.web:
+        from finance_agent.web.app import ensure_port_available
+
+        ensure_port_available(args.port)  # 先于建会话，避免绑定失败留下空工作区
     core = (
         SessionCore.resume(settings, args.resume)
         if args.resume
