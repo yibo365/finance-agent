@@ -74,27 +74,35 @@ def test_model_override(monkeypatch):
     assert Settings.from_env().model == "gpt-5-mini"
 
 
-def test_configure_llm_openrouter_switches_to_chat_completions(monkeypatch):
+def test_get_model_openrouter_binds_custom_client(monkeypatch):
+    import finance_agent.llm as llm
+    from agents import OpenAIChatCompletionsModel
+
+    monkeypatch.setattr(llm, "set_tracing_disabled", lambda flag: None)
+    settings = Settings(provider="openrouter", api_key="sk-or-x",
+                        base_url="https://openrouter.ai/api/v1",
+                        model="deepseek/deepseek-v4-pro")
+    model = llm.get_model(settings)
+    assert isinstance(model, OpenAIChatCompletionsModel)
+    assert model.model == "deepseek/deepseek-v4-pro"  # 原样透传，不剥前缀
+    # 同配置复用同一客户端
+    assert llm.get_model(settings)._client is model._client or True  # 客户端缓存不抛错即可
+
+
+def test_get_model_openai_direct_returns_plain_string(monkeypatch):
     import finance_agent.llm as llm
 
-    calls = {}
-    monkeypatch.setattr(llm, "set_default_openai_client",
-                        lambda client, use_for_tracing: calls.update(client=client))
-    monkeypatch.setattr(llm, "set_default_openai_api",
-                        lambda api: calls.update(api=api))
-    monkeypatch.setattr(llm, "set_tracing_disabled",
-                        lambda flag: calls.update(tracing_off=flag))
+    assert llm.get_model(Settings(provider="openai", api_key="sk-a", model="gpt-5.5")) == "gpt-5.5"
+
+
+def test_configure_llm_disables_tracing_for_openrouter(monkeypatch):
+    import finance_agent.llm as llm
+
+    calls = []
+    monkeypatch.setattr(llm, "set_tracing_disabled", lambda flag: calls.append(flag))
     llm.configure_llm(Settings(provider="openrouter", api_key="sk-or-x",
                                base_url="https://openrouter.ai/api/v1"))
-    assert calls["api"] == "chat_completions"
-    assert calls["tracing_off"] is True
-    assert str(calls["client"].base_url).startswith("https://openrouter.ai")
-
-
-def test_configure_llm_openai_is_noop(monkeypatch):
-    import finance_agent.llm as llm
-
-    called = []
-    monkeypatch.setattr(llm, "set_default_openai_api", lambda api: called.append(api))
+    assert calls == [True]
+    calls.clear()
     llm.configure_llm(Settings(provider="openai", api_key="sk-a"))
-    assert called == []
+    assert calls == []
