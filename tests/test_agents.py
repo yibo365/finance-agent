@@ -61,13 +61,14 @@ def test_permission_matrix_event_researcher():
         }
 
 
-def test_permission_matrix_alignment_analyst_has_no_tools():
-    assert build_alignment_analyst(MOCK).tools == []
+def test_permission_matrix_alignment_analyst_only_loads_materials():
+    # 仍无检索/写产物能力：唯一工具是读取上游落盘材料（引用传递）
+    assert tool_names(build_alignment_analyst(MOCK)) == {"load_material"}
 
 
 def test_permission_matrix_report_builder():
     assert tool_names(build_report_builder(MOCK)) == {
-        "list_skills", "load_skill", "list_artifacts",
+        "load_material", "list_skills", "load_skill", "list_artifacts",
         "read_artifact", "render_artifact", "update_artifact",
     }
 

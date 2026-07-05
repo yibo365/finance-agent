@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import date
 
 from agents import Agent, ModelSettings, RunContextWrapper, Runner, function_tool
@@ -27,7 +28,12 @@ from finance_agent.subagents.alignment_analyst import build_alignment_analyst
 from finance_agent.subagents.data_collector import build_data_collector
 from finance_agent.subagents.event_researcher import build_event_researcher
 from finance_agent.subagents.report_builder import build_report_builder
-from finance_agent.tools.agent_tools import list_artifacts, list_skills, read_artifact
+from finance_agent.tools.agent_tools import (
+    list_artifacts,
+    list_skills,
+    read_artifact,
+    truncated_tool_error,
+)
 
 _PROMPT = """\
 你是一个投研工作台的主 agent（orchestrator）。今天是 {today}。
@@ -60,22 +66,25 @@ _PROMPT = """\
 - 你的推断（时间范围、标的解析）写进结构化字段，推断依据写进 assumptions；
 - **相对时间必须以上方的"今天"为基准计算**（"近五年"→ start=今天-5年、end=今天），
   先写出具体日期再调用，禁止凭直觉写年份（你的直觉可能停留在训练数据的年代）；
-- subagent 需要的材料（变化点、事件、dataset_id、当前 spec 等）打包成 JSON
-  放进 context_data——subagent 没有对话记忆，你不传它就不知道。
+- subagent 没有对话记忆，它需要的输入你必须经 brief 传达；
+- **材料按引用传递**：每个 subagent 完成后返回 material_id + 摘要（全量内容
+  已落盘）。给下游 subagent 传材料时，context_data 里只放 material_id 与
+  dataset_id 等标识，**禁止把变化点/事件/对齐的全量 JSON 复制进 context_data**
+  ——下游会用 load_material 自行读取全量（真实事故：51KB 的 brief 驻留
+  对话历史，最终单次请求超 8MB 上限）。
 
 ## 数据流细则（新建研究）
 
-1. run_data_collector：返回 dataset_id 与变化点列表；
+1. run_data_collector：返回 dataset_id、变化点摘要与 material_id；
 2. run_event_researcher：把 severity≥2 的变化点日期**聚合成不超过 10 个时间段**
    放进 focus_windows（相邻的点合并成区间，覆盖全部年份，不要只传前几个）；
    keywords 给出任务点名的具名事件（如 ChatGPT、B100、DeepSeek）+ 主题词
-   （AI、芯片、出口管制）——检索是带着问题去的；
-3. run_alignment_analyst：把变化点列表 + 事件列表原样打包进 context_data；
-4. run_report_builder：把 dataset_id、变化点、事件、对齐矩阵全部打包进
-   context_data，并说明期望的产物类型与 artifact_id 建议。
-   **事件列表必须逐字段完整透传（尤其 sources 的 URL 与 evidence_refs），
-   禁止摘要压缩**——你省掉的字段下游拿不到，只能编造，渲染校验会整体拒绝
-   （真实事故：事件只传了日期标题，报告里的链接全是编的 404）。
+   （AI、芯片、出口管制）——检索是带着问题去的；返回事件摘要与 material_id；
+3. run_alignment_analyst：context_data 只放
+   {{"changepoints_material": "<市场材料id>", "events_material": "<事件材料id>"}}；
+4. run_report_builder：context_data 只放 dataset_id、三个 material_id
+   （市场/事件/对齐）、期望产物类型与 artifact_id 建议。事件的 sources URL 与
+   evidence_refs 在事件材料里，subagent 会自行读取并逐字复制。
 
 ## 终检清单（report-builder 返回后逐条核对）
 
@@ -131,20 +140,71 @@ def _instructions(ctx: RunContextWrapper[AppContext], _agent: Agent[AppContext])
     )
 
 
+def _digest(output: BaseModel) -> dict:
+    """子代理全量输出 → 给 orchestrator 的确定性紧凑摘要。
+
+    摘要只保留 orchestrator 决策需要的字段（聚合 focus_windows、终检对照、
+    向用户复述）；全量内容经 material 落盘，下游 subagent 用 load_material 取。
+    """
+    if isinstance(output, MarketData):
+        return {
+            "datasets": [
+                {
+                    "dataset_id": d.dataset_id, "ticker": d.ticker, "rows": d.rows,
+                    "start": d.start, "end": d.end, "source": d.source,
+                    "quality_notes": d.quality_notes,
+                    "changepoints": [
+                        f"{p.date} {p.kind} sev{p.severity}" for p in d.changepoints
+                    ],
+                }
+                for d in output.datasets
+            ],
+            "echo": output.echo,
+        }
+    if isinstance(output, EventList):
+        return {
+            "events": [
+                f"{e.date} [{e.category}] {e.title}（impact {e.impact}，{e.direction}）"
+                for e in output.events
+            ],
+            "coverage_notes": output.coverage_notes,
+        }
+    if isinstance(output, AlignmentMatrix):
+        verdicts: dict[str, int] = {}
+        for entry in output.entries:
+            verdicts[entry.verdict] = verdicts.get(entry.verdict, 0) + 1
+        return {
+            "verdicts": verdicts,
+            "entries": [
+                f"{e.changepoint_date} {e.changepoint_kind} → {e.verdict}"
+                + (f"（{'、'.join(e.matched_event_titles)}）" if e.matched_event_titles else "")
+                for e in output.entries
+            ],
+            "overall_notes": output.overall_notes,
+        }
+    return output.model_dump()
+
+
 async def _run_subagent(
     agent: Agent[AppContext],
     brief: TaskBrief,
     ctx: RunContextWrapper[AppContext],
     output_type: type[BaseModel],
     max_turns: int,
+    material_kind: str | None = None,
 ) -> str:
     """嵌套运行 subagent 并把内部动作经 ctx.emit 上报（FR-18）。
 
     嵌套 run 的流事件不会出现在外层 orchestrator 的流里——不转发，
     前端/CLI 就只能看到"正在调用 run_xxx…"的黑盒（真实事故：界面停在
     run event 十分钟，用户只能翻文件 mtime 判断是否卡死）。
+
+    material_kind 非空时，全量输出落盘为工作区材料，只把 material_id + 摘要
+    返回给 orchestrator——大 JSON 不进主对话历史（真实事故：51KB brief
+    全程驻留历史，每轮 LLM 调用陪跑）。
     """
     app = ctx.context
+    app.begin_subagent_run()
     app.emit({"type": "agent_start", "agent": agent.name})
     translator = RunItemTranslator(agent.name)
     result = Runner.run_streamed(
@@ -158,7 +218,16 @@ async def _run_subagent(
                     app.emit(translated)
     finally:
         app.emit({"type": "agent_end", "agent": agent.name})
-    return result.final_output_as(output_type).model_dump_json()
+    output = result.final_output_as(output_type)
+    if material_kind is None:
+        return output.model_dump_json()
+    material_id = app.workspace.store_material(material_kind, output.model_dump())
+    envelope = {
+        "material_id": material_id,
+        **_digest(output),
+        "note": "全量材料已落盘；给下游 subagent 传这个 material_id（context_data），不要复制全量内容。",
+    }
+    return json.dumps(envelope, ensure_ascii=False)
 
 
 def build_orchestrator(settings: Settings) -> Agent[AppContext]:
@@ -167,34 +236,40 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
     analyst = build_alignment_analyst(settings)
     builder = build_report_builder(settings)
 
-    @function_tool
+    @function_tool(failure_error_function=truncated_tool_error)
     async def run_data_collector(ctx: RunContextWrapper[AppContext], brief: TaskBrief) -> str:
         """调用数据采集 subagent：拉取行情、缓存 dataset、执行变化点检测。
 
         Args:
             brief: TaskBrief。original_request 必须逐字引用用户原话。
         """
-        return await _run_subagent(collector, brief, ctx, MarketData, max_turns=12)
+        return await _run_subagent(
+            collector, brief, ctx, MarketData, max_turns=12, material_kind="market"
+        )
 
-    @function_tool
+    @function_tool(failure_error_function=truncated_tool_error)
     async def run_event_researcher(ctx: RunContextWrapper[AppContext], brief: TaskBrief) -> str:
         """调用事件研究 subagent：围绕 focus_windows 定向检索、去重、影响评级。
 
         Args:
             brief: TaskBrief。focus_windows 放入需要解释的变化点日期窗口。
         """
-        return await _run_subagent(researcher, brief, ctx, EventList, max_turns=20)
+        return await _run_subagent(
+            researcher, brief, ctx, EventList, max_turns=20, material_kind="events"
+        )
 
-    @function_tool
+    @function_tool(failure_error_function=truncated_tool_error)
     async def run_alignment_analyst(ctx: RunContextWrapper[AppContext], brief: TaskBrief) -> str:
         """调用对齐分析 subagent：变化点 × 事件吻合性论证（无工具，纯推理）。
 
         Args:
             brief: TaskBrief。context_data 必须包含变化点列表与事件列表 JSON。
         """
-        return await _run_subagent(analyst, brief, ctx, AlignmentMatrix, max_turns=4)
+        return await _run_subagent(
+            analyst, brief, ctx, AlignmentMatrix, max_turns=8, material_kind="alignment"
+        )
 
-    @function_tool
+    @function_tool(failure_error_function=truncated_tool_error)
     async def run_report_builder(ctx: RunContextWrapper[AppContext], brief: TaskBrief) -> str:
         """调用报告构建 subagent：组织/修改 ArtifactSpec 并渲染产物。
 

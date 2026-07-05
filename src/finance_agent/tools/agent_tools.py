@@ -41,6 +41,23 @@ def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
+_TOOL_ERROR_LIMIT = 1500
+
+
+def truncated_tool_error(ctx: RunContextWrapper[Any], error: Exception) -> str:
+    """工具失败消息进上下文前截断。
+
+    SDK/pydantic 的默认错误会回显完整参数或完整输出（真实事故：report-builder
+    的失败尝试里，几十 KB 的 spec 参数 + 错误回显成对驻留运行内上下文，
+    单次请求滚到 7.8M tokens 超 8MB 上限）。前缀保持与 SDK 默认一致，
+    事件流/历史回放的 ok 判定不受影响。
+    """
+    message = str(error)
+    if len(message) > _TOOL_ERROR_LIMIT:
+        message = message[:_TOOL_ERROR_LIMIT] + f"…（错误消息已截断，原长 {len(message)} 字符）"
+    return f"An error occurred while running the tool. Please try again. Error: {message}"
+
+
 def _json(payload: Any) -> str:
     return json.dumps(payload, ensure_ascii=False)
 
@@ -141,9 +158,30 @@ def run_changepoint_detection(
 
 # ---------- event-researcher 工具 ----------
 
+def _consume_search_budget(app: AppContext) -> dict[str, Any] | None:
+    """检索预算的确定性收敛闸：超预算不再检索，指令模型立即汇总。
+
+    真实事故：event-researcher 无预算连搜 98 次、20 轮打满后 Max turns
+    exceeded 整体作废——7 分钟成果全丢。预算耗尽是软着陆：已获材料仍在
+    运行上下文里，立即收敛还能产出完整结果。
+    """
+    if app.search_calls >= app.settings.search_budget:
+        return {
+            "items": [], "results": [], "evidence_id": "",
+            "note": f"本次运行的检索预算（{app.settings.search_budget} 次）已用尽，"
+                    "禁止继续任何检索：立即基于已获材料去重、评级并输出最终结果；"
+                    "未覆盖的窗口在 coverage_notes 中如实说明。",
+        }
+    app.search_calls += 1
+    return None
+
+
 def search_hn_impl(
     app: AppContext, query: str, start: str, end: str, max_hits: int = 30
 ) -> dict[str, Any]:
+    exhausted = _consume_search_budget(app)
+    if exhausted is not None:
+        return exhausted
     # 确定性纠错：Algolia 不支持布尔语法，长串组合词必然零命中（真实事故：
     # "NVIDIA OR NVDA OR ChatGPT OR…" 12 连败）。直接拒绝并告知正确用法。
     if " OR " in query.upper() or len(query.split()) > 4:
@@ -177,6 +215,9 @@ def search_hn_impl(
 
 
 def search_yahoo_news_impl(app: AppContext, query: str, max_items: int = 20) -> dict[str, Any]:
+    exhausted = _consume_search_budget(app)
+    if exhausted is not None:
+        return exhausted
     if app.settings.mock_mode:
         return {"query": query, "items": [], "evidence_id": "", "mock": True,
                 "note": "mock 模式下 Yahoo 资讯不可用"}
@@ -230,6 +271,9 @@ async def tavily_web_search_impl(
     """
     from finance_agent.tools.websearch import tavily_search
 
+    exhausted = _consume_search_budget(app)
+    if exhausted is not None:
+        return exhausted
     if not app.settings.tavily_api_key:
         raise ValueError(
             "联网搜索未配置：缺少 TAVILY_API_KEY（Web 界面左下角\"设置\"或 .env 中填写）。"
@@ -298,6 +342,21 @@ def load_skill(ctx: RunContextWrapper[AppContext], name: str) -> str:
     return load_skill_impl(ctx.context, name)
 
 
+# ---------- 材料（alignment-analyst / report-builder） ----------
+
+@function_tool
+def load_material(ctx: RunContextWrapper[AppContext], material_id: str) -> str:
+    """读取上游环节落盘的全量材料（变化点列表 / 事件列表 / 对齐矩阵）。
+
+    任务材料 context_data 里给出的是 material_id（形如 mat-events-1）——
+    材料按引用传递，全量内容用本工具按需读取。
+
+    Args:
+        material_id: 材料标识，见 context_data。
+    """
+    return _json(ctx.context.workspace.load_material(material_id))
+
+
 # ---------- 工作区/产物工具 ----------
 
 def list_artifacts_impl(app: AppContext) -> dict[str, Any]:
@@ -328,7 +387,7 @@ def read_artifact(
     return spec.model_dump_json()
 
 
-@function_tool
+@function_tool(failure_error_function=truncated_tool_error)
 def render_artifact(
     ctx: RunContextWrapper[AppContext], spec: ArtifactSpec, change_summary: str = "初版"
 ) -> str:
@@ -346,7 +405,7 @@ def render_artifact(
     })
 
 
-@function_tool
+@function_tool(failure_error_function=truncated_tool_error)
 def update_artifact(
     ctx: RunContextWrapper[AppContext], artifact_id: str, spec: ArtifactSpec, change_summary: str
 ) -> str:

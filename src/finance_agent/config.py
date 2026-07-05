@@ -33,6 +33,7 @@ class Settings:
     model: str = "gpt-5.5"
     tavily_api_key: str = ""
     web_max_results: int = 5          # 联网搜索每次返回的结果条数
+    search_budget: int = 36           # 单次 subagent 运行的检索次数预算（确定性收敛闸）
     max_output_tokens: int = 12000    # 单次调用输出上限：控成本，部分网关按此做预算检查
     mock_mode: bool = False
 
@@ -55,6 +56,7 @@ class Settings:
             model=os.environ.get("FINANCE_AGENT_MODEL", default_model),
             tavily_api_key=os.environ.get("TAVILY_API_KEY", ""),
             web_max_results=int(os.environ.get("FINANCE_AGENT_WEB_MAX_RESULTS", "5")),
+            search_budget=int(os.environ.get("FINANCE_AGENT_SEARCH_BUDGET", "36")),
             max_output_tokens=int(os.environ.get("FINANCE_AGENT_MAX_TOKENS", "12000")),
             mock_mode=os.environ.get("FINANCE_AGENT_MOCK", "") == "1",
         )

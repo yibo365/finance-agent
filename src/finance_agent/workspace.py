@@ -201,6 +201,33 @@ class Workspace:
     def dataset_index(self) -> dict[str, Any]:
         return self._data_index()
 
+    # ---------- 材料（subagent 全量输出的引用传递载体） ----------
+    #
+    # 真实事故：变化点/事件/对齐矩阵按值在 orchestrator ↔ subagent 间来回复制，
+    # 单个 brief 到 51KB 且永久驻留对话历史；子代理运行内上下文一次滚到
+    # 7.8M tokens（超 8MB 请求上限）。材料落盘、上下文只传 material_id，
+    # 下游用 load_material 按需取。
+
+    def store_material(self, kind: str, payload: dict[str, Any]) -> str:
+        if not re.fullmatch(r"[a-z][a-z0-9-]{0,30}", kind):
+            raise WorkspaceError(f"非法 material kind：{kind!r}")
+        (self.dir / "materials").mkdir(exist_ok=True)
+        seq = len(list((self.dir / "materials").glob(f"mat-{kind}-*.json"))) + 1
+        material_id = f"mat-{kind}-{seq}"
+        self._write_json_atomic(self.dir / "materials" / f"{material_id}.json", payload)
+        return material_id
+
+    def load_material(self, material_id: str) -> dict[str, Any]:
+        if not re.fullmatch(r"mat-[a-z][a-z0-9-]{0,30}-\d+", material_id):
+            raise WorkspaceError(f"非法 material_id：{material_id!r}")
+        path = self._join("materials", f"{material_id}.json")
+        if not path.is_file():
+            existing = sorted(p.stem for p in (self.dir / "materials").glob("mat-*.json")) \
+                if (self.dir / "materials").is_dir() else []
+            hint = f"可用材料：{'、'.join(existing)}" if existing else "（本会话暂无材料）"
+            raise WorkspaceError(f"材料不存在：{material_id}。{hint}")
+        return json.loads(path.read_text(encoding="utf-8"))
+
     def load_dataset(self, dataset_id: str) -> pd.DataFrame:
         entry = self._data_index().get(dataset_id)
         if entry is None:

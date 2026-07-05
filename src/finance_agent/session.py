@@ -24,6 +24,66 @@ from finance_agent.orchestrator import build_orchestrator
 from finance_agent.workspace import Workspace
 
 MAX_ORCHESTRATOR_TURNS = 30
+# 主 agent 历史修剪：喂给模型时保留最近 N 个用户轮的完整内容，
+# 更早的轮只留 user/assistant 文本（工具调用对与 reasoning 剔除）。
+KEEP_RECENT_TURNS = 2
+
+
+def trim_history(items: list[dict], keep_turns: int = KEEP_RECENT_TURNS) -> list[dict]:
+    """历史修剪的纯函数实现（确定性，无 LLM 压缩调用）。
+
+    真实事故：51KB 的 subagent brief、29KB 的 read_artifact 输出作为
+    function_call 对永久驻留历史，此后每一轮 LLM 调用都要陪跑——多轮会话
+    越来越慢、越来越贵。旧轮的工具明细对后续决策几乎无价值（结论已在
+    assistant 文本里复述），只留对话文本即可。
+
+    轮边界 = user 消息。落库数据不动（审计与前端回放仍是全量），
+    只在读取喂给模型时过滤。
+    """
+    user_indices = [
+        i for i, item in enumerate(items)
+        if isinstance(item, dict) and item.get("role") == "user"
+    ]
+    if len(user_indices) <= keep_turns:
+        return items
+    boundary = user_indices[-keep_turns]
+    trimmed: list[dict] = []
+    for i, item in enumerate(items):
+        if i >= boundary or not isinstance(item, dict):
+            trimmed.append(item)
+            continue
+        role = item.get("role")
+        if role == "user" or role == "assistant" or item.get("type") == "message":
+            trimmed.append(item)
+        # 旧轮的 function_call / function_call_output / reasoning：剔除
+    return trimmed
+
+
+class TrimmedSession:
+    """SQLiteSession 的读时修剪包装（实现 SDK Session 协议）。
+
+    写入原样透传——session.db 永远是全量；get_items 返回修剪视图。
+    """
+
+    def __init__(self, inner: SQLiteSession, keep_turns: int = KEEP_RECENT_TURNS) -> None:
+        self._inner = inner
+        self.keep_turns = keep_turns
+
+    @property
+    def session_id(self) -> str:
+        return self._inner.session_id
+
+    async def get_items(self, limit: int | None = None) -> list:
+        return trim_history(await self._inner.get_items(limit), self.keep_turns)
+
+    async def add_items(self, items: list) -> None:
+        await self._inner.add_items(items)
+
+    async def pop_item(self):
+        return await self._inner.pop_item()
+
+    async def clear_session(self) -> None:
+        await self._inner.clear_session()
 
 
 class SessionCore:
@@ -34,8 +94,8 @@ class SessionCore:
         self.settings = settings
         self.workspace = workspace
         self.ctx = AppContext(settings=settings, workspace=workspace)
-        self.chat = SQLiteSession(
-            session_id=workspace.session_id, db_path=workspace.session_db_path
+        self.chat = TrimmedSession(
+            SQLiteSession(session_id=workspace.session_id, db_path=workspace.session_db_path)
         )
         self.orchestrator = build_orchestrator(settings)
 

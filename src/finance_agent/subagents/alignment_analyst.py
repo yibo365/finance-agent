@@ -1,7 +1,8 @@
 """alignment-analyst：变化点 × 事件的吻合性论证。
 
-刻意零工具：职责是"基于既有证据论证"而非继续找料——输出只依赖输入，
-可复现性最好。材料缺口由它声明，是否补检索由 orchestrator 决定。
+唯一工具是 load_material（读取上游落盘的全量材料）：职责仍是"基于既有
+证据论证"而非继续找料——没有检索工具，输出只依赖输入，可复现性最好。
+材料缺口由它声明，是否补检索由 orchestrator 决定。
 """
 
 from __future__ import annotations
@@ -14,11 +15,14 @@ from finance_agent.config import Settings
 from finance_agent.context import AppContext
 from finance_agent.contracts import AlignmentMatrix
 from finance_agent.llm import get_model
+from finance_agent.tools.agent_tools import load_material
 
 _INSTRUCTIONS = """\
 今天是 {today}。你是投研流水线的对齐分析环节。输入是一个 TaskBrief JSON，其 context_data 中
-包含两份材料：变化点列表（确定性算法产出）与事件列表（带来源与评级）。
-你没有任何工具——只基于给定材料做严谨论证，产出 AlignmentMatrix。
+给出两个 material_id（changepoints_material：变化点材料；events_material：事件材料）。
+第一步：用 load_material 分别读入两份全量材料（可在同一轮并行调用）。
+此后只基于这两份材料做严谨论证，产出 AlignmentMatrix——你没有检索工具，
+不引入材料之外的信息。
 
 判定标准：
 - match：事件日（或其后第一个交易日）落在变化点数据窗口内或相距 ≤10 个交易日，
@@ -40,7 +44,7 @@ def build_alignment_analyst(settings: Settings) -> Agent[AppContext]:
     return Agent[AppContext](
         name="alignment-analyst",
         instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
-        tools=[],
+        tools=[load_material],
         output_type=AlignmentMatrix,
         model=get_model(settings),
         model_settings=ModelSettings(max_tokens=settings.max_output_tokens),

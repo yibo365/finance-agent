@@ -21,7 +21,13 @@ class AppContext:
     # tool_call/tool_result 等事件经此上报，由 stream_turn 合流后推给前端/CLI。
     # None 表示无人订阅（如单测直接调工具 impl），emit 静默丢弃。
     on_event: Callable[[dict], None] | None = field(default=None, repr=False)
+    # 当次 subagent 运行内已消耗的检索次数（真实事故：event-researcher 无预算
+    # 连搜 98 次、20 轮打满后整体作废）。检索工具据此执行确定性预算收敛。
+    search_calls: int = field(default=0, repr=False)
 
     def emit(self, event: dict) -> None:
         if self.on_event is not None:
             self.on_event(event)
+
+    def begin_subagent_run(self) -> None:
+        self.search_calls = 0

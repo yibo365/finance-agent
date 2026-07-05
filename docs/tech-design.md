@@ -152,6 +152,25 @@ evidence.json    # 溯源记录
 - **注册表原子写**：manifest.json 与 data/index.json 用临时文件 + `os.replace` 更新，进程中断不产生半写状态；
 - 单文件大小上限，防失控输出撑爆磁盘。
 
+### 上下文治理（多轮会话与长流水线的爆仓防线）
+
+四道确定性防线（均不引入 LLM 压缩调用），对应两起真实事故——单次 subagent
+请求滚到 7.8M tokens 超 8MB 上限；event-researcher 无预算连搜 98 次后
+Max turns exceeded 整体作废：
+
+1. **材料按引用传递**：subagent 全量输出（变化点/事件/对齐矩阵）落盘为
+   `materials/mat-<kind>-<n>.json`，orchestrator 历史里只驻留 material_id +
+   确定性摘要（事件一行一条）；下游 subagent 用 `load_material` 按需读全量。
+   大 JSON 不再在 brief 与输出里来回复制。
+2. **主 agent 历史读时修剪**（`TrimmedSession`）：喂给模型时保留最近
+   2 个用户轮的完整内容，更早的轮只留 user/assistant 文本，工具调用对与
+   reasoning 剔除。落库仍是全量——审计与前端历史回放不受影响。
+3. **检索预算**（`FINANCE_AGENT_SEARCH_BUDGET`，默认 36 次/子代理运行）：
+   预算耗尽时检索工具返回收敛指令而非结果，强制模型基于已获材料立即输出
+   ——软着陆好于轮次打满后全部作废。
+4. **失败消息截断**：工具错误进上下文前截到定长（pydantic 校验错误会回显
+   完整参数，失败重试时按 2×参数体积/次滚雪球）。
+
 skill 静态资产（如 plotly.min.js）由渲染器从内置 skill 的 `assets/` 按白名单复制进产物目录，agent 无法指定来源路径。源码树（含 skill 资产）在运行期只读，`outputs/` 是唯一写入区。
 
 **如实陈述的剩余风险**：工具与渲染器本身是可信代码（纯库调用，无 shell/exec/eval）；威胁面是 LLM 生成的参数与外部数据内容，分别被"逻辑标识 + pydantic 校验"与"转义 + 白名单"拦截。若未来产物需要执行用户自定义代码（如自定义指标脚本），必须补真沙箱——明确 out of scope。
