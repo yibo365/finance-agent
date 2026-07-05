@@ -384,10 +384,12 @@ class Workspace:
         同时事件的 evidence_refs 被整体挂到行情数据 evidence 上，回链失真，
         故一并要求事件引用中至少一条 news/search 类 evidence。
         """
+        evidence_items = {ev.id: ev for ev in self.evidence.items()}
         known_urls = self.evidence.known_urls()
-        evidence_kinds = {ev.id: ev.kind for ev in self.evidence.items()}
+        evidence_kinds = {ev.id: ev.kind for ev in evidence_items.values()}
         missing: list[str] = []
         fabricated: list[str] = []
+        mismatched: list[str] = []
         misattributed: list[str] = []
         for block in spec.blocks:
             for event in getattr(block, "events", None) or []:
@@ -401,10 +403,24 @@ class Workspace:
                     unknown = [u for u in http_urls if u not in known_urls]
                     if unknown:
                         fabricated.append(f"{event.date} {event.title} → {unknown[0]}")
-                if event.evidence_refs and not any(
-                    evidence_kinds.get(r) in ("news", "search") for r in event.evidence_refs
-                ):
+                event_evidence = [
+                    evidence_items[r] for r in event.evidence_refs
+                    if evidence_kinds.get(r) in ("news", "search")
+                ]
+                if not event_evidence:
                     misattributed.append(f"{event.date} {event.title}")
+                    continue
+                allowed_urls: set[str] = set()
+                for ev in event_evidence:
+                    if ev.source_url.startswith(("http://", "https://")):
+                        allowed_urls.add(ev.source_url)
+                    allowed_urls.update(ev.urls)
+                crossed = [
+                    u for u in http_urls
+                    if u in known_urls and u not in allowed_urls
+                ]
+                if crossed:
+                    mismatched.append(f"{event.date} {event.title} → {crossed[0]}")
         if missing:
             sample = "；".join(missing[:5])
             raise WorkspaceError(
@@ -417,6 +433,13 @@ class Workspace:
                 f"以下事件的来源 URL 不在溯源记录中（共 {len(fabricated)} 个，疑似编造）：{sample}…。"
                 "sources.url 只能逐字复制材料中事件研究给出的真实 URL，"
                 "禁止凭记忆构造或\"修正\"链接；材料里没有 URL 就要求上游补齐，而不是编一个。"
+            )
+        if mismatched:
+            sample = "；".join(mismatched[:5])
+            raise WorkspaceError(
+                f"以下事件的来源 URL 不属于该事件 evidence_refs（共 {len(mismatched)} 个）：{sample}…。"
+                "sources.url 必须来自该事件自己引用的 news/search evidence 的 source_url 或 urls，"
+                "不要把同一会话里其他事件的真实链接串挂到当前事件。"
             )
         if misattributed:
             sample = "；".join(misattributed[:5])

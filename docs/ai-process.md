@@ -4,7 +4,7 @@
 
 ## 使用的 AI 工具
 
-- **Claude Code（Claude Fable 5）**：全程结对——需求拆解、设计文档撰写、编码、测试、调试、提交。
+- **Claude Code**：全程结对——需求拆解、设计文档撰写、编码、测试、调试、提交。
 - 开发过程中的全部提示词资产都在仓库里：orchestrator 与四个 subagent 的 system prompt
   （`src/finance_agent/orchestrator.py`、`subagents/*.py`）、四个 skill 的方法论
   （`skills/builtin/*/SKILL.md`）——它们既是运行时资产也是"prompt 工程"的交付物。

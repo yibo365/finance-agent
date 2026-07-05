@@ -10,6 +10,7 @@ from collections.abc import Mapping
 from datetime import UTC, datetime
 
 from docx import Document
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt, RGBColor
@@ -89,6 +90,29 @@ def _evidence_mark(paragraph, refs: list[str]) -> None:
     run.font.superscript = True
 
 
+def _add_hyperlink(paragraph, text: str, url: str) -> None:
+    r_id = paragraph.part.relate_to(url, RT.HYPERLINK, is_external=True)
+    hyperlink = OxmlElement("w:hyperlink")
+    hyperlink.set(qn("r:id"), r_id)
+
+    run = OxmlElement("w:r")
+    rpr = OxmlElement("w:rPr")
+    _set_rfonts(_get_or_add(rpr, "w:rFonts"))
+    color = OxmlElement("w:color")
+    color.set(qn("w:val"), "0563C1")
+    underline = OxmlElement("w:u")
+    underline.set(qn("w:val"), "single")
+    rpr.append(color)
+    rpr.append(underline)
+    run.append(rpr)
+
+    text_node = OxmlElement("w:t")
+    text_node.text = text
+    run.append(text_node)
+    hyperlink.append(run)
+    paragraph._p.append(hyperlink)
+
+
 def _add_table(doc: Document, headers: list[str], rows: list[list[str]],
                caption: str = "", evidence_refs: list[str] | None = None) -> None:
     if caption:
@@ -159,8 +183,13 @@ def render_docx(
         for ev in evidence.values():
             para = doc.add_paragraph(style="List Bullet")
             para.add_run(f"{ev.id}").bold = True
+            para.add_run(f"［{ev.kind}］")
+            if ev.source_url.startswith(("http://", "https://")):
+                _add_hyperlink(para, ev.source_url, ev.source_url)
+            else:
+                para.add_run(ev.source_url)
             para.add_run(
-                f"［{ev.kind}］{ev.source_url}　抓取于 {ev.fetched_at}"
+                f"　抓取于 {ev.fetched_at}"
                 + (f"　查询：{ev.query}" if ev.query else "")
             )
     else:

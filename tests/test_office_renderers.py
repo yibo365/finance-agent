@@ -41,6 +41,11 @@ def _docx_xml(path, member: str):
         return ET.fromstring(zf.read(member))
 
 
+def _zip_member_text(path, member: str) -> str:
+    with ZipFile(path) as zf:
+        return zf.read(member).decode("utf-8")
+
+
 def _style_rfonts(styles, style_id: str):
     style = styles.find(f".//{_W_NS}style[@{_W_NS}styleId='{style_id}']")
     assert style is not None, style_id
@@ -163,6 +168,28 @@ def test_pptx_slides_and_evidence_page(ws):
             assert shape.top + shape.height <= prs.slide_height + 1
 
 
+def test_pptx_evidence_urls_are_clickable_hyperlinks(ws):
+    """真实事故：PPTX 证据页只写普通 URL 文本，不能一跳打开来源。"""
+    spec = ArtifactSpec.model_validate({
+        "artifact_id": "hyperlink-deck",
+        "kind": "pptx",
+        "title": "PPTX 超链接测试",
+        "blocks": [
+            {"type": "slide", "layout": "title", "title": "PPTX 超链接测试"},
+        ],
+    })
+    version = ws.render_artifact(spec)
+    with ZipFile(ws.dir / version.file) as zf:
+        rel_members = [
+            name for name in zf.namelist()
+            if name.startswith("ppt/slides/_rels/") and name.endswith(".rels")
+        ]
+        rels = "\n".join(zf.read(name).decode("utf-8") for name in rel_members)
+    assert "relationships/hyperlink" in rels
+    assert 'Target="https://example.com/gold"' in rels
+    assert 'TargetMode="External"' in rels
+
+
 def test_pptx_overflow_splits_into_continuation_slides(ws):
     spec = ArtifactSpec.model_validate({
         "artifact_id": "overflow-deck", "kind": "pptx", "title": "容量测试",
@@ -222,6 +249,23 @@ def test_docx_structure_and_appendix(ws):
     assert any("ev-s-20260703-office-1" in t for t in texts)   # 正文溯源标记 + 附录
     assert any("不构成投资建议" in t for t in texts)
     assert len(doc.tables) == 2  # 数据说明 + 变化点明细
+
+
+def test_docx_evidence_urls_are_clickable_hyperlinks(ws):
+    """真实事故：Word 附录只写普通 URL 文本，不能一跳打开来源。"""
+    spec = ArtifactSpec.model_validate({
+        "artifact_id": "hyperlink-report",
+        "kind": "docx",
+        "title": "Word 超链接测试",
+        "blocks": [{"type": "narrative", "text": "正文。"}],
+    })
+    version = ws.render_artifact(spec)
+    rels = _zip_member_text(ws.dir / version.file, "word/_rels/document.xml.rels")
+    document = _zip_member_text(ws.dir / version.file, "word/document.xml")
+    assert "relationships/hyperlink" in rels
+    assert 'Target="https://example.com/gold"' in rels
+    assert 'TargetMode="External"' in rels
+    assert "<w:hyperlink" in document
 
 
 def test_docx_uses_chinese_report_fonts(ws):

@@ -233,6 +233,36 @@ def test_event_fabricated_source_url_rejected(ws, df):
     assert ws.render_artifact(spec).v == 1
 
 
+def test_event_source_url_must_belong_to_event_evidence_refs(ws, df):
+    """真实事故：真实但错配的 URL 挂到错误事件上，逐事件溯源失真。"""
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    chatgpt = ws.evidence.record(
+        "news",
+        source_url="mock://hn-chatgpt",
+        urls=["https://openai.example/index/chatgpt/"],
+        excerpt="ChatGPT",
+    )
+    deepseek = ws.evidence.record(
+        "news",
+        source_url="mock://hn-deepseek",
+        urls=["https://deepseek.example/r1/"],
+        excerpt="DeepSeek",
+    )
+    spec = html_spec()
+    spec.blocks[2].events = [
+        {
+            "date": "2025-01-27", "title": "DeepSeek R1 发布", "impact": 4,
+            "sources": [{"name": "DeepSeek", "url": "https://deepseek.example/r1/"}],
+            "evidence_refs": [chatgpt.id],
+        }
+    ]
+    spec = ArtifactSpec.model_validate(spec.model_dump())
+    with pytest.raises(WorkspaceError, match="不属于该事件"):
+        ws.render_artifact(spec)
+    spec.blocks[2].events[0].evidence_refs = [deepseek.id]
+    assert ws.render_artifact(spec).v == 1
+
+
 def test_event_refs_must_include_news_or_search(ws, df):
     # 真实事故：25 个事件的 evidence_refs 全部挂到行情数据 evidence，回链失真
     ws.store_dataset("ds-nvda", df, ticker="NVDA")

@@ -249,17 +249,31 @@ def _fill_cell(cell, text: str, size: float, *, bold=False,
 
 def _evidence_slides(prs, evidence: Mapping[str, Evidence], page) -> None:
     items = list(evidence.values())
-    lines = [
-        f"{ev.id}［{ev.kind}］{ev.source_url}（{ev.fetched_at}）" for ev in items
-    ] or ["（本演示未登记 evidence）"]
-    for i, chunk in enumerate(_chunks(lines, MAX_EVIDENCE_PER_SLIDE)):
+    chunks = list(_chunks(items, MAX_EVIDENCE_PER_SLIDE)) or [[]]
+    for i, chunk in enumerate(chunks):
         slide = _blank(prs)
         _content_header(slide, _cont_title("数据来源与溯源清单", i))
         frame = _textbox(slide, MARGIN, BODY_TOP, CONTENT_W,
                          Emu(BODY_BOTTOM - BODY_TOP))
-        for j, line in enumerate(chunk):
-            para = _para(frame, line, 10.5, color=_MUTED, space_after=6, first=(j == 0))
+        if not chunk:
+            _para(frame, "（本演示未登记 evidence）", 10.5, color=_MUTED, first=True)
+        for j, ev in enumerate(chunk):
+            para = frame.paragraphs[0] if j == 0 else frame.add_paragraph()
+            para.space_after = Pt(6)
             para.line_spacing = 1.1
+            prefix = para.add_run()
+            prefix.text = f"{ev.id}［{ev.kind}］"
+            _style(prefix, 10.5, color=_MUTED)
+            url = para.add_run()
+            url.text = ev.source_url
+            if ev.source_url.startswith(("http://", "https://")):
+                url.hyperlink.address = ev.source_url
+                _style(url, 10.5, color=_ACCENT)
+            else:
+                _style(url, 10.5, color=_MUTED)
+            suffix = para.add_run()
+            suffix.text = f"（{ev.fetched_at}）"
+            _style(suffix, 10.5, color=_MUTED)
         _footer(slide, page())
 
 
