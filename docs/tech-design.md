@@ -19,6 +19,8 @@
 
 ## 2. 总体架构
 
+> 更细的运行时视图（用户输入后的完整时序、每个 agent 的工具/输入/输出档案卡、工具×agent 权限矩阵）见 [architecture-and-flow.md](architecture-and-flow.md)。
+
 ```
 终端 REPL ──┐
 finance-agent -p "…" ──┤── 会话核心（SQLiteSession 多轮记忆，--resume 恢复）

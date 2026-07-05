@@ -4,7 +4,7 @@
 
 > 完整的运行说明与 AI 辅助开发过程记录将在交付打磨阶段（M8）补全。
 >
-> 需求与设计文档：[docs/prd.md](docs/prd.md) ｜ [docs/tech-design.md](docs/tech-design.md)
+> 需求与设计文档：[docs/prd.md](docs/prd.md) ｜ [docs/tech-design.md](docs/tech-design.md) ｜ [docs/architecture-and-flow.md](docs/architecture-and-flow.md)（时序图 + 架构图 + agent 档案卡）
 
 ## 快速开始（当前为骨架阶段）
 
