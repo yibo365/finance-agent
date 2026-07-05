@@ -1,0 +1,489 @@
+{
+  "events": [
+    {
+      "date": "2021-08-11",
+      "title": "Nvidia reveals GTC keynote kitchen was entirely CGI rendered using Omniverse",
+      "category": "产品技术",
+      "direction": "up",
+      "move": "展示了 Omniverse 平台能力，强化元宇宙基础设施叙事",
+      "impact": 3,
+      "notes": "Nvidia 用 Omniverse 渲染了整个 GTC 2021 主题演讲的厨房场景，无人察觉。展示了数字孪生和元宇宙底层技术实力。",
+      "sources": [
+        {
+          "name": "Nvidia Blog",
+          "url": "https://blogs.nvidia.com/blog/2021/08/11/omniverse-making-of-gtc/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-53"
+      ]
+    },
+    {
+      "date": "2021-08-15",
+      "title": "NBMiner update unlocks up to 70% of Nvidia RTX 30 LHR series mining performance",
+      "category": "行业动态",
+      "direction": "mixed",
+      "move": "LHR 限制被部分破解，加密挖矿需求继续推高 GPU 价格",
+      "impact": 2,
+      "notes": "Nvidia 的 Lite Hash Rate 限制被 NBMiner 破解至 70%，削弱了 LHR 策略有效性，对游戏玩家不利但维持矿工需求。",
+      "sources": [
+        {
+          "name": "VideoCardz",
+          "url": "https://videocardz.com/newz/nbminer-update-unlocks-up-to-70-of-nvidia-rtx-30-lhr-series-mining-performance"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-50"
+      ]
+    },
+    {
+      "date": "2021-10-11",
+      "title": "Nvidia and Microsoft release Megatron-Turing NLG 530B - world's largest generative language model",
+      "category": "产品技术",
+      "direction": "up",
+      "move": "展示了 Nvidia GPU 在大模型训练中的核心地位",
+      "impact": 3,
+      "notes": "530B 参数的 Megatron-Turing NLG 使用 280 块 A100 GPU 训练，巩固了 Nvidia 在 AI 训练基础设施的统治地位。",
+      "sources": [
+        {
+          "name": "Nvidia Developer Blog",
+          "url": "https://developer.nvidia.com/blog/using-deepspeed-and-megatron-to-train-megatron-turing-nlg-530b-the-worlds-largest-and-most-powerful-generative-language-model/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-41"
+      ]
+    },
+    {
+      "date": "2021-10-16",
+      "title": "Nvidia allegedly halting RTX 3000 production to maintain high GPU prices until 1H22",
+      "category": "行业动态",
+      "direction": "mixed",
+      "move": "供应控制策略影响市场预期",
+      "impact": 2,
+      "notes": "消息称 Nvidia 2021年10月起暂停 RTX 3000 系列生产以维持高价，反映 GPU 短缺环境下的供应策略。",
+      "sources": [
+        {
+          "name": "Notebookcheck",
+          "url": "https://www.notebookcheck.net/Nvidia-allegedly-halting-RTX-3000-production-this-October-to-keep-prices-as-high-as-possible-until-1H22.573312.0.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-41"
+      ]
+    },
+    {
+      "date": "2021-10-27",
+      "title": "EU opens in-depth investigation into Nvidia's $54B acquisition of Arm",
+      "category": "监管政策",
+      "direction": "down",
+      "move": "监管阻力增加，交易前景恶化",
+      "impact": 4,
+      "notes": "欧盟委员会对 Nvidia 收购 Arm 展开深入调查，认为合并可能限制竞争。后续交易在 2022年2月正式终止。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/technology/setback-nvidias-54-bln-arm-bid-eu-regulators-open-probe-2021-10-27/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-41"
+      ]
+    },
+    {
+      "date": "2021-10-28",
+      "title": "Facebook rebrands to Meta, igniting metaverse narrative and GPU demand expectations",
+      "category": "行业动态",
+      "direction": "up",
+      "move": "元宇宙概念爆发，推动 GPU 作为元宇宙基础设施的需求预期",
+      "impact": 4,
+      "notes": "Facebook 正式更名为 Meta，全面转向元宇宙战略。Nvidia Omniverse 定位为元宇宙的底层操作系统，GPU 被视为构建元宇宙的关键基础设施。",
+      "sources": [
+        {
+          "name": "Washington Post",
+          "url": "https://www.washingtonpost.com/video-games/2021/10/29/facebook-meta-rebrand-metaverse-video-games/"
+        },
+        {
+          "name": "Ars Technica",
+          "url": "https://arstechnica.com/gaming/2021/10/john-carmack-sounds-a-skeptical-note-over-metas-metaverse-plans/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-52",
+        "ev-s-20260705-0376-63"
+      ]
+    },
+    {
+      "date": "2024-05-22",
+      "title": "Nvidia Q1 FY2025 earnings beat estimates, announces 10-for-1 stock split",
+      "category": "财报",
+      "direction": "up",
+      "move": "Q1 数据中心收入同比+427%，营收 $26B 超预期 $24.6B，盘后股价突破 $1000",
+      "impact": 5,
+      "notes": "数据中心收入 $22.6B（同比+427%）。同时宣布 10:1 拆股（2024年6月10日生效），大幅降低散户投资门槛。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/05/22/nvidia-nvda-earnings-report-q1-2025-.html"
+        },
+        {
+          "name": "CNBC (stock split)",
+          "url": "https://www.cnbc.com/2024/05/22/nvidia-announces-10-for-1-stock-split.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-47",
+        "ev-s-20260705-0376-46"
+      ]
+    },
+    {
+      "date": "2024-06-05",
+      "title": "Nvidia market cap surpasses $3 trillion, overtakes Apple as second-most valuable US company",
+      "category": "市场表现",
+      "direction": "up",
+      "move": "市值突破 $3T，超越 Apple，仅次于 Microsoft",
+      "impact": 4,
+      "notes": "AI 芯片需求推动 Nvidia 市值从 $2T 到 $3T 仅用约 3 个月（2024年2月突破 $2T）。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/06/05/nvidia-briefly-passes-3-trillion-market-cap-on-back-of-ai-boom.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-62"
+      ]
+    },
+    {
+      "date": "2024-06-18",
+      "title": "Nvidia surpasses Microsoft to become world's most valuable company by market cap",
+      "category": "市场表现",
+      "direction": "up",
+      "move": "市值超越 Microsoft，登顶全球市值第一",
+      "impact": 4,
+      "notes": "Nvidia 市值达到约 $3.34T，超越 Microsoft。AI 芯片垄断地位推动估值。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/06/18/nvidia-passes-microsoft-in-market-cap-is-most-valuable-public-company.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-62"
+      ]
+    },
+    {
+      "date": "2024-08-05",
+      "title": "Nvidia Blackwell B200 GPUs reportedly delayed due to design flaw, shipments pushed to Q4",
+      "category": "产品技术",
+      "direction": "down",
+      "move": "Blackwell 延期消息导致股价短期承压",
+      "impact": 4,
+      "notes": "据报道 Blackwell B200 因 TSMC CoWoS-L 封装设计缺陷延期至少 3 个月。Nvidia 随后确认问题已修复，Q4 开始量产。",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/2024/8/3/24212518/nvidia-ai-chip-delay-blackwell-b200-microsoft-amazon-google-openai-meta-artificial-intelligence"
+        },
+        {
+          "name": "SemiAnalysis",
+          "url": "https://www.semianalysis.com/p/nvidias-blackwell-reworked-shipment"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-27"
+      ]
+    },
+    {
+      "date": "2024-08-28",
+      "title": "Nvidia Q2 FY2025 earnings: 122% revenue growth on surging data center demand, but stock dips",
+      "category": "财报",
+      "direction": "mixed",
+      "move": "营收 $30B（超预期），但 Blackwell 延期忧虑和利润率指引略低于预期，股价下跌",
+      "impact": 5,
+      "notes": "数据中心收入 $26.3B，同比+154%。Blackwell 样品已出货，Q4 量产确认。毛利率指引略低于最乐观预期导致 sell-off。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/08/28/nvidia-nvda-earnings-report-q2-2025.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-47"
+      ]
+    },
+    {
+      "date": "2024-10-23",
+      "title": "Jensen Huang admits Blackwell AI chip design flaw was '100% Nvidia's fault', now fixed",
+      "category": "产品技术",
+      "direction": "up",
+      "move": "坦诚面对问题并确认已修复，增强了市场对 Blackwell 按时出货的信心",
+      "impact": 3,
+      "notes": "黄仁勋在采访中确认 Blackwell 设计缺陷完全由 Nvidia 造成（非 TSMC），问题已经修复，芯片已恢复生产。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/technology/artificial-intelligence/nvidias-design-flaw-with-blackwell-ai-chips-now-fixed-ceo-says-2024-10-23/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-27"
+      ]
+    },
+    {
+      "date": "2024-11-20",
+      "title": "Nvidia Q3 FY2025 earnings beat estimates, Blackwell revenue exceeds expectations",
+      "category": "财报",
+      "direction": "up",
+      "move": "Q3 数据中心收入 $30.8B，Blackwell 已开始出货并产生收入",
+      "impact": 5,
+      "notes": "营收 $35.1B（预期 $33.2B），数据中心收入同比+112%。Blackwell 收入超出预期，但 Q4 毛利率指引略保守。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/11/20/nvidia-nvda-earnings-report-q3-2025.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-47"
+      ]
+    },
+    {
+      "date": "2024-12-03",
+      "title": "US bans HBM chip exports to China; China retaliates with gallium/germanium export ban",
+      "category": "监管政策",
+      "direction": "mixed",
+      "move": "出口管制升级影响对华销售预期，但凸显 Nvidia 芯片的战略价值",
+      "impact": 4,
+      "notes": "拜登政府对华实施新一轮芯片出口管制：禁止 HBM（高带宽内存）出口、限制 200+中国芯片企业。中国反制：禁止镓/锗等关键矿物出口美国。",
+      "sources": [
+        {
+          "name": "The Register",
+          "url": "https://www.theregister.com/2024/12/03/biden_hbm_china_export_ban/"
+        },
+        {
+          "name": "AP News",
+          "url": "https://apnews.com/article/china-us-tech-semiconductor-chip-gallium-6b4216551e200fb719caa6a6cc67e2a4"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-48"
+      ]
+    },
+    {
+      "date": "2024-12-26",
+      "title": "DeepSeek-V3 released: open-source AI model outperforms Llama and Qwen at fraction of training cost",
+      "category": "行业动态",
+      "direction": "down",
+      "move": "中国团队以极低成本训练出接近 GPT-4o 水平的模型，引发对高端 GPU 需求可持续性的质疑",
+      "impact": 4,
+      "notes": "DeepSeek-V3 使用 671B MoE 参数，训练成本仅约 $5.6M（远低于西方模型）。开源发布，性能超越 Llama 3.1 405B。",
+      "sources": [
+        {
+          "name": "VentureBeat",
+          "url": "https://venturebeat.com/ai/deepseek-v3-ultra-large-open-source-ai-outperforms-llama-and-qwen-on-launch/"
+        },
+        {
+          "name": "GitHub (DeepSeek-V3)",
+          "url": "https://github.com/deepseek-ai/DeepSeek-V3"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-30"
+      ]
+    },
+    {
+      "date": "2025-01-20",
+      "title": "DeepSeek-R1 released: open-source reasoning model matches OpenAI o1 at much lower cost",
+      "category": "行业动态",
+      "direction": "down",
+      "move": "中国 AI 推理模型以极低成本匹敌 OpenAI o1，引发对 AI 芯片需求范式转变的担忧",
+      "impact": 5,
+      "notes": "DeepSeek-R1 使用强化学习实现推理能力，成本仅为 OpenAI o1 的 1/27。证明无需数十亿美元 GPU 集群也能训练顶尖模型，直接挑战 Nvidia 高端 GPU 需求逻辑。",
+      "sources": [
+        {
+          "name": "DeepSeek API Docs",
+          "url": "https://api-docs.deepseek.com/news/news1226"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-33",
+        "ev-s-20260705-0376-37"
+      ]
+    },
+    {
+      "date": "2025-01-27",
+      "title": "Nvidia stock crashes ~17% in single day — $600B market cap wiped on DeepSeek R1 fears",
+      "category": "市场表现",
+      "direction": "down",
+      "move": "NVDA 单日暴跌约17%，市值蒸发近 $600B，创美股历史最大单日市值损失",
+      "impact": 5,
+      "notes": "DeepSeek R1 引发市场恐慌：低成本 AI 模型可能降低对 Nvidia 高端 GPU 的需求。纳斯达克综合指数下跌3.1%，费城半导体指数跌9.2%。",
+      "sources": [
+        {
+          "name": "Washington Post",
+          "url": "https://www.washingtonpost.com/business/2025/01/27/deep-seek-ai-markets-nvidia/"
+        },
+        {
+          "name": "NY Post",
+          "url": "https://nypost.com/2025/01/27/business/nvidia-stock-set-for-record-wipeout-on-deepseek-fears-ceo-jensen-huangs-net-worth-tanks/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-64",
+        "ev-s-20260705-0376-37"
+      ]
+    },
+    {
+      "date": "2025-03-18",
+      "title": "Nvidia GTC 2025: Vera Rubin architecture unveiled, GB300, DGX Spark/Station, Kyber, Dynamo",
+      "category": "产品技术",
+      "direction": "up",
+      "move": "下一代 AI 芯片路线图清晰：Blackwell Ultra → Vera Rubin → Rubin Ultra，提振长期信心",
+      "impact": 5,
+      "notes": "GTC 2025 核心发布：Vera Rubin（2026年下半年，CPU+GPU 组合，3.6TB/s NVLink）；Blackwell Ultra GB300（2025年下半年）；DGX Spark/Station 个人 AI 超级计算机；Nvidia Dynamo 推理框架。",
+      "sources": [
+        {
+          "name": "SemiAnalysis",
+          "url": "https://semianalysis.com/2025/03/19/nvidia-gtc-2025-built-for-reasoning-vera-rubin-kyber-cpo-dynamo-inference-jensen-math-feynman/"
+        },
+        {
+          "name": "Nvidia GTC Keynote",
+          "url": "https://www.nvidia.com/gtc/keynote/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-38"
+      ]
+    },
+    {
+      "date": "2024-10-29",
+      "title": "Nvidia Spectrum-X Ethernet powers xAI Colossus — world's largest AI supercomputer with 100K H100 GPUs",
+      "category": "产品技术",
+      "direction": "up",
+      "move": "验证 Spectrum-X 网络在超大规模 AI 集群中的商业可行性",
+      "impact": 3,
+      "notes": "xAI Colossus 使用 Nvidia Spectrum-X 以太网网络构建，是当时最大 AI 超算集群（100K H100 GPU）。展示了 Nvidia 在网络领域的扩展能力。",
+      "sources": [
+        {
+          "name": "Nvidia Newsroom",
+          "url": "https://nvidianews.nvidia.com/news/spectrum-x-ethernet-networking-xai-colossus"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-66"
+      ]
+    },
+    {
+      "date": "2025-05-15",
+      "title": "US bans Huawei Ascend AI chips worldwide with criminal penalties; China retaliates",
+      "category": "监管政策",
+      "direction": "mixed",
+      "move": "新一轮芯片战升级：全面禁止华为 Ascend AI 芯片对华出口，进一步收紧对华半导体限制",
+      "impact": 3,
+      "notes": "美国宣布全球范围禁止华为 Ascend AI 芯片，违规者可面临刑事处罚。进一步收紧对华 AI 芯片出口管制。Nvidia 对华特供版芯片（H20/B20）前景不确定。",
+      "sources": [
+        {
+          "name": "AP News",
+          "url": "https://apnews.com/article/china-trade-tariffs-steel-huawei-c7c1c82ac65f1b82024a7b07e8505c37"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-48"
+      ]
+    },
+    {
+      "date": "2025-05-28",
+      "title": "Nvidia Q1 FY2026 earnings beat expectations but takes hit from chip export restrictions",
+      "category": "财报",
+      "direction": "mixed",
+      "move": "营收超预期，但出口管制对中国市场收入造成55亿美元损失，指引略低于部分预期",
+      "impact": 5,
+      "notes": "Q1 FY2026 营收 $43.3B（预期 $41.8B），数据中心收入同比+73%。但出口管制造成约 $5.5B 中国市场损失。Blackwell 全面量产。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2025/05/28/nvidia-nvda-earnings-report-q1-2026.html"
+        },
+        {
+          "name": "Axios",
+          "url": "https://www.axios.com/2025/05/28/nvidia-earnings-jensen-huang-ai"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-54"
+      ]
+    },
+    {
+      "date": "2024-03-18",
+      "title": "Nvidia GTC 2024: Blackwell B200/B100 GPU architecture and GB200 NVL72 rack system unveiled",
+      "category": "产品技术",
+      "direction": "up",
+      "move": "Blackwell 架构发布标志 AI 算力新里程碑，GB200 NVL72 单机架 120kW 算力震撼业界",
+      "impact": 5,
+      "notes": "GTC 2024 发布 Blackwell 架构（208B 晶体管，20 petaFLOPS AI 算力），B200 GPU，以及 GB200 Grace Blackwell Superchip。DGX GB200 NVL72 单机架集成 72 块 Blackwell GPU，算力达 1.4 exaFLOPS。",
+      "sources": [
+        {
+          "name": "Nvidia Newsroom",
+          "url": "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing"
+        },
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/2024/3/18/24105157/nvidia-blackwell-gpu-b200-ai"
+        },
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/03/18/nvidia-announces-gb200-blackwell-ai-chip-launching-later-this-year.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-39"
+      ]
+    },
+    {
+      "date": "2024-12-20",
+      "title": "OpenAI announces o3 and o3-mini reasoning models, achieving breakthrough on ARC-AGI benchmark",
+      "category": "行业动态",
+      "direction": "up",
+      "move": "前沿 AI 推理能力突破推动对高端 GPU 训练和推理需求继续增长",
+      "impact": 3,
+      "notes": "OpenAI 在12天发布活动最后一天公布 o3 推理模型，在 ARC-AGI 基准测试中达到 87.5%（人类水平 85%）。推理模型的计算需求远超传统 LLM，间接利好 Nvidia GPU。",
+      "sources": [
+        {
+          "name": "OpenAI",
+          "url": "https://openai.com/12-days/"
+        },
+        {
+          "name": "Ars Technica",
+          "url": "https://arstechnica.com/information-technology/2024/12/openai-announces-o3-and-o3-mini-its-next-simulated-reasoning-models/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-70"
+      ]
+    },
+    {
+      "date": "2025-03-18",
+      "title": "Nvidia GTC 2025: Rubin Ultra and Feynman roadmap revealed — annual chip cadence through 2028",
+      "category": "产品技术",
+      "direction": "up",
+      "move": "Blackwell Ultra (2025H2) → Vera Rubin (2026H2) → Rubin Ultra (2027H2) → Feynman (2028)，年度迭代路线清晰",
+      "impact": 5,
+      "notes": "黄仁勋宣布 Nvidia 转向年度芯片更新节奏。Blackwell Ultra GB300（2025下半年），Vera Rubin（2026下半年，CPU+GPU），Rubin Ultra NVL576（2027下半年），Feynman（2028）。配合 Spectrum-X 和 CPO 共封装光学。",
+      "sources": [
+        {
+          "name": "Ars Technica",
+          "url": "https://arstechnica.com/ai/2025/03/nvidia-announces-rubin-ultra-and-feynman-ai-chips-for-2027-and-2028/"
+        },
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/news/631835/nvidia-blackwell-ultra-ai-chip-gb300"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-67"
+      ]
+    }
+  ],
+  "coverage_notes": "（最终输出解析失败，事件来自运行中的增量提交，覆盖说明缺失——如需窗口级核对请复核检索日志）"
+}

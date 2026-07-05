@@ -1,0 +1,530 @@
+{
+  "events": [
+    {
+      "date": "2022-11-30",
+      "title": "OpenAI发布ChatGPT，生成式AI时代开启",
+      "category": "科技事件",
+      "direction": "mixed",
+      "move": "AI相关资产受关注，科技股情绪提振",
+      "impact": 4,
+      "notes": "ChatGPT在2022年11月30日发布，成为史上增长最快的科技产品。对AI相关资产产生深远影响，间接影响风险资产偏好。",
+      "sources": [
+        {
+          "name": "History.com",
+          "url": "https://www.history.com/this-day-in-history/november-30/chatgpt-released-openai"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-5"
+      ]
+    },
+    {
+      "date": "2022-11-02",
+      "title": "FTX崩盘：CoinDesk披露Alameda资产负债表，引发加密市场信任危机",
+      "category": "行业事件",
+      "direction": "down",
+      "move": "BTC大幅下跌，加密市场恐慌",
+      "impact": 5,
+      "notes": "2022年11月2日CoinDesk报道Alameda Research资产负债表严重依赖FTT代币，引发挤兑；11月11日FTX申请破产。加密市场遭受重创，BTC从约$21k跌至$15k。",
+      "sources": [
+        {
+          "name": "Wikipedia - Bankruptcy of FTX",
+          "url": "https://en.wikipedia.org/wiki/Bankruptcy_of_FTX"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-4"
+      ]
+    },
+    {
+      "date": "2023-03-10",
+      "title": "硅谷银行(SVB)倒闭，美国银行业危机爆发",
+      "category": "宏观事件",
+      "direction": "up",
+      "move": "避险情绪飙升，黄金大涨，BTC因USDC脱锚先跌后涨",
+      "impact": 5,
+      "notes": "SVB于3月10日被FDIC接管，为美国史上第三大银行倒闭案。随后Signature Bank和First Republic相继倒闭。避险需求推动黄金突破$2000，BTC从$20k以下反弹。",
+      "sources": [
+        {
+          "name": "Wikipedia - Collapse of Silicon Valley Bank",
+          "url": "https://en.wikipedia.org/wiki/Collapse_of_Silicon_Valley_Bank"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-6"
+      ]
+    },
+    {
+      "date": "2025-01-20",
+      "title": "DeepSeek发布R1模型，以极低成本挑战美国AI霸权",
+      "category": "科技事件",
+      "direction": "mixed",
+      "move": "科技股大幅波动，芯片/AI概念受冲击",
+      "impact": 4,
+      "notes": "中国AI初创DeepSeek于2025年1月发布DeepSeek-R1模型，训练成本仅约$600万，远低于OpenAI GPT-4的$1亿。引发全球AI产业格局重估，NVIDIA等芯片股暴跌。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/technology/artificial-intelligence/what-is-deepseek-why-is-it-disrupting-ai-sector-2025-01-27"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-7"
+      ]
+    },
+    {
+      "date": "2022-02-24",
+      "title": "俄罗斯全面入侵乌克兰，地缘政治危机爆发",
+      "category": "地缘政治",
+      "direction": "up",
+      "move": "黄金飙升，BTC先跌后涨，能源与粮食价格暴涨",
+      "impact": 5,
+      "notes": "2022年2月24日俄罗斯对乌克兰发动全面军事行动，为二战后欧洲最大规模战争。黄金突破$2000/盎司，避险情绪主导市场，通胀压力加剧。",
+      "sources": [
+        {
+          "name": "History.com",
+          "url": "https://www.history.com/this-day-in-history/february-24/russia-invades-ukraine"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-11"
+      ]
+    },
+    {
+      "date": "2024-01-10",
+      "title": "SEC批准11只现货比特币ETF，加密资产里程碑",
+      "category": "行业事件",
+      "direction": "up",
+      "move": "BTC从$45k以下飙升至$73k（3月），加密市场全面激活",
+      "impact": 5,
+      "notes": "美国SEC于2024年1月10日批准11只现货BTC ETF，包括BlackRock、Fidelity等巨头产品。1月11日开始交易。标志着比特币进入主流金融体系。",
+      "sources": [
+        {
+          "name": "Bitbo.io",
+          "url": "https://bitbo.io/calendar/etfs"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-9"
+      ]
+    },
+    {
+      "date": "2024-04-19",
+      "title": "比特币第四次减半，区块奖励降至3.125 BTC",
+      "category": "行业事件",
+      "direction": "up",
+      "move": "减半前后BTC从$63k波动至$73k新高",
+      "impact": 4,
+      "notes": "2024年4月19日BTC在区块高度840,000完成第四次减半。历史规律显示减半后12-18个月BTC通常出现显著涨幅，但本次市场已提前定价。",
+      "sources": [
+        {
+          "name": "LSEG",
+          "url": "https://www.lseg.com/en/ftse-russell/research/bitcoin-halving"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-8"
+      ]
+    },
+    {
+      "date": "2025-04-02",
+      "title": "特朗普宣布对等关税（解放日），全球贸易战升级",
+      "category": "宏观事件",
+      "direction": "mixed",
+      "move": "风险资产暴跌，黄金创新高，BTC跟随风险资产下跌",
+      "impact": 5,
+      "notes": "2025年4月2日特朗普宣布对所有贸易伙伴征收10%基准关税，部分国家更高。引发全球金融市场剧烈震荡，避险黄金创新高，BTC大幅回调。",
+      "sources": [
+        {
+          "name": "White House",
+          "url": "https://www.whitehouse.gov/presidential-actions/2025/04/regulating-imports-with-a-reciprocal-tariff-to-rectify-trade-practices-that-contribute-to-large-and-persistent-annual-united-states-goods-trade-deficits"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-10"
+      ]
+    },
+    {
+      "date": "2021-12-15",
+      "title": "美联储暗示2022年加息三次，正式放弃通胀暂时论",
+      "category": "宏观事件",
+      "direction": "down",
+      "move": "美元走强，黄金承压，BTC从高位回落",
+      "impact": 4,
+      "notes": "12月FOMC会议后，美联储宣布加速taper并暗示2022年三次加息。正式放弃通胀暂时论。黄金从$1800跌至$1750区间。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/markets/us/fed-prepares-stiffen-inflation-response-post-transitory-world-2021-12-15/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-12"
+      ]
+    },
+    {
+      "date": "2021-09-07",
+      "title": "萨尔瓦多正式将比特币列为法定货币",
+      "category": "行业事件",
+      "direction": "up",
+      "move": "BTC短暂冲高至$52k后暴跌，买预期卖事实",
+      "impact": 3,
+      "notes": "2021年9月7日萨尔瓦多成为全球首个将比特币作为法定货币的国家。当日BTC价格暴跌约10%，典型的买预期卖事实。",
+      "sources": [
+        {
+          "name": "Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/Bitcoin_in_El_Salvador"
+        }
+      ],
+      "evidence_refs": []
+    },
+    {
+      "date": "2022-03-16",
+      "title": "美联储启动加息周期，2018年以来首次加息25bp",
+      "category": "宏观事件",
+      "direction": "down",
+      "move": "风险资产承压，BTC从$45k跌至$38k，黄金受美元走强压制",
+      "impact": 5,
+      "notes": "2022年3月16日美联储加息25bp，开启数十年来最激进的加息周期。点阵图显示年内还将加息6次。俄乌冲突叠加加息周期开启，全球市场剧烈动荡。",
+      "sources": [
+        {
+          "name": "Federal Reserve",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220316a.htm"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-15",
+        "ev-s-20260705-745a-16"
+      ]
+    },
+    {
+      "date": "2022-07-13",
+      "title": "美国CPI同比上涨9.1%，创40年新高",
+      "category": "宏观事件",
+      "direction": "mixed",
+      "move": "通胀超预期推动黄金上涨至$1740，BTC先涨后跌",
+      "impact": 5,
+      "notes": "2022年6月CPI同比9.1%，创1981年以来最高。市场预期7月加息100bp概率飙升，后回落至75bp。黄金短暂受益于通胀对冲需求，但随后受加息预期压制。",
+      "sources": [
+        {
+          "name": "BLS.gov",
+          "url": "https://www.bls.gov/news.release/archives/cpi_07132022.htm"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "date": "2022-07-27",
+      "title": "美联储连续第二次加息75bp，联邦基金利率升至2.25-2.5%",
+      "category": "宏观事件",
+      "direction": "down",
+      "move": "美元走强，BTC和黄金承压",
+      "impact": 4,
+      "notes": "美联储7月FOMC加息75bp，鲍威尔暗示未来可能放缓加息步伐，但市场仍担忧激进紧缩。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2022/07/27/fed-decision-july-2022-.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "date": "2022-09-21",
+      "title": "美联储连续第三次加息75bp，点阵图鹰派超预期",
+      "category": "宏观事件",
+      "direction": "down",
+      "move": "全球风险资产下跌，BTC跌破$19k，黄金跌至$1650",
+      "impact": 5,
+      "notes": "9月FOMC加息75bp，点阵图显示终端利率升至4.6%，远超市场预期。美元指数突破113，创20年新高。BTC跌至$19k以下。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2022/09/21/fed-rate-hike-september-2022-.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "date": "2022-12-14",
+      "title": "美联储加息50bp（放缓步伐），终端利率指引升至5.1%",
+      "category": "宏观事件",
+      "direction": "down",
+      "move": "风险资产短暂反弹后回落",
+      "impact": 4,
+      "notes": "12月FOMC加息50bp（此前连续四次75bp），但点阵图显示终端利率升至5.1%超预期。鲍威尔鹰派表态。BTC在$17k附近震荡。",
+      "sources": [
+        {
+          "name": "Federal Reserve",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20221214a.htm"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-23"
+      ]
+    },
+    {
+      "date": "2023-03-19",
+      "title": "瑞信(Credit Suisse)被UBS以32.5亿美元收购，AT1债券减记引发市场动荡",
+      "category": "宏观事件",
+      "direction": "up",
+      "move": "避险情绪推升黄金突破$2000，BTC反弹至$28k",
+      "impact": 5,
+      "notes": "在SVB倒闭后仅一周，瑞士政府撮合UBS收购瑞信，同时将瑞信160亿瑞郎AT1债券全额减记，引发全球债券市场恐慌。黄金创年内新高。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/business/finance/switzerlands-secretive-credit-suisse-rescue-rocks-global-finance-2023-03-21/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-21"
+      ]
+    },
+    {
+      "date": "2023-03-12",
+      "title": "Signature Bank被关闭，美国银行业危机扩散",
+      "category": "宏观事件",
+      "direction": "up",
+      "move": "银行业恐慌加剧，黄金加速上涨",
+      "impact": 4,
+      "notes": "SVB倒闭两天后，纽约州监管机构关闭Signature Bank，为美国史上第三大银行倒闭案。美联储紧急推出BTFP流动性工具。",
+      "sources": [
+        {
+          "name": "Federal Reserve",
+          "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20230312a.htm"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-22"
+      ]
+    },
+    {
+      "date": "2023-06-03",
+      "title": "拜登签署债务上限法案，美国避免历史性违约",
+      "category": "宏观事件",
+      "direction": "mixed",
+      "move": "黄金从避险高位回落，风险资产短期受益",
+      "impact": 4,
+      "notes": "经过数周激烈博弈，拜登与麦卡锡达成协议，将债务上限暂停至2025年1月。X-date（6月5日）前签署，避免违约。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/world/us/us-debt-ceiling-negotiations-push-towards-critical-default-deadline-2023-05-27/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-25"
+      ]
+    },
+    {
+      "date": "2023-06-15",
+      "title": "BlackRock提交现货比特币ETF申请，引爆加密市场乐观情绪",
+      "category": "行业事件",
+      "direction": "up",
+      "move": "BTC从$25k反弹至$31k，带动加密市场全面回暖",
+      "impact": 5,
+      "notes": "全球最大资管公司BlackRock于6月15日向SEC提交iShares Bitcoin Trust申请，使用Coinbase Custody。被视为加密资产的制度性认可，开启ETF申请潮。",
+      "sources": [
+        {
+          "name": "Bitcoin Magazine",
+          "url": "https://bitcoinmagazine.com/markets/blackrock-nears-filing-bitcoin-etf-application-leveraging-coinbase-custody"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-24"
+      ]
+    },
+    {
+      "date": "2023-10-07",
+      "title": "哈马斯突袭以色列，中东地缘政治危机爆发",
+      "category": "地缘政治",
+      "direction": "up",
+      "move": "黄金从$1820飙升至$2000以上，避险需求激增",
+      "impact": 5,
+      "notes": "2023年10月7日哈马斯对以色列发动大规模袭击，引发新一轮中东战争。黄金作为避险资产大幅上涨，从$1820升至10月底$2000+。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/world/middle-east/israel-declares-state-war-alert-after-palestinian-militants-fire-rockets-2023-10-07/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-26"
+      ]
+    },
+    {
+      "date": "2024-08-23",
+      "title": "鲍威尔杰克逊霍尔讲话：调整政策的时机已到，9月降息信号明确",
+      "category": "宏观事件",
+      "direction": "up",
+      "move": "黄金突破$2500创历史新高，BTC反弹至$64k",
+      "impact": 5,
+      "notes": "鲍威尔在Jackson Hole明确表示通胀已受控，劳动力市场降温，9月降息信号清晰。美元走弱，黄金创历史新高。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/08/23/fed-chair-powell-indicates-interest-rate-cuts-ahead-the-time-has-come-for-policy-to-adjust.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-27"
+      ]
+    },
+    {
+      "date": "2024-09-18",
+      "title": "美联储降息50bp，开启四年多来首次降息周期",
+      "category": "宏观事件",
+      "direction": "up",
+      "move": "黄金延续涨势，BTC突破$62k，风险资产全面上涨",
+      "impact": 5,
+      "notes": "美联储以50bp幅度启动降息周期（2020年以来首次），点阵图显示年内还将降息50bp。开启全球降息潮。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2024/09/18/fed-cuts-rates-september-2024-.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-27"
+      ]
+    },
+    {
+      "date": "2024-03-14",
+      "title": "比特币创历史新高$73,777，ETF资金持续涌入",
+      "category": "行业事件",
+      "direction": "up",
+      "move": "BTC突破2021年高点$69k，ETF累计净流入超$100亿",
+      "impact": 4,
+      "notes": "受现货ETF获批后持续资金流入推动，BTC于3月14日突破$73,777历史新高。黄金同步创新高$2195。首次出现黄金与比特币齐创新高的局面。",
+      "sources": [
+        {
+          "name": "CoinDesk",
+          "url": "https://www.coindesk.com/markets/2024/03/14/bitcoin-hits-new-all-time-high-above-73000/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-29"
+      ]
+    },
+    {
+      "date": "2024-11-06",
+      "title": "特朗普赢得2024年美国总统大选，共和党横扫国会",
+      "category": "宏观事件",
+      "direction": "up",
+      "move": "BTC突破$76k创历史新高，黄金先跌后涨，美元走强",
+      "impact": 5,
+      "notes": "特朗普击败哈里斯赢得总统大选，共和党同时控制参众两院。市场预期放松监管、减税和关税政策。加密货币受益于亲加密立场，BTC当日暴涨。黄金因强美元短期承压，随后因通胀预期回升。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/world/us/election-results-2024/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-31"
+      ]
+    },
+    {
+      "date": "2025-04-09",
+      "title": "特朗普宣布90天关税暂停（中国除外并加征至125%），市场剧烈震荡",
+      "category": "宏观事件",
+      "direction": "up",
+      "move": "风险资产全面反弹，BTC从$75k反弹至$83k，黄金维持高位",
+      "impact": 5,
+      "notes": "特朗普于4月9日突然宣布对大多数国家暂停关税90天，但将中国关税提高至125%（累计达145%）。市场经历V型反转。黄金维持在$3000+高位。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/world/trumps-latest-tariffs-loom-set-deepen-global-trade-war-2025-04-09/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-30"
+      ]
+    },
+    {
+      "date": "2025-01-27",
+      "title": "DeepSeek R1引发全球AI股灾，NVIDIA单日暴跌17%市值蒸发近$6000亿",
+      "category": "科技事件",
+      "direction": "mixed",
+      "move": "科技股暴跌拖累风险情绪，黄金受益于避险，BTC跟随风险资产下跌",
+      "impact": 5,
+      "notes": "DeepSeek以极低训练成本展示接近GPT-4o性能后，市场重新定价AI基础设施需求。NVIDIA暴跌17%，纳斯达克跌超3%。对算力硬件需求预期产生重大冲击。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/technology/artificial-intelligence/what-is-deepseek-why-is-it-disrupting-ai-sector-2025-01-27"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-32"
+      ]
+    },
+    {
+      "date": "2025-08-05",
+      "title": "比特币战略储备法案(H.R.8957)全文公布，美国将BTC纳入国家储备",
+      "category": "行业事件",
+      "direction": "up",
+      "move": "BTC从$60k区域获得支撑",
+      "impact": 4,
+      "notes": "美国战略比特币储备法案全文公布，此前2025年3月特朗普已签署行政令建立战略性比特币储备。",
+      "sources": [
+        {
+          "name": "Bitcoin Magazine",
+          "url": "https://bitcoinmagazine.com/news/full-of-strategic-bitcoin-reserve-bill"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-33"
+      ]
+    },
+    {
+      "date": "2026-06-05",
+      "title": "比特币跌破$60,000创2024年10月以来新低，AI与IPO分流资金",
+      "category": "行业事件",
+      "direction": "down",
+      "move": "BTC从$100k+区域跌至$60k以下",
+      "impact": 5,
+      "notes": "2026年6月比特币经历数月来最惨烈的一周，跌破$60,000。投资者资金转向AI和大型IPO。MicroStrategy(Strategy)自2022年来首次出售比特币。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/business/finance/bitcoins-star-fades-investors-flock-lustre-ai-megacap-ipos-2026-06-05/"
+        },
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2026/06/05/bitcoin-dismal-week-price-below-all-time-high-crypto-investors.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-33"
+      ]
+    },
+    {
+      "date": "2026-05-30",
+      "title": "美国财政部宣布查封伊朗超$10亿加密货币",
+      "category": "宏观事件",
+      "direction": "neutral",
+      "move": "对BTC直接影响有限",
+      "impact": 3,
+      "notes": "财政部长贝森特宣布美国政府查封伊朗超$10亿加密资产，显示美国在加密领域的执法能力。",
+      "sources": [
+        {
+          "name": "Bitcoin Magazine",
+          "url": "https://bitcoinmagazine.com/news/u-s-treasury-the-united-states-iran"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-745a-33"
+      ]
+    }
+  ],
+  "coverage_notes": "（最终输出解析失败，事件来自运行中的增量提交，覆盖说明缺失——如需窗口级核对请复核检索日志）"
+}

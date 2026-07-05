@@ -1,0 +1,446 @@
+{
+  "entries": [
+    {
+      "changepoint_date": "2021-08-19",
+      "changepoint_kind": "accel_up",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年8月无收录事件，变化点发生在事件覆盖范围（2021-11起）之前。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-08-23",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年8月无收录事件，无法建立对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-09-20",
+      "changepoint_kind": "accel_down",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年9月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-10-04",
+      "changepoint_kind": "accel_down",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年10月初无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-10-05",
+      "changepoint_kind": "accel_up",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年10月初无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-10-26",
+      "changepoint_kind": "accel_up",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年10月末无收录事件，+6.70%的单日加速缺乏事件对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-11-18",
+      "changepoint_kind": "accel_up",
+      "verdict": "match",
+      "matched_event_titles": [
+        "NVIDIA Q3 FY2022 earnings beat expectations on strong gaming and data center sales"
+      ],
+      "reasoning": "事件日2021-11-17落在变化点窗口[2021-10-20, 2021-11-18]内，仅相差1个交易日；财报超预期（数据中心同比+55%）方向与accel_up一致，时间与逻辑均吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-8"
+      ]
+    },
+    {
+      "changepoint_date": "2021-12-07",
+      "changepoint_kind": "accel_up",
+      "verdict": "match",
+      "matched_event_titles": [
+        "NVIDIA Q3 FY2022 earnings beat expectations on strong gaming and data center sales"
+      ],
+      "reasoning": "事件日2021-11-17落在窗口[2021-11-05, 2021-12-07]内，虽相距14个交易日，但财报驱动的上行趋势与accel_up方向一致。同日窗口内FTC诉讼(12/02)方向相反，不作匹配。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-8"
+      ]
+    },
+    {
+      "changepoint_date": "2021-12-13",
+      "changepoint_kind": "drawdown",
+      "verdict": "match",
+      "matched_event_titles": [
+        "FTC起诉阻止NVIDIA以400亿美元收购ARM"
+      ],
+      "reasoning": "事件日2021-12-02落在窗口[2021-11-29, 2021-12-13]内，FTC诉讼构成重大监管负面压力，与回撤方向完全吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-6"
+      ]
+    },
+    {
+      "changepoint_date": "2022-02-02",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "ARM交易终止(2022-02-08)在变化点之后，无法解释此前的反弹；窗口[2022-01-27, 2022-02-02]内无其他收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-02-23",
+      "changepoint_kind": "drawdown",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "NVIDIA正式终止以400亿美元收购ARM，软银转向ARM IPO"
+      ],
+      "reasoning": "事件日2022-02-08的下一个交易日(02/09)恰好为窗口[2022-02-09, 2022-02-23]起点，时间极度接近；但事件被标记为短期正面，而变化点为回撤，方向逻辑牵强——可理解为利好兑现后的获利回吐。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-13"
+      ]
+    },
+    {
+      "changepoint_date": "2022-03-17",
+      "changepoint_kind": "rally",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "NVIDIA GTC 2022：发布Hopper架构与H100 GPU，AI训练性能较A100提升30倍"
+      ],
+      "reasoning": "事件日2022-03-22在变化点后仅3个交易日，方向均为向上；窗口[2022-03-14, 2022-03-17]的反弹与GTC大会前的乐观预期相吻合，但事件实际发生于变化点之后。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-14",
+        "ev-s-20260705-0376-15"
+      ]
+    },
+    {
+      "changepoint_date": "2022-04-07",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "最近事件为GTC 2022(03/22)，方向向上，与回撤方向相反且时间超出窗口；无其他对应事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-05-27",
+      "changepoint_kind": "rally",
+      "verdict": "match",
+      "matched_event_titles": [
+        "NVIDIA Q1 FY2023财报：数据中心首次成为最大业务板块"
+      ],
+      "reasoning": "事件日2022-05-26落在窗口[2022-05-24, 2022-05-27]内，仅差1个交易日；数据中心首次超越游戏成为最大业务板块，方向与rally吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-10"
+      ]
+    },
+    {
+      "changepoint_date": "2022-06-13",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "最近事件为Q1 FY2023财报(05/26)，方向向上；窗口[2022-06-02, 2022-06-13]内无负面事件对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-07-19",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "窗口[2022-07-01, 2022-07-19]内及附近10个交易日内无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-08-26",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2022年8月无收录事件；最近事件为5月财报和7月无事件窗口。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-10-25",
+      "changepoint_kind": "rally",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "美国商务部对华实施最严芯片出口管制，禁止A100/H100等高端AI芯片出口中国"
+      ],
+      "reasoning": "事件日2022-10-07距窗口[2022-10-14, 2022-10-25]起点约5个交易日，时间接近；事件方向向下而反弹向上，逻辑上可解释为利空出尽后的超跌修复行情。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-19"
+      ]
+    },
+    {
+      "changepoint_date": "2022-12-22",
+      "changepoint_kind": "drawdown",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "OpenAI发布ChatGPT，引发全球生成式AI革命"
+      ],
+      "reasoning": "事件日2022-11-30距窗口[2022-12-13, 2022-12-22]起点约9个交易日，时间接近；ChatGPT方向向上而回撤向下，可理解为ChatGPT引发急涨后的阶段性回调与获利了结。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-16",
+        "ev-s-20260705-0376-4"
+      ]
+    },
+    {
+      "changepoint_date": "2023-01-12",
+      "changepoint_kind": "rally",
+      "verdict": "match",
+      "matched_event_titles": [
+        "TSMC可能降低3nm晶圆价格以吸引AMD和NVIDIA",
+        "OpenAI发布ChatGPT，引发全球生成式AI革命"
+      ],
+      "reasoning": "TSMC 3nm降价事件日与变化点同日(2023-01-12)，落在窗口[2022-12-28, 2023-01-12]内，方向一致；ChatGPT(2022-11-30)距窗口起点约19个交易日，方向一致，构成AI算力需求预期的持续背景。以TSMC为直接触发、ChatGPT为背景驱动。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-20",
+        "ev-s-20260705-0376-16"
+      ]
+    },
+    {
+      "changepoint_date": "2023-05-18",
+      "changepoint_kind": "accel_up",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "NVIDIA Q1 FY2024财报：数据中心收入创纪录，AI芯片需求爆发，盘后涨超25%"
+      ],
+      "reasoning": "事件日2023-05-24在变化点后4个交易日，方向一致；窗口[2023-04-19, 2023-05-18]的加速上涨与财报前的乐观预期和提前布局相吻合，但事件实际发生于变化点之后。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-22"
+      ]
+    },
+    {
+      "changepoint_date": "2023-09-21",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "Q2 FY2024财报(08/23)方向向上，出口管制升级(10/17)尚未发生；窗口[2023-08-31, 2023-09-21]内无对应负面事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2023-11-08",
+      "changepoint_kind": "rally",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "美国升级对华AI芯片出口管制：NVIDIA A800/H800中国特供芯片也被禁止"
+      ],
+      "reasoning": "事件日2023-10-17距窗口[2023-10-26, 2023-11-08]起点约7个交易日，时间接近；出口管制升级方向向下而反弹向上，可解释为利空消化后的修复行情，同期H200发布预期(11/13)亦可能提供支撑。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-25"
+      ]
+    },
+    {
+      "changepoint_date": "2024-04-19",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "Run:AI收购与DGX H200交付(04/24)在变化点之后且方向向上，无法解释此前的回撤。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-04-26",
+      "changepoint_kind": "rally",
+      "verdict": "match",
+      "matched_event_titles": [
+        "NVIDIA宣布以7亿美元收购Run:AI，强化AI工作负载编排能力",
+        "Jensen Huang亲手向OpenAI交付全球首台DGX H200 AI超级计算机"
+      ],
+      "reasoning": "事件日2024-04-24落在窗口[2024-04-19, 2024-04-26]内，仅差2个交易日；Run:AI收购与DGX H200交付均属AI生态正向事件，方向与rally吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-26"
+      ]
+    },
+    {
+      "changepoint_date": "2024-07-24",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "事件材料覆盖截至2024-04-24，此后无事件可对应；2024年7月可能存在未收录的负面催化。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-08-13",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "事件材料覆盖截至2024-04，2024年8月无事件可对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-09-03",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "事件材料覆盖截至2024-04，2024年9月无事件可对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-09-12",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "事件材料覆盖截至2024-04，2024年9月无事件可对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-01-27",
+      "changepoint_kind": "accel_down",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "事件材料覆盖截至2024-04；此变化点（-16.97%，-5.9σ）极可能与DeepSeek R1发布(2025-01-20前后)相关，但事件列表中未收录，无法建立对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-01-27",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "同上，与accel_down为同一日期的不同检测规则触发；DeepSeek事件未在材料中，无法匹配。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-01-28",
+      "changepoint_kind": "accel_up",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "事件材料覆盖截至2024-04；此反弹(+8.93%)疑为DeepSeek冲击后的修复，但无事件可对应。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-02-13",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2025年2月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-03-03",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2025年3月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-04-09",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2025年4月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-04-21",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2025年4月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-05-01",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2025年5月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2025-12-12",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2025年12月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2026-04-14",
+      "changepoint_kind": "rally",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2026年4月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "changepoint_date": "2026-06-23",
+      "changepoint_kind": "drawdown",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2026年6月无收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    }
+  ],
+  "overall_notes": "事件材料仅覆盖2021-11至2024-04（16个事件），存在两处显著缺口：(1) 2021年7-10月的变化点（#1-#6）完全无事件可对应，此时段NVDA已有显著行情但事件库空白；(2) 2024年7月至2026年6月的变化点（#26-#40，共15个）无事件可对应，尤其是2025年1月DeepSeek R1发布（与-16.97%单日暴跌高度疑似相关）、2025年Q1财报季、B100/Blackwell发布等关键AI行业事件均未收录。建议上游补检索2021年7-10月及2024年5月-2026年7月的事件以提升对齐覆盖率。在现有材料范围内，40个变化点中match 6个、partial 6个、none 28个（其中17个因材料缺口导致）。"
+}

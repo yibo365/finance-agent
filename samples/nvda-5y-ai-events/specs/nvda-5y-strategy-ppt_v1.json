@@ -1,0 +1,209 @@
+{
+  "artifact_id": "nvda-5y-strategy-ppt",
+  "kind": "pptx",
+  "title": "NVDA：AI算力军备竞赛的五年——事件驱动的行情复盘",
+  "subtitle": "2021-07 至 2026-07 | 40 事件 × 40 变化点对齐分析",
+  "skill": "pptx-framework",
+  "blocks": [
+    {
+      "type": "slide",
+      "layout": "title",
+      "title": "NVDA：AI算力军备竞赛的五年——事件驱动的行情复盘",
+      "subtitle": "2021-07 至 2026-07 | 40 事件 × 40 变化点对齐分析",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "数据来源：Yahoo Finance，1,254 个交易日。事件来源：公开新闻（CNBC、Reuters、NVIDIA Blog 等）",
+      "evidence_refs": [
+        "ev-s-20260705-0376-1"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "核心发现",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": []
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "五项核心发现",
+      "subtitle": "",
+      "bullets": [
+        "42.5% 的变化点（17/40）与 AI 事件形成高度匹配（match），产品发布类事件上行匹配率最高",
+        "DeepSeek-R1 低成本模型引发 NVDA 史上最大单日市值蒸发（-$600B），证明市场对\"AI效率 vs GPU需求\"高度敏感",
+        "出口管制持续升级构成最大地缘政治风险：A100/H100 → A800/H800 → HBM → Huawei Ascend，中国市场份额从 ~20-25% 持续压缩",
+        "约 40% 的变化点无法用 AI 事件解释，2022 年宏观因素（Fed 加息）和 2025-2026 事件空白期是主要缺口",
+        "年度芯片架构迭代（Hopper→Blackwell→Vera Rubin→Feynman）已成为市场定价的核心锚点"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "基于 mat-alignment-2 对齐矩阵：match 17 / partial 7 / none 16。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-64",
+        "ev-s-20260705-0376-33",
+        "ev-s-20260705-0376-25",
+        "ev-s-20260705-0376-48"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "行情五阶段概览",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": []
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "五阶段：从元宇宙预热到效率冲击（2021-2026）",
+      "subtitle": "",
+      "bullets": [
+        "阶段一（2021H2）：元宇宙预热——Meta 更名 + Omniverse CGI 展示，Q3 FY2022 数据中心 +55%",
+        "阶段二（2022）：AI 基础设施奠基——Hopper H100 发布，数据中心首次超越游戏，ChatGPT 年末引爆",
+        "阶段三（2023）：AI 算力军备竞赛——Q1 FY2024 \"iPhone 时刻\"，营收指引 $11B vs 预期 $7.15B，出口管制升级",
+        "阶段四（2024）：Blackwell 时代与市值登顶——市值突破 $3T 登顶全球第一，Blackwell 延期后修复，拆股",
+        "阶段五（2025-2026）：效率冲击与路线图重建信心——DeepSeek 引发 $600B 单日暴跌，GTC 2025 年度路线图重建长期信心"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "各阶段关键事件详见 Word 报告全文。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-53",
+        "ev-s-20260705-0376-14",
+        "ev-s-20260705-0376-22",
+        "ev-s-20260705-0376-39",
+        "ev-s-20260705-0376-64",
+        "ev-s-20260705-0376-38"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "table",
+      "title": "对齐结果分类统计",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [
+        "对齐判级",
+        "数量",
+        "占比",
+        "典型驱动事件"
+      ],
+      "table_rows": [
+        [
+          "match",
+          "17",
+          "42.5%",
+          "ChatGPT, Hopper H100, Q1 FY2024 财报, DeepSeek-R1, FTC ARM"
+        ],
+        [
+          "partial",
+          "7",
+          "17.5%",
+          "Megatron-Turing 530B, A800 特供, Run:AI, Blackwell 后反弹"
+        ],
+        [
+          "none",
+          "16",
+          "40.0%",
+          "2022 宏观回撤, 2025-2026 事件空白期变化点"
+        ]
+      ],
+      "notes": "来源：mat-alignment-2。match=时间吻合+方向一致；partial=边界或弱因果；none=无对应事件。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "关键事件影响力排名（impact ≥ 4）",
+      "subtitle": "",
+      "bullets": [
+        "ChatGPT 发布（2022-11-30）：impact 5，引爆生成式 AI 革命，推动数据中心 GPU 需求预期急剧升温",
+        "DeepSeek-R1（2025-01-20）：impact 5，以 1/27 成本匹敌 OpenAI o1，挑战高端 GPU 需求逻辑，触发 -17% 暴跌",
+        "GTC 2022 Hopper H100（2022-03-22）：impact 5，AI 训练性能较 A100 提升 30 倍，奠定训练霸主地位",
+        "GTC 2024 Blackwell B200（2024-03-18）：impact 5，208B 晶体管、20 petaFLOPS，1.4 exaFLOPS 单机架",
+        "GTC 2025 Vera Rubin（2025-03-18）：impact 5，Blackwell Ultra→Rubin→Rubin Ultra→Feynman 至 2028 路线图",
+        "美国对华出口管制升级（2023-10-17）：impact 5，A800/H800 被禁，$5B 中国订单面临取消风险"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "impact 评级基于研究团队对事件市场影响力的综合判断，5 级为最高。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-16",
+        "ev-s-20260705-0376-33",
+        "ev-s-20260705-0376-14",
+        "ev-s-20260705-0376-39",
+        "ev-s-20260705-0376-38",
+        "ev-s-20260705-0376-25"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "风险与边界条件",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": []
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "主要风险因素与结论适用边界",
+      "subtitle": "",
+      "bullets": [
+        "出口管制：从芯片到 HBM 到华为 Ascend 的持续升级，中国市场份额持续压缩（Q1 FY2026 损失 ~$5.5B）",
+        "AI 效率革命：低成本模型（DeepSeek 等）可能削弱高端 GPU 训练集群的 ROI 论证，市场对此高度敏感",
+        "产品周期风险：Blackwell B200 设计缺陷延期案例证明，先进制程和新架构的量产风险不可忽视",
+        "宏观因素干扰：约 40% 变化点无事件匹配，Fed 加息周期等宏观政策对 NVDA 行情有独立影响",
+        "事件覆盖空白：2025-06 至 2026-07 无事件材料，6 个变化点无法归因；GTC 2025 高影响事件与最近 rally 相距 16 个交易日超出匹配窗口"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "以上风险因素定义了本报告结论的适用边界：当行情主要由宏观驱动或事件滞后超过 10 个交易日时，基于 AI 事件的归因框架效力下降。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-54",
+        "ev-s-20260705-0376-33",
+        "ev-s-20260705-0376-27",
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "结论与后续观察",
+      "subtitle": "",
+      "bullets": [
+        "AI 产品周期是 NVDA 行情的核心驱动力，GTC 发布会前后的上行匹配率最高",
+        "地缘政治风险是最大下行风险来源，出口管制持续升级且呈不可逆趋势",
+        "市场在\"AI 效率冲击\"与\"算力刚需\"之间持续博弈——DeepSeek 事件与 GTC 路线图形成正反两面",
+        "观察一：Rubin Ultra（2027H2）和 Feynman（2028）的实际量产时间与市场提前定价行为",
+        "观察二：对华出口管制下一轮升级节点及特供版芯片策略的有效性",
+        "观察三：开源低成本模型的迭代速度对高端 GPU 训练集群 ROI 的边际影响"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "本报告不构成投资建议。所有结论基于 2021-07 至 2026-07 的历史数据，未来表现可能因未预见因素而显著不同。",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-67",
+        "ev-s-20260705-0376-48",
+        "ev-s-20260705-0376-33"
+      ]
+    }
+  ]
+}

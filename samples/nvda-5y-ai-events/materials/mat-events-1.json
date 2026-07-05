@@ -1,0 +1,343 @@
+{
+  "events": [
+    {
+      "date": "2021-11-17",
+      "title": "NVIDIA Q3 FY2022 earnings beat expectations on strong gaming and data center sales",
+      "category": "财报",
+      "direction": "up",
+      "move": "2021-11-17前后上涨",
+      "impact": 3,
+      "notes": "数据中心销售同比增长55%，AI芯片需求强劲。游戏业务同样强劲。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2021/11/17/nvidia-nvda-earnings-q3-2022.html"
+        },
+        {
+          "name": "Yahoo Finance",
+          "url": "https://finance.yahoo.com/news/nvidia-q-3-earnings-2022-203256956.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-8"
+      ]
+    },
+    {
+      "date": "2021-12-02",
+      "title": "FTC起诉阻止NVIDIA以400亿美元收购ARM",
+      "category": "监管",
+      "direction": "down",
+      "move": "2021-12-02后下跌压力",
+      "impact": 4,
+      "notes": "FTC以数据中心创新竞争为由提起诉讼，ARM交易失败风险骤增。",
+      "sources": [
+        {
+          "name": "The Verge",
+          "url": "https://www.theverge.com/2021/12/2/22814633/nvidia-arm-purchase-semiconductor-ftc-40-billion-lawsuit-block-deal"
+        },
+        {
+          "name": "AnandTech",
+          "url": "https://www.anandtech.com/show/17101/united-states-ftc-files-lawsuit-to-block-nvidiaarm-acquisition"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-6"
+      ]
+    },
+    {
+      "date": "2021-12-08",
+      "title": "NVIDIA发布RTX 2060 12GB显卡，面向加密矿工",
+      "category": "产品发布",
+      "direction": "neutral",
+      "move": "",
+      "impact": 2,
+      "notes": "加密货币挖矿需求推动GPU销售，但也引发游戏玩家不满。",
+      "sources": [
+        {
+          "name": "VideoCardz",
+          "url": "https://videocardz.com/newz/nvidia-launches-geforce-rtx-2060-12gb-a-perfect-card-for-crypto-miners"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-6"
+      ]
+    },
+    {
+      "date": "2022-02-08",
+      "title": "NVIDIA正式终止以400亿美元收购ARM，软银转向ARM IPO",
+      "category": "监管/并购",
+      "direction": "mixed",
+      "move": "并购失败但解除监管不确定性，股价短期正面",
+      "impact": 4,
+      "notes": "收购因FTC和欧盟反垄断审查而终止，NVIDIA需支付12.5亿美元分手费。释放了管理层注意力回归核心业务。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/business/softbanks-66-bln-sale-arm-nvidia-collapses-ft-2022-02-08/"
+        },
+        {
+          "name": "AnandTech",
+          "url": "https://www.anandtech.com/show/17245/nvidiaarm-acquisition-officially-nixed-softbank-to-ipo-arm-instead"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-13"
+      ]
+    },
+    {
+      "date": "2022-05-26",
+      "title": "NVIDIA Q1 FY2023财报：数据中心首次成为最大业务板块",
+      "category": "财报",
+      "direction": "up",
+      "move": "数据中心超越游戏成为最大收入来源",
+      "impact": 3,
+      "notes": "尽管面临中国疫情封锁和俄罗斯业务损失5亿美元，数据中心收入同比增长83%。",
+      "sources": [
+        {
+          "name": "The Next Platform",
+          "url": "https://www.nextplatform.com/2022/05/26/datacenter-becomes-nvidias-largest-business/"
+        },
+        {
+          "name": "The Register",
+          "url": "https://www.theregister.com/2022/05/27/nvidia_shrugs_off_global_chaos/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-10"
+      ]
+    },
+    {
+      "date": "2022-03-22",
+      "title": "NVIDIA GTC 2022：发布Hopper架构与H100 GPU，AI训练性能较A100提升30倍",
+      "category": "产品发布",
+      "direction": "up",
+      "move": "GTC 2022前后股价上涨",
+      "impact": 5,
+      "notes": "Hopper H100是NVIDIA旗舰AI加速器，采用台积电4nm工艺，800亿晶体管，Transformer引擎将AI训练性能大幅提升，奠定AI数据中心霸主地位。",
+      "sources": [
+        {
+          "name": "AnandTech",
+          "url": "https://www.anandtech.com/show/17327/nvidia-hopper-gpu-architecture-and-h100-accelerator-announced"
+        },
+        {
+          "name": "NVIDIA Blog",
+          "url": "https://blogs.nvidia.com/blog/2022/03/22/ai-factories-hopper-h100-nvidia-ceo-jensen-huang/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-14",
+        "ev-s-20260705-0376-15"
+      ]
+    },
+    {
+      "date": "2022-10-07",
+      "title": "美国商务部对华实施最严芯片出口管制，禁止A100/H100等高端AI芯片出口中国",
+      "category": "监管/出口管制",
+      "direction": "down",
+      "move": "出口管制后股价承压",
+      "impact": 5,
+      "notes": "新规限制NVIDIA向中国出口A100和即将量产的H100芯片，中国占NVIDIA数据中心收入约20-25%。这是近年最重大的地缘政治风险事件。",
+      "sources": [
+        {
+          "name": "BIS Press Release",
+          "url": "https://www.bis.doc.gov/index.php/documents/about-bis/newsroom/press-releases/3158-2022-10-07-bis-press-release-advanced-computing-and-semiconductor-manufacturing-controls-final/file"
+        },
+        {
+          "name": "Financial Times",
+          "url": "https://www.ft.com/content/e950f58c-0d8f-4121-b4f2-ece71d2cb267"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-19"
+      ]
+    },
+    {
+      "date": "2022-11-08",
+      "title": "NVIDIA推出A800芯片作为中国特供版，符合美国出口管制要求",
+      "category": "产品发布",
+      "direction": "mixed",
+      "move": "缓解了部分中国市场损失担忧",
+      "impact": 3,
+      "notes": "A800是A100的降级版本，互连带宽降低以符合美国管制要求，但保留了核心AI计算能力。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/technology/exclusive-nvidia-offers-new-advanced-chip-china-that-meets-us-export-controls-2022-11-08/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-19"
+      ]
+    },
+    {
+      "date": "2022-11-30",
+      "title": "OpenAI发布ChatGPT，引发全球生成式AI革命",
+      "category": "行业事件",
+      "direction": "up",
+      "move": "ChatGPT发布后AI投资热情引爆，NVIDIA作为算力核心供应商间接受益",
+      "impact": 5,
+      "notes": "ChatGPT在两个月内用户突破1亿，成为史上增长最快的消费应用，推动数据中心GPU需求预期急剧升温。",
+      "sources": [
+        {
+          "name": "History.com",
+          "url": "https://www.history.com/this-day-in-history/november-30/chatgpt-released-openai"
+        },
+        {
+          "name": "NYT (Code Red)",
+          "url": "https://www.nytimes.com/2022/12/21/technology/ai-chatgpt-google-search.html"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-16",
+        "ev-s-20260705-0376-4"
+      ]
+    },
+    {
+      "date": "2023-01-12",
+      "title": "TSMC可能降低3nm晶圆价格以吸引AMD和NVIDIA",
+      "category": "供应链",
+      "direction": "up",
+      "move": "",
+      "impact": 2,
+      "notes": "台积电3nm降价信号有利于NVIDIA下一代GPU成本控制。此外，NVIDIA在CES 2023发布RTX 4070 Ti等新品。",
+      "sources": [
+        {
+          "name": "Tom's Hardware",
+          "url": "https://www.tomshardware.com/news/tsmc-might-cut-3nm-prices-to-lure-amd-nvidia"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-20"
+      ]
+    },
+    {
+      "date": "2023-05-24",
+      "title": "NVIDIA Q1 FY2024财报：数据中心收入创纪录，AI芯片需求爆发，盘后涨超25%",
+      "category": "财报",
+      "direction": "up",
+      "move": "2023-05-24盘后暴涨约25%，市值逼近万亿美元",
+      "impact": 5,
+      "notes": "Q1数据中心收入42.8亿美元创纪录，Q2指引110亿美元远超预期71.5亿。Jensen Huang称这是NVIDIA和AI的iPhone时刻。此后AI算力军备竞赛全面展开。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2023/05/24/nvidia-nvda-earnings-report-q1-2024.html"
+        },
+        {
+          "name": "AnandTech",
+          "url": "https://www.anandtech.com/show/18874/nvidia-reports-q1-fy2024-earnings-bigger-things-to-come-as-nv-approaches-1t-market-cap"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-22"
+      ]
+    },
+    {
+      "date": "2023-08-23",
+      "title": "NVIDIA Q2 FY2024财报：营收135亿美元同比增88%，数据中心收入103亿美元",
+      "category": "财报",
+      "direction": "up",
+      "move": "Q2财报再度超预期，股价继续上涨",
+      "impact": 4,
+      "notes": "数据中心收入同比增长171%，AI GPU需求持续井喷。公司宣布250亿美元股票回购计划。",
+      "sources": [
+        {
+          "name": "CNBC",
+          "url": "https://www.cnbc.com/2023/08/23/nvidia-nvda-earnings-report-q2-2024.html"
+        },
+        {
+          "name": "AnandTech",
+          "url": "https://www.anandtech.com/show/20024/nvidia-reports-q2-fy2024-earnings-13b-revnues-blows-past-records-on-absurd-data-center-demand"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-22"
+      ]
+    },
+    {
+      "date": "2023-10-17",
+      "title": "美国升级对华AI芯片出口管制：NVIDIA A800/H800中国特供芯片也被禁止",
+      "category": "监管/出口管制",
+      "direction": "down",
+      "move": "出口管制升级导致股价下跌",
+      "impact": 5,
+      "notes": "BIS新规填补了2022年出口管制漏洞，连为中国市场设计的A800/H800也被禁。NVIDIA有50亿美元中国订单面临取消风险。RTX 4090也被限制出口中国。",
+      "sources": [
+        {
+          "name": "Reuters",
+          "url": "https://www.reuters.com/technology/biden-cut-china-off-more-nvidia-chips-expand-curbs-more-countries-2023-10-17/"
+        },
+        {
+          "name": "WSJ",
+          "url": "https://www.wsj.com/tech/nvidias-5-billion-of-china-orders-in-limbo-after-latest-u-s-curbs-1928f399"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-25"
+      ]
+    },
+    {
+      "date": "2023-11-13",
+      "title": "NVIDIA发布H200 Tensor Core GPU，HBM3e内存141GB，性能大幅提升",
+      "category": "产品发布",
+      "direction": "up",
+      "move": "H200发布巩固AI芯片领先地位",
+      "impact": 3,
+      "notes": "H200是首款搭载HBM3e的GPU，内存带宽达4.8TB/s，推理性能较H100提升近2倍。预计2024年Q2上市。",
+      "sources": [
+        {
+          "name": "NVIDIA",
+          "url": "https://www.nvidia.com/en-us/data-center/h200/"
+        },
+        {
+          "name": "ServeTheHome",
+          "url": "https://www.servethehome.com/nvidia-h200-launched-with-141gb-of-hbm3e-at-sc23/"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-23"
+      ]
+    },
+    {
+      "date": "2024-04-24",
+      "title": "NVIDIA宣布以7亿美元收购Run:AI，强化AI工作负载编排能力",
+      "category": "并购",
+      "direction": "up",
+      "move": "",
+      "impact": 2,
+      "notes": "Run:AI是Kubernetes AI工作负载管理平台，此次收购巩固NVIDIA在AI基础设施软件层的布局。",
+      "sources": [
+        {
+          "name": "NVIDIA Blog",
+          "url": "https://blogs.nvidia.com/blog/runai/"
+        },
+        {
+          "name": "Tom's Hardware",
+          "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-ceo-hand-delivers-worlds-fastest-ai-system-to-openai-again-first-dgx-h200-given-to-sam-altman-and-greg-brockman"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-26"
+      ]
+    },
+    {
+      "date": "2024-04-24",
+      "title": "Jensen Huang亲手向OpenAI交付全球首台DGX H200 AI超级计算机",
+      "category": "产品/生态",
+      "direction": "up",
+      "move": "",
+      "impact": 2,
+      "notes": "NVIDIA CEO将首台DGX H200交付给Sam Altman和Greg Brockman，象征AI算力合作关系深化。",
+      "sources": [
+        {
+          "name": "Tom's Hardware",
+          "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-ceo-hand-delivers-worlds-fastest-ai-system-to-openai-again-first-dgx-h200-given-to-sam-altman-and-greg-brockman"
+        }
+      ],
+      "evidence_refs": [
+        "ev-s-20260705-0376-26"
+      ]
+    }
+  ],
+  "coverage_notes": "（最终输出解析失败，事件来自运行中的增量提交，覆盖说明缺失——如需窗口级核对请复核检索日志）"
+}

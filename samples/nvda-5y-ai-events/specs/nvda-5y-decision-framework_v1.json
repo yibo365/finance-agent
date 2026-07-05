@@ -1,0 +1,211 @@
+{
+  "artifact_id": "nvda-5y-decision-framework",
+  "kind": "pptx",
+  "title": "NVDA：AI叙事是五年行情的核心定价锚",
+  "subtitle": "2021.07–2026.07 | 40事件×40变化点 | 17 match / 7 partial / 16 none",
+  "skill": "pptx-framework",
+  "blocks": [
+    {
+      "type": "slide",
+      "layout": "title",
+      "title": "NVDA：AI叙事是五年行情的核心定价锚",
+      "subtitle": "2021.07–2026.07 | 40 AI事件 × 40变化点 | 对齐结论：17 match / 7 partial / 16 none",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "数据源：Yahoo Finance日线 + AI事件检索（财报/产品/监管/行业）",
+      "evidence_refs": [
+        "ev-s-20260705-0376-1",
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "一、分析框架：事件驱动 × 行情变化点",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "框架三要素",
+      "subtitle": "",
+      "bullets": [
+        "行情变化点（40个）：accel_up/down、rally、drawdown，确定性算法检测，severity≥2过滤",
+        "AI事件库（40个）：财报、产品发布、监管/出口管制、行业事件，覆盖2021-08至2025-05",
+        "对齐矩阵：±10交易日窗口 + 方向一致性 → match / partial / none 三级判定"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "变化点检测由 changepoints.py 完成，min_severity=2，共检出150个，返回前40个",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "二、核心发现：42.5%事件-行情直接对齐",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "AI事件对NVDA行情具有高定价效率",
+      "subtitle": "",
+      "bullets": [
+        "match率42.5%（17/40）：事件与变化点时间吻合且方向一致，定价效率显著",
+        "财报与产品发布match率最高：Q1 FY2024（盘后+25%）、GTC 2022 Hopper H100、GTC 2024 Blackwell架构",
+        "监管事件解释力强但偶有滞后：FTC起诉ARM → -15.6%回撤；出口管制升级（2023-10-17）→ 多次下行冲击",
+        "DeepSeek-R1（2025-01-20）为最强单事件冲击：-5.9σ极端单日-16.97%，市值蒸发约$600B"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "DeepSeek-R1以OpenAI o1 1/27成本匹敌其推理能力，直接挑战高端GPU需求逻辑",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-22",
+        "ev-s-20260705-0376-14",
+        "ev-s-20260705-0376-6",
+        "ev-s-20260705-0376-33",
+        "ev-s-20260705-0376-37",
+        "ev-s-20260705-0376-64"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "table",
+      "title": "五大关键事件 × 行情对照",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [
+        "事件",
+        "日期",
+        "变化点类型",
+        "行情幅度",
+        "对齐结论"
+      ],
+      "table_rows": [
+        [
+          "DeepSeek-R1发布",
+          "2025-01-20",
+          "accel_down + drawdown",
+          "单日-16.97% / -20.8%回撤",
+          "match（-5.9σ极端）"
+        ],
+        [
+          "GTC 2022 Hopper H100",
+          "2022-03-22",
+          "rally",
+          "+16.1%反弹（提前3日定价）",
+          "match（影响5级）"
+        ],
+        [
+          "Q1 FY2024 财报超预期",
+          "2023-05-24",
+          "accel_up",
+          "提前+4.97% / 盘后+25%",
+          "match（量能3.5×均量）"
+        ],
+        [
+          "对华出口管制升级",
+          "2023-10-17",
+          "rally",
+          "后续+15.5%反弹（H200对冲）",
+          "match（H200发布叠加）"
+        ],
+        [
+          "Blackwell B200设计缺陷",
+          "2024-08-05",
+          "drawdown",
+          "-15.7%回撤（提前8日定价）",
+          "match（传闻提前定价）"
+        ]
+      ],
+      "notes": "出口管制升级后NVIDIA发布H200/H800中国特供版部分对冲利空；Blackwell缺陷已由Jensen Huang确认修复",
+      "evidence_refs": [
+        "ev-s-20260705-0376-33",
+        "ev-s-20260705-0376-37",
+        "ev-s-20260705-0376-64",
+        "ev-s-20260705-0376-14",
+        "ev-s-20260705-0376-15",
+        "ev-s-20260705-0376-22",
+        "ev-s-20260705-0376-25",
+        "ev-s-20260705-0376-23",
+        "ev-s-20260705-0376-27"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "三、缺口、边界与反例条件",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "关键缺口：事件框架在何种情况下失效",
+      "subtitle": "",
+      "bullets": [
+        "16个变化点无事件匹配（40%）：2022年宏观驱动（Fed加息/通胀），事件库未覆盖宏观政策类事件",
+        "2025-04至2026-06共6个变化点完全无事件覆盖：事件库止于2025-05-28，需补检索",
+        "GTC 2025两项5级事件（Vera Rubin架构、Feynman路线图）未匹配任何变化点——市场反应滞后或被同期贸易政策波动稀释",
+        "7个partial匹配解释力有限：多为技术性超跌反弹，缺乏独立事件催化剂"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "2022年6个none变化点对应Fed加息周期，说明框架需补充宏观变量",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-38",
+        "ev-s-20260705-0376-67"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "结论：AI产品周期定价效率高，地缘政治与低成本替代为核心变量",
+      "subtitle": "",
+      "bullets": [
+        "核心驱动：AI产品周期（Hopper→Blackwell→Rubin→Feynman年度迭代）定价效率高，财报与GTC为最可靠上行催化剂",
+        "主要风险一：地缘政治——出口管制从A100→A800/H800→HBM逐轮升级，中国市场收入持续承压（Q1 FY2026损失约$5.5B）",
+        "主要风险二：低成本替代——DeepSeek范式证明无需数十亿美元GPU集群也能训练顶尖模型，挑战高端GPU需求逻辑",
+        "失效条件：AI资本开支大幅收缩 / 出口管制覆盖全部市场 / 开源模型在性能与效率上完全替代高端GPU"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "研究判断措辞，不做投资建议。框架适用前提：AI算力军备竞赛持续、NVIDIA保持制程与架构领先",
+      "evidence_refs": [
+        "ev-s-20260705-0376-2",
+        "ev-s-20260705-0376-33",
+        "ev-s-20260705-0376-37",
+        "ev-s-20260705-0376-25",
+        "ev-s-20260705-0376-48",
+        "ev-s-20260705-0376-54",
+        "ev-s-20260705-0376-38",
+        "ev-s-20260705-0376-67"
+      ]
+    }
+  ]
+}

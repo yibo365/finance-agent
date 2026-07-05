@@ -1,0 +1,916 @@
+{
+  "entries": [
+    {
+      "changepoint_date": "2021-08-06",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年8月初无宏观或行业事件与黄金加速下跌窗口重叠，材料中最早事件为9月7日萨尔瓦多比特币法定货币，相距超20个交易日。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-09-16",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "萨尔瓦多正式将比特币列为法定货币"
+      ],
+      "reasoning": "萨尔瓦多9月7日将BTC列为法定货币，黄金accel_down窗口[8/17-9/16]覆盖该事件；但事件方向为BTC相关，对黄金影响逻辑牵强，时间吻合但归因存疑。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-09-20",
+      "changepoint_kind": "trend_down (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "萨尔瓦多正式将比特币列为法定货币"
+      ],
+      "reasoning": "与9月16日accel_down同属萨尔瓦多BTC法币事件窗口[8/23-9/20]内的下行趋势，但事件为BTC行业事件，对黄金传导逻辑薄弱。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-09-30",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "9月末黄金加速上行，材料中无对应宏观或行业事件。最近事件萨尔瓦多BTC法币(9/7)已间隔超20个交易日，且方向逻辑不吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-10-13",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "10月中旬黄金加速上行无对应事件。材料中该时段事件列表空白，上下游需确认是否需补检索。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-11-04",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "11月初黄金加速上行，无对应宏观/行业事件。最近事件为12月15日FOMC，相距超30个交易日。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-11-22",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "11月下旬黄金加速下行，11月整月材料事件列表空白，无事件可对齐。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-12-01",
+      "changepoint_kind": "trend_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "12月初黄金下行趋势确认，无当月事件覆盖。最近FOMC(12/15)在窗口[11/3-12/1]之外。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2021-12-16",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "美联储暗示2022年加息三次，正式放弃通胀暂时论"
+      ],
+      "reasoning": "12月15日FOMC鹰派转向，事件方向为down（美元走强、黄金承压），但次日黄金出现accel_up，方向相悖。时间仅隔1天但逻辑矛盾，可能为短期超卖反弹。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-12"
+      ]
+    },
+    {
+      "changepoint_date": "2022-01-19",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "1月中旬黄金加速上行，12月FOMC(12/15)已间隔超20个交易日，2022年1月无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2022-01-27",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "1月下旬黄金加速下行，无直接事件。俄乌冲突(2/24)尚在一个月后。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2022-03-07",
+      "changepoint_kind": "rally (黄金 GC=F)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "俄罗斯全面入侵乌克兰，地缘政治危机爆发"
+      ],
+      "reasoning": "俄罗斯2月24日入侵乌克兰后11个自然日内黄金确认rally（+15.8%），窗口[2021-09-29, 2022-03-07]覆盖该事件。时间吻合，地缘危机→避险需求→黄金上涨方向一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-11"
+      ]
+    },
+    {
+      "changepoint_date": "2022-07-11",
+      "changepoint_kind": "drawdown (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "美联储启动加息周期，2018年以来首次加息25bp",
+        "美国CPI同比上涨9.1%，创40年新高"
+      ],
+      "reasoning": "黄金drawdown窗口[3/8-7/11]覆盖美联储3月启动加息和7月13日CPI（差2天）。多事件叠加推动美元走强压制黄金，方向吻合但确认日(7/11)略早于CPI(7/13)，且非单一事件驱动。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-15",
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "changepoint_date": "2022-07-28",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "美国CPI同比上涨9.1%，创40年新高"
+      ],
+      "reasoning": "7月13日CPI创40年新高后黄金短暂受益于通胀对冲需求（\"上涨至$1740\"），7月28日accel_up在约11个交易日后出现。方向吻合但时间差略超阈值，且7月27日加息75bp本应压制黄金，逻辑上存在张力。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "changepoint_date": "2022-09-28",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "美联储连续第三次加息75bp，点阵图鹰派超预期"
+      ],
+      "reasoning": "9月21日FOMC超鹰派加息后黄金跌至$1650，9月28日accel_up可能是利空出尽后的反弹。时间差5个交易日但方向逻辑需要\"靴子落地\"解释，属于非典型吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "changepoint_date": "2022-12-01",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "FTX崩盘：CoinDesk披露Alameda资产负债表，引发加密市场信任危机"
+      ],
+      "reasoning": "FTX于11月2日爆发危机后，黄金作为传统避险资产在窗口[11/1-12/1]内出现accel_up(+3.16%)。时间吻合：FTX崩盘引发广泛风险厌恶情绪，资金流向黄金避险，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-4"
+      ]
+    },
+    {
+      "changepoint_date": "2023-01-09",
+      "changepoint_kind": "rally (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "黄金自2022年9月低点反弹确认于1月9日，窗口[9/26-1/9]跨度大，涵盖多个事件（FTX、ChatGPT、FOMC），无法归因于单一事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2023-02-03",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2月初黄金加速下行，材料中2023年1月底至3月初除SVB前无事件覆盖，无法对齐。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2023-03-21",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "3月银行业危机期间黄金accel_down与事件方向相悖：SVB(3/10)、瑞信(3/19)均推动避险情绪升温、黄金上涨。3月21日accel_down可能是短期获利了结，但事件→行情方向逻辑不吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2023-05-16",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "5月中旬黄金加速下行，债务上限事件(6/3)尚在18天后，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2023-07-18",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "BlackRock提交现货比特币ETF申请，引爆加密市场乐观情绪"
+      ],
+      "reasoning": "BlackRock于6月15日提交BTC ETF申请，黄金accel_up窗口[6/15-7/18]覆盖该事件。但事件为BTC行业催化剂，对黄金传导逻辑间接（可能通过风险偏好改善），方向吻合但因果链不强。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-24"
+      ]
+    },
+    {
+      "changepoint_date": "2023-07-27",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "7月下旬黄金加速下行，材料中无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2023-09-21",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "9月下旬黄金加速下行，哈马斯事件(10/7)尚在16天后，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2023-12-04",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "12月初黄金加速下行，哈马斯事件后黄金自$2000+回落但窗口[11/2-12/4]不覆盖10月7日事件，且方向逻辑不吻合（事件为黄金上行驱动）。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2024-03-22",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "比特币创历史新高$73,777，ETF资金持续涌入"
+      ],
+      "reasoning": "BTC于3月14日创历史新高，黄金accel_down窗口[2/22-3/22]覆盖该事件。材料注\"黄金同步创新高$2195\"，但3月22日黄金出现加速下行，可能是同步创新高后的回调。时间在窗口内，但方向与事件整体趋势相悖。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-29"
+      ]
+    },
+    {
+      "changepoint_date": "2024-05-23",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "BTC减半(4/19)为BTC行业事件，对黄金直接影响微弱。\"市场已提前定价\"的逻辑不适用于黄金，归因牵强。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2024-06-07",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "6月上旬黄金加速下行，材料中无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2024-07-19",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "7月中旬黄金加速下行，Jackson Hole(8/23)尚在一个月后，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2024-11-25",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "特朗普赢得2024年美国总统大选，共和党横扫国会"
+      ],
+      "reasoning": "特朗普11月6日胜选，黄金accel_down窗口[10/25-11/25]覆盖该事件。材料指出\"黄金因强美元短期承压\"，方向吻合。但11月25日距事件19天，时间差较大，可能是强美元趋势的延续而非直接反应。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-31"
+      ]
+    },
+    {
+      "changepoint_date": "2025-01-27",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "DeepSeek R1引发全球AI股灾，NVIDIA单日暴跌17%市值蒸发近$6000亿"
+      ],
+      "reasoning": "1月27日DeepSeek引发AI股灾与黄金accel_down同日发生。材料注\"黄金受益于避险\"，但当日黄金实际下跌-1.43%。时间精确吻合但方向与避险叙事相悖，可能因流动性抽离或美元走强干扰。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-32"
+      ]
+    },
+    {
+      "changepoint_date": "2025-01-30",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "DeepSeek R1引发全球AI股灾，NVIDIA单日暴跌17%市值蒸发近$6000亿"
+      ],
+      "reasoning": "DeepSeek事件(1/27)后3个交易日黄金出现accel_up(+1.95%)，窗口[12/30-1/30]覆盖该事件。1月27日短暂下跌后黄金反弹，与\"黄金受益于避险\"逻辑吻合，方向一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-32"
+      ]
+    },
+    {
+      "changepoint_date": "2025-04-03",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "特朗普宣布对等关税（解放日），全球贸易战升级"
+      ],
+      "reasoning": "4月2日对等关税宣布后一日黄金accel_down(-1.37%)，时间极近。但材料注\"避险黄金创新高\"，accel_down与事件驱动的避险上涨方向相悖，可能为当日获利了结。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-10"
+      ]
+    },
+    {
+      "changepoint_date": "2025-08-01",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "比特币战略储备法案(H.R.8957)全文公布，美国将BTC纳入国家储备"
+      ],
+      "reasoning": "BTC战略储备法案(8/5)前4个交易日黄金accel_up，时间接近。但事件为BTC行业催化剂，对黄金传导逻辑不明确，可能同期受其他宏观因素驱动。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-33"
+      ]
+    },
+    {
+      "changepoint_date": "2025-09-18",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "9月中旬黄金加速下行，材料中无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2026-01-20",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2026年1月黄金加速上行，材料中无匹配宏观/行业事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2026-01-30",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "1月30日黄金极端accel_down(-11.37%)，材料中无事件可对齐。此变化点异常显著但缺乏事件支撑，需关注数据质量或未收录事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2026-03-19",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "3月黄金加速下行，材料中无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2026-03-23",
+      "changepoint_kind": "drawdown (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "3月23日黄金确认drawdown(-17.2%)，材料中5月30日伊朗加密货币事件和6月5日BTC事件均在此后，无匹配。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2026-03-25",
+      "changepoint_kind": "accel_up (黄金 GC=F)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "3月25日黄金反弹accel_up，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3"
+      ]
+    },
+    {
+      "changepoint_date": "2026-06-05",
+      "changepoint_kind": "accel_down (黄金 GC=F)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "比特币跌破$60,000创2024年10月以来新低，AI与IPO分流资金"
+      ],
+      "reasoning": "6月5日BTC跌破$60k同日黄金accel_down(-3.10%)。事件为BTC行业特定，但材料提到\"投资者资金转向AI和大型IPO\"，可能反映更广泛的风险偏好转变，黄金同期承压。同日但因果链需谨慎。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-3",
+        "ev-s-20260705-745a-33"
+      ]
+    },
+    {
+      "changepoint_date": "2021-07-24",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2021年7月BTC rally确认，材料中无匹配事件。萨尔瓦多BTC法币事件在9月7日，相距超40天。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-09-20",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "萨尔瓦多正式将比特币列为法定货币"
+      ],
+      "reasoning": "萨尔瓦多9月7日将BTC列为法定货币，窗口[9/6-9/20]覆盖该事件。材料明确\"买预期卖事实，BTC暴跌约10%\"，drawdown(-18.6%)与事件后实际走势吻合，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-10-01",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "10月初BTC rally为萨尔瓦多事件后超卖反弹，窗口[9/21-10/1]内无独立事件驱动。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2021-11-18",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "11月中旬BTC drawdown，材料中无匹配事件。12月FOMC尚在一个月后。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-02-04",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2月初BTC rally，俄乌冲突(2/24)尚在20天后，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-02-21",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "俄罗斯全面入侵乌克兰，地缘政治危机爆发"
+      ],
+      "reasoning": "BTC drawdown确认于2月21日，俄乌冲突爆发于2月24日。drawdown在事件前3天，可能反映战前风险回避情绪，时间接近但属\"预跑\"行情，方向逻辑可解释但非典型。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-11"
+      ]
+    },
+    {
+      "changepoint_date": "2022-02-28",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "俄罗斯全面入侵乌克兰，地缘政治危机爆发"
+      ],
+      "reasoning": "俄乌冲突2月24日爆发，BTC rally窗口[2/21-2/28]覆盖该事件。材料注\"BTC先跌后涨\"，2月28日rally(+16.5%)与\"后涨\"阶段吻合，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-11"
+      ]
+    },
+    {
+      "changepoint_date": "2022-04-11",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "4月BTC drawdown，窗口[3/29-4/11]不覆盖3月16日美联储加息（差13天），无直接匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-07-18",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "美国CPI同比上涨9.1%，创40年新高"
+      ],
+      "reasoning": "7月13日CPI后5个交易日BTC rally确认，窗口[6/18-7/18]覆盖该事件。材料注BTC\"先涨后跌\"，rally可能对应\"先涨\"阶段。时间接近但方向仅在短期吻合。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "changepoint_date": "2022-08-26",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "8月下旬BTC drawdown，7月FOMC(7/27)已在窗口[8/13-8/26]前，9月FOMC尚未到来，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-09-10",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "9月上旬BTC rally，无匹配事件。9月FOMC在9/21。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-09-20",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "美联储连续第三次加息75bp，点阵图鹰派超预期"
+      ],
+      "reasoning": "9月21日FOMC超鹰派加息前一日BTC drawdown确认，窗口[9/12-9/20]紧贴事件。BTC提前定价紧缩预期，方向（下行）与加息压制风险资产逻辑吻合，事件后第一个交易日(9/21)在窗口外仅1天。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-19"
+      ]
+    },
+    {
+      "changepoint_date": "2022-11-04",
+      "changepoint_kind": "accel_up (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "FTX崩盘(11/2)后2天BTC accel_up(+4.64%)，与事件方向相悖（事件为重大利空）。可能为崩盘初期的短暂反弹，但方向逻辑不吻合，不视为有效对齐。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2022-11-08",
+      "changepoint_kind": "accel_down (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "FTX崩盘：CoinDesk披露Alameda资产负债表，引发加密市场信任危机"
+      ],
+      "reasoning": "FTX危机11月2日爆发后第4个交易日BTC出现极端accel_down(-10.01%)，窗口[10/18-11/8]覆盖事件。时间吻合，方向一致：加密市场信任危机→恐慌性抛售→BTC加速下跌。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-4"
+      ]
+    },
+    {
+      "changepoint_date": "2023-01-12",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "BTC自FTX低点反弹rally确认，窗口[11/21-1/12]跨度大，涵盖FTX后续、FOMC等多事件，无法归因单一事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2023-03-09",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "硅谷银行(SVB)倒闭，美国银行业危机爆发"
+      ],
+      "reasoning": "BTC drawdown确认于3月9日，SVB倒闭于3月10日。drawdown先于事件1天，可能是市场提前反应或巧合。BTC在银行业危机初期因USDC脱锚承压，方向吻合但时序为\"预跑\"。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-6"
+      ]
+    },
+    {
+      "changepoint_date": "2023-03-13",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "硅谷银行(SVB)倒闭，美国银行业危机爆发",
+        "Signature Bank被关闭，美国银行业危机扩散"
+      ],
+      "reasoning": "SVB(3/10)和Signature Bank(3/12)相继倒闭后，BTC在窗口[3/10-3/13]内rally(+19.9%)。材料注\"BTC从$20k以下反弹\"，时间吻合，银行业危机→美联储紧急流动性→BTC受益于宽松预期，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-6",
+        "ev-s-20260705-745a-22"
+      ]
+    },
+    {
+      "changepoint_date": "2023-06-05",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "拜登签署债务上限法案，美国避免历史性违约"
+      ],
+      "reasoning": "债务上限法案6月3日签署后2天BTC drawdown确认。事件方向mixed，风险资产短期受益但黄金从避险高位回落；BTC同期drawdown可能反映避险溢价消退。时间接近但因果链间接。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-25"
+      ]
+    },
+    {
+      "changepoint_date": "2023-06-21",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "BlackRock提交现货比特币ETF申请，引爆加密市场乐观情绪"
+      ],
+      "reasoning": "BlackRock于6月15日提交BTC ETF申请，窗口[6/14-6/21]覆盖该事件。BTC rally(+19.5%)与\"BTC从$25k反弹至$31k\"吻合，时间紧密，方向逻辑一致：制度性认可→加密市场乐观→BTC上涨。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-24"
+      ]
+    },
+    {
+      "changepoint_date": "2023-08-17",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "8月BTC drawdown，材料中无匹配事件。哈马斯事件在10月7日。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2023-10-16",
+      "changepoint_kind": "accel_up (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "哈马斯突袭以色列，中东地缘政治危机爆发"
+      ],
+      "reasoning": "哈马斯10月7日袭击以色列后9天BTC accel_up(+5.01%)，窗口[9/25-10/16]覆盖事件。事件为黄金主要驱动，BTC同期上涨可能受地缘不确定性下的替代避险需求或独立行情影响，方向吻合但逻辑间接。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-26"
+      ]
+    },
+    {
+      "changepoint_date": "2023-10-20",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "哈马斯突袭以色列，中东地缘政治危机爆发"
+      ],
+      "reasoning": "同10月16日逻辑，rally确认于10月20日，窗口[9/11-10/20]覆盖哈马斯事件。BTC上涨与事件同期但因果链不如黄金直接。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-26"
+      ]
+    },
+    {
+      "changepoint_date": "2024-01-22",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "SEC批准11只现货比特币ETF，加密资产里程碑"
+      ],
+      "reasoning": "SEC于1月10日批准BTC ETF，drawdown窗口[1/8-1/22]覆盖该事件。ETF批准为重大利好但BTC出现drawdown(-15.9%)，典型\"买预期卖事实\"：利好兑现后获利了结。时间吻合但方向表面相悖，需事件后逻辑解释。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-9"
+      ]
+    },
+    {
+      "changepoint_date": "2024-02-09",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "SEC批准11只现货比特币ETF，加密资产里程碑"
+      ],
+      "reasoning": "BTC rally窗口[1/22-2/9]紧随ETF获批后的drawdown低点，反映ETF资金持续流入的累积效应。事件(1/10)在窗口前但为驱动因素，方向吻合但时间略超10个交易日。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-9"
+      ]
+    },
+    {
+      "changepoint_date": "2024-02-26",
+      "changepoint_kind": "accel_up (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "2月下旬BTC accel_up，ETF事件(1/10)已间隔超30个交易日，BT新高(3/14)尚在半月后，无直接匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-03-05",
+      "changepoint_kind": "accel_down (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "3月初BTC accel_down，无匹配事件。BTC新高在3月14日。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-03-19",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "比特币创历史新高$73,777，ETF资金持续涌入"
+      ],
+      "reasoning": "BTC于3月14日创历史新高，drawdown窗口[3/13-3/19]覆盖该事件。创新高后5天内出现drawdown(-15.3%)，典型高位获利了结。时间吻合但方向与事件\"up\"相悖，属行情反转。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-29"
+      ]
+    },
+    {
+      "changepoint_date": "2024-03-31",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "3月底BTC rally为drawdown后的反弹，窗口[3/19-3/31]内无独立事件驱动。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-04-30",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "partial",
+      "matched_event_titles": [
+        "比特币第四次减半，区块奖励降至3.125 BTC"
+      ],
+      "reasoning": "BTC减半于4月19日发生，drawdown窗口[4/8-4/30]覆盖该事件。材料注\"本次市场已提前定价\"，减半后drawdown(-15.3%)与\"买预期卖事实\"逻辑吻合。时间在窗口内但方向与历史规律相悖。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-8"
+      ]
+    },
+    {
+      "changepoint_date": "2024-05-17",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "5月中旬BTC rally，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-06-24",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "6月下旬BTC drawdown，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-07-15",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "7月中旬BTC rally，无匹配事件。Jackson Hole在8月23日。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-08-02",
+      "changepoint_kind": "accel_down (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "8月初BTC accel_down，Jackson Hole(8/23)尚在3周后，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-08-05",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "8月5日BTC drawdown(-20.9%)，材料中无匹配事件。此为大级别回撤但事件列表空缺。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-08-08",
+      "changepoint_kind": "accel_up (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "8月8日BTC极端accel_up(+12.14%)，为8月5日drawdown后的反弹，无独立事件驱动。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-08-23",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "鲍威尔杰克逊霍尔讲话：调整政策的时机已到，9月降息信号明确"
+      ],
+      "reasoning": "鲍威尔8月23日Jackson Hole讲话当日BTC rally确认，窗口[8/5-8/23]覆盖事件。降息信号→风险资产受益→BTC上涨，时间精确吻合，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-27"
+      ]
+    },
+    {
+      "changepoint_date": "2024-09-06",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "none",
+      "matched_event_titles": [],
+      "reasoning": "9月上旬BTC drawdown，美联储降息(9/18)尚在12天后，无匹配事件。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2"
+      ]
+    },
+    {
+      "changepoint_date": "2024-09-19",
+      "changepoint_kind": "rally (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "美联储降息50bp，开启四年多来首次降息周期"
+      ],
+      "reasoning": "美联储9月18日降息50bp后一日BTC rally确认，窗口[9/6-9/19]覆盖事件。降息周期开启→流动性宽松→BTC上涨，时间吻合，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-27"
+      ]
+    },
+    {
+      "changepoint_date": "2024-11-06",
+      "changepoint_kind": "accel_up (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "特朗普赢得2024年美国总统大选，共和党横扫国会"
+      ],
+      "reasoning": "特朗普11月6日胜选当日BTC accel_up(+9.05%)，窗口[10/16-11/6]覆盖事件。亲加密立场预期→BTC创新高突破$76k，时间精确吻合，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-31"
+      ]
+    },
+    {
+      "changepoint_date": "2025-02-25",
+      "changepoint_kind": "drawdown (BTC-USD)",
+      "verdict": "match",
+      "matched_event_titles": [
+        "DeepSeek R1引发全球AI股灾，NVIDIA单日暴跌17%市值蒸发近$6000亿",
+        "DeepSeek发布R1模型，以极低成本挑战美国AI霸权"
+      ],
+      "reasoning": "DeepSeek事件(1/20发布、1/27股灾)后BTC drawdown窗口[1/21-2/25]覆盖事件。材料注\"BTC跟随风险资产下跌\"，时间吻合，科技股暴跌→风险情绪传导→BTC承压，方向逻辑一致。",
+      "evidence_refs": [
+        "ev-s-20260705-745a-2",
+        "ev-s-20260705-745a-32",
+        "ev-s-20260705-745a-7"
+      ]
+    }
+  ],
+  "overall_notes": "材料覆盖29个宏观/行业事件与80个变化点（黄金40+BTC40）。匹配结果：match 14个（黄金4/BTC10），partial 22个（黄金12/BTC10），none 44个（黄金24/BTC20）。主要缺口：(1)2021年7-11月黄金&BTC均无事件覆盖，期间9个变化点全部为none；(2)2024年6-8月BTC多次大级别变化点(accel_down/drawdown/rally)缺乏事件解释，尤其8月5日-20.9%回撤无对应事件；(3)2026年1-3月黄金出现极端accel_down(-11.37%)和drawdown(-17.2%)均无事件支撑，疑似数据异常或未收录事件；(4)部分BTC行业事件（减半、ETF批准）与黄金变化的对齐逻辑牵强，已在条目中标记partial。建议上游补充2024年8月全球市场波动事件（如日元套息交易平仓）及2026年Q1黄金极端行情相关事件。"
+}
