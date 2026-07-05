@@ -9,6 +9,7 @@ from __future__ import annotations
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
+from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import AlignmentMatrix
 
@@ -39,6 +40,6 @@ def build_alignment_analyst(settings: Settings) -> Agent[AppContext]:
         instructions=_INSTRUCTIONS,
         tools=[],
         output_type=AlignmentMatrix,
-        model=settings.model,
+        model=get_model(settings),
         model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
     )

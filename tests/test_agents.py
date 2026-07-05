@@ -90,6 +90,26 @@ def test_subagents_declare_structured_output():
         assert build(MOCK).output_type is not None
 
 
+def test_openrouter_model_name_passthrough():
+    """OpenRouter 模型名必须原样透传（如 deepseek/deepseek-v4-pro）。
+
+    不能走 SDK MultiProvider 前缀解析——它只认少数前缀且会剥离前缀，
+    真实事故：'Unknown prefix: deepseek'。
+    """
+    from agents import OpenAIChatCompletionsModel
+
+    deepseek = Settings(provider="openrouter", api_key="k",
+                        base_url="https://openrouter.ai/api/v1",
+                        model="deepseek/deepseek-v4-pro")
+    for build in (build_data_collector, build_event_researcher, build_alignment_analyst,
+                  build_report_builder, build_orchestrator):
+        model = build(deepseek).model
+        assert isinstance(model, OpenAIChatCompletionsModel)
+        assert model.model == "deepseek/deepseek-v4-pro"
+    # OpenAI 直连仍走 SDK 默认（字符串）
+    assert isinstance(build_data_collector(LIVE).model, str)
+
+
 def test_all_agents_cap_output_tokens():
     # 控成本 + OpenRouter 按 max_tokens 做预算检查（未设置时按模型最大值预留，低额度 key 会 402）
     for build in (build_data_collector, build_event_researcher, build_alignment_analyst,

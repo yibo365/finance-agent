@@ -9,6 +9,7 @@ from __future__ import annotations
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
+from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import ArtifactRefs
 from finance_agent.tools.agent_tools import (
@@ -54,6 +55,6 @@ def build_report_builder(settings: Settings) -> Agent[AppContext]:
         instructions=_INSTRUCTIONS,
         tools=[list_skills, load_skill, list_artifacts, read_artifact, render_artifact, update_artifact],
         output_type=ArtifactRefs,
-        model=settings.model,
+        model=get_model(settings),
         model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
     )

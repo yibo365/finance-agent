@@ -8,6 +8,7 @@ from __future__ import annotations
 from agents import Agent, ModelSettings, WebSearchTool
 
 from finance_agent.config import Settings
+from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import EventList
 from finance_agent.tools.agent_tools import (
@@ -62,6 +63,6 @@ def build_event_researcher(settings: Settings) -> Agent[AppContext]:
         instructions=_INSTRUCTIONS,
         tools=tools,
         output_type=EventList,
-        model=settings.model,
+        model=get_model(settings),
         model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
     )

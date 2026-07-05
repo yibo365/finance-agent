@@ -5,6 +5,7 @@ from __future__ import annotations
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
+from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import MarketData
 from finance_agent.tools.agent_tools import fetch_market_data, run_changepoint_detection
@@ -36,6 +37,6 @@ def build_data_collector(settings: Settings) -> Agent[AppContext]:
         instructions=_INSTRUCTIONS,
         tools=[fetch_market_data, run_changepoint_detection],
         output_type=MarketData,
-        model=settings.model,
+        model=get_model(settings),
         model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
     )

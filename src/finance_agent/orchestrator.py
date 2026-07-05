@@ -12,6 +12,7 @@ from datetime import date
 from agents import Agent, ModelSettings, RunContextWrapper, Runner, function_tool
 
 from finance_agent.config import Settings
+from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import (
     AlignmentMatrix,
@@ -187,6 +188,6 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
             list_artifacts,
             read_artifact,
         ],
-        model=settings.model,
+        model=get_model(settings),
         model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
     )
