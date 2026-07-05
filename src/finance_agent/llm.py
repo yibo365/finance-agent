@@ -5,13 +5,22 @@ OpenRouter/自建网关的模型名（如 deepseek/deepseek-v4-pro、openai/gpt-
 且会剥离前缀，真实事故：'Unknown prefix: deepseek'）。因此非 OpenAI 直连时
 直接构造绑定自定义 AsyncOpenAI 客户端的 OpenAIChatCompletionsModel。
 
-response_format 兼容（真实事故）：SDK 对带 output_type 的 agent 一律发送
-{"type": "json_schema", ...}，Kimi/DeepSeek 官方 API 不支持该类型
-（"This response_format type is unavailable now"），只认 json_object。
-网关路径默认把 json_schema 降级为 json_object（各家通吃，且供应方保证输出
-为合法 JSON——顺带在源头压制围栏/截断类坏 JSON）；schema 本身改由提示词
-携带（output_schema_note）。可用 FINANCE_AGENT_JSON_MODE 覆盖：
-object（默认）| schema（原样透传，供应方支持时更严格）| off（不发）。
+## 供应方兼容层（唯一收口）
+
+底层模型可以随时换（OpenAI/OpenRouter/DeepSeek 官方/Kimi/自建网关），
+应用代码不感知供应方差异——所有兼容性变换集中在本模块的客户端包装里，
+每一条都是确定性纯函数、有单测、对宽容供应方无害：
+
+1. response_format 降级（真实事故 "This response_format type is unavailable
+   now"）：SDK 对带 output_type 的 agent 一律发 {"type": "json_schema", ...}，
+   Kimi/DeepSeek 官方只认 json_object → 网关路径默认降级为 json_object，
+   schema 改由提示词携带（output_schema_note）。FINANCE_AGENT_JSON_MODE
+   可覆盖：object（默认）| schema（原样透传）| off（不发）。
+2. 消息序列规整（真实事故 "An assistant message with 'tool_calls' must be
+   followed by tool messages…"）：模型同轮"边说话边调工具"时，SDK 把文本
+   拆成独立 assistant 消息插在 tool_calls 与 tool 回执之间——OpenAI/OpenRouter
+   宽容，DeepSeek 官方/Kimi 严格校验邻接并 400。发送前把插队文本并入
+   tool_calls 消息、回执按声明顺序紧随、缺失回执补占位、无主回执丢弃。
 """
 
 from __future__ import annotations
@@ -40,12 +49,74 @@ def rewrite_response_format(kwargs: dict[str, Any], mode: str) -> dict[str, Any]
     return kwargs  # mode == "schema"：原样透传
 
 
-def _patch_json_mode(client: AsyncOpenAI, mode: str) -> AsyncOpenAI:
-    if mode == "schema":
-        return client
+def _content_text(content: Any) -> str:
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):  # 分段内容：取全部 text 部分
+        return "".join(p.get("text", "") for p in content if isinstance(p, dict))
+    return ""
+
+
+def sanitize_chat_messages(messages: list[dict]) -> list[dict]:
+    """规整消息序列以通过严格供应方（DeepSeek 官方/Kimi）的邻接校验（纯函数）。
+
+    - assistant(tool_calls) 与其 tool 回执之间的插队 assistant 文本
+      并入 tool_calls 消息的 content；
+    - tool 回执按 tool_calls 声明顺序紧随其后；缺失的补占位回执；
+    - 无主 tool 回执（找不到对应 tool_calls）丢弃。
+    对宽容供应方而言这是语义等价的无害变换。
+    """
+    result: list[dict] = []
+    pending: dict | None = None      # 等待回执的 assistant(tool_calls)
+    extra_texts: list[str] = []      # 插队的 assistant 文本
+    replies: dict[str, dict] = {}    # tool_call_id → 回执
+
+    def flush() -> None:
+        nonlocal pending, extra_texts, replies
+        if pending is None:
+            return
+        if extra_texts:
+            base = _content_text(pending.get("content"))
+            pending["content"] = "\n\n".join(t for t in [base, *extra_texts] if t)
+        result.append(pending)
+        for tc in pending.get("tool_calls") or []:
+            tid = tc.get("id")
+            result.append(replies.pop(tid, None) or {
+                "role": "tool", "tool_call_id": tid, "content": "（本次调用未返回结果）",
+            })
+        pending, extra_texts, replies = None, [], {}
+
+    for message in messages:
+        m = dict(message) if isinstance(message, dict) else message
+        role = m.get("role") if isinstance(m, dict) else None
+        if pending is not None and isinstance(m, dict):
+            if role == "tool":
+                replies[m.get("tool_call_id")] = m
+                if {tc.get("id") for tc in pending.get("tool_calls") or []} <= set(replies):
+                    flush()
+                continue
+            if role == "assistant" and not m.get("tool_calls"):
+                text = _content_text(m.get("content"))
+                if text:
+                    extra_texts.append(text)
+                continue
+            flush()  # 其他角色到来：结清当前 tool_calls（缺失回执补占位）
+        if isinstance(m, dict) and role == "assistant" and m.get("tool_calls"):
+            pending = m
+            continue
+        if isinstance(m, dict) and role == "tool":
+            continue  # 无主回执：严格供应方同样会拒绝，直接丢弃
+        result.append(m)
+    flush()
+    return result
+
+
+def _patch_compat(client: AsyncOpenAI, mode: str) -> AsyncOpenAI:
     original = client.chat.completions.create
 
     async def create(*args: Any, **kwargs: Any):
+        if isinstance(kwargs.get("messages"), list):
+            kwargs["messages"] = sanitize_chat_messages(kwargs["messages"])
         return await original(*args, **rewrite_response_format(kwargs, mode))
 
     client.chat.completions.create = create  # type: ignore[method-assign]
@@ -60,7 +131,7 @@ def _client_for(settings: Settings) -> AsyncOpenAI:
             api_key=settings.api_key or "missing-key",
             default_headers={"X-Title": "finance-agent"},  # OpenRouter 归因头（可选）
         )
-        _clients[key] = _patch_json_mode(client, settings.json_mode)
+        _clients[key] = _patch_compat(client, settings.json_mode)
     return _clients[key]
 
 
