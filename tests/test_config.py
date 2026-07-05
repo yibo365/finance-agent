@@ -7,6 +7,10 @@ from finance_agent.config import Settings
 
 @pytest.fixture(autouse=True)
 def clean_env(monkeypatch):
+    # 屏蔽仓库 .env（本地开发配置了真实 key 时测试必须仍然确定）
+    import finance_agent.config as config
+
+    monkeypatch.setattr(config, "load_dotenv", lambda *args, **kwargs: None)
     for var in ("OPENAI_API_KEY", "OPENROUTER_API_KEY", "FINANCE_AGENT_PROVIDER",
                 "FINANCE_AGENT_MODEL", "FINANCE_AGENT_MOCK", "FINANCE_AGENT_BASE_URL",
                 "FINANCE_AGENT_SEARCH_MODEL", "FINANCE_AGENT_WEB_MAX_RESULTS"):
