@@ -10,6 +10,7 @@
 |---|---|---|
 | Agent SDK | **OpenAI Agents SDK（Python）** | 刻意不用自带 tools/subagents/skills 三概念的框架（如 Claude Agent SDK）——skill 机制与 subagent 边界**自研**，架构划分是自己的判断而非框架赠品。放弃 LangGraph：偏 workflow 编排，"agent 自主完成任务"的味道弱。 |
 | 模型 | gpt-5.5（`FINANCE_AGENT_MODEL` 可覆盖） | 影响评级与拐点对齐是判断密集环节；开发迭代可切轻量档。 |
+| LLM 供应方 | OpenAI 直连 或 **OpenRouter**（自动探测，`FINANCE_AGENT_PROVIDER` 可显式指定） | OpenRouter 走 Chat Completions（其无 Responses API），SDK 侧切默认 API 并关 tracing 上传；托管 WebSearchTool 不可用 → 换其 **web 插件** function tool，返回 URL citations 并登记 evidence（溯源比托管搜索更完整）；搜索模型/条数经 `FINANCE_AGENT_SEARCH_MODEL`/`FINANCE_AGENT_WEB_MAX_RESULTS` 配置。 |
 | 入口与会话 | 终端 REPL（默认）+ `-p` 一次性 + 本地 Web 聊天薄层；SDK `SQLiteSession` 持久化，`--resume` 跨进程恢复 | 投研修改是常态，一次性命令产完即忘不可用；Web 层薄到只是同一会话核心的另一张脸，排期在 e2e 之后，可被时间盒裁剪的是它而不是核心。 |
 | 文件安全 | **无 OS 沙箱，应用层 WorkspaceFS 约束**（§5） | 时间盒取舍：容器/seccomp 级隔离做不完且收益有限——本项目不执行 LLM 生成的代码，威胁面是"LLM 生成的参数"，用"只传逻辑标识不传路径 + 路径守卫"在参数层拦截更对症。 |
 | 语言/工程 | Python 3.12 + uv；`src/` 布局 | docx/pptx/xlsx 生态最成熟；uv 保证评审者一键复现。 |

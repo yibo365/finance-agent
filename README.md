@@ -13,7 +13,10 @@
 uv sync
 
 # 配置密钥（唯一的密钥；.env 已 gitignore，不入库、不出现在产物中）
-cp .env.example .env   # 填入 OPENAI_API_KEY
+# 支持两种供应方式，二选一填入即可自动识别：
+#   OpenAI 直连  → OPENAI_API_KEY=sk-...
+#   OpenRouter  → OPENROUTER_API_KEY=sk-or-...（联网搜索自动切换为其 web 插件）
+cp .env.example .env
 
 # 方式一：交互会话（默认）
 uv run finance-agent
@@ -42,7 +45,9 @@ node --test tests/*.test.cjs   # 前端渲染骨架纯函数 + 模板无外链�
 FINANCE_AGENT_MOCK=1 uv run pytest tests/test_agents.py
 ```
 
-环境变量：`OPENAI_API_KEY`（必需）；`FINANCE_AGENT_MODEL`（默认 `gpt-5.5`）；`FINANCE_AGENT_MOCK=1`（行情用内置 NVDA 种子、资讯用离线夹具）；`FINANCE_AGENT_SKILLS_DIR`（追加外部 skill 目录）。
+环境变量：`OPENAI_API_KEY` / `OPENROUTER_API_KEY`（二选一必需，双设时可用 `FINANCE_AGENT_PROVIDER` 指定）；`FINANCE_AGENT_MODEL`（OpenAI 默认 `gpt-5.5`，OpenRouter 默认 `openai/gpt-5.5`，可换任意其托管模型）；`FINANCE_AGENT_SEARCH_MODEL` / `FINANCE_AGENT_WEB_MAX_RESULTS`（OpenRouter 联网搜索的模型与条数）；`FINANCE_AGENT_MOCK=1`（行情用内置 NVDA 种子、资讯用离线夹具）；`FINANCE_AGENT_SKILLS_DIR`（追加外部 skill 目录）；`FINANCE_AGENT_BASE_URL`（自建 OpenAI 兼容网关）。
+
+OpenRouter 模式的差异：走 Chat Completions API（自动切换）；联网搜索从 OpenAI 托管 WebSearchTool 换成 OpenRouter web 插件——后者返回 URL citations 并登记 evidence，**溯源链路反而更完整**。
 
 ## 架构一图流
 

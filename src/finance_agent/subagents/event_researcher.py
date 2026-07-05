@@ -10,7 +10,11 @@ from agents import Agent, WebSearchTool
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
 from finance_agent.contracts import EventList
-from finance_agent.tools.agent_tools import search_hn_news, search_yahoo_finance_news
+from finance_agent.tools.agent_tools import (
+    search_hn_news,
+    search_yahoo_finance_news,
+    web_search,
+)
 
 _INSTRUCTIONS = """\
 你是投研流水线的事件研究环节。输入是一个 TaskBrief JSON，其中 focus_windows
@@ -27,8 +31,9 @@ _INSTRUCTIONS = """\
    direction 指事件对标的的方向性含义（up/down/mixed/neutral），不是当日涨跌。
 5. 溯源纪律（硬性要求）：
    - 每个事件 sources 至少一条可点击 URL；日期、标题必须来自检索结果，禁止凭记忆编造；
-   - evidence_refs 填入检索工具返回的 evidence_id（web_search 无 evidence_id，
-     其发现必须至少再经一路带 evidence 的检索确认，或在 notes 里注明"仅联网搜索来源"）。
+   - evidence_refs 填入检索工具返回的 evidence_id；若联网搜索工具的返回不含
+     evidence_id（托管搜索模式），其发现必须至少再经一路带 evidence 的检索确认，
+     或在 notes 里注明"仅联网搜索来源"。
 6. 诚实原则：某窗口检索无果就是无果，写进 coverage_notes；宁可返回"无对应事件"
    也不得强行凑一条。coverage_notes 同时复述你实际检索了哪些窗口与关键词（回声）。
 """
@@ -37,7 +42,11 @@ _INSTRUCTIONS = """\
 def build_event_researcher(settings: Settings) -> Agent[AppContext]:
     tools: list = [search_hn_news, search_yahoo_finance_news]
     if not settings.mock_mode:
-        tools.append(WebSearchTool(search_context_size="medium"))
+        if settings.provider == "openrouter":
+            # OpenRouter 无 Responses API 托管搜索 → 用其 web 插件（带 citations 与 evidence）
+            tools.append(web_search)
+        else:
+            tools.append(WebSearchTool(search_context_size="medium"))
     return Agent[AppContext](
         name="event-researcher",
         instructions=_INSTRUCTIONS,

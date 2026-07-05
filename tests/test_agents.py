@@ -23,8 +23,13 @@ from finance_agent.tools.agent_tools import (
 from finance_agent.tools.market import FetchError
 from finance_agent.workspace import Workspace
 
-MOCK = Settings(openai_api_key="", model="gpt-5.5", mock_mode=True)
-LIVE = Settings(openai_api_key="k", model="gpt-5.5", mock_mode=False)
+MOCK = Settings(mock_mode=True)
+LIVE = Settings(api_key="k")
+OPENROUTER = Settings(
+    provider="openrouter", api_key="sk-or-k",
+    base_url="https://openrouter.ai/api/v1",
+    model="openai/gpt-5.5", search_model="openai/gpt-5-mini", web_max_results=3,
+)
 
 
 @pytest.fixture()
@@ -50,6 +55,13 @@ def test_permission_matrix_event_researcher():
     }
     live = build_event_researcher(LIVE)
     assert any(isinstance(t, WebSearchTool) for t in live.tools)
+
+
+def test_event_researcher_openrouter_uses_web_plugin_tool():
+    # OpenRouter 无 Responses API 托管搜索 → 换用 web 插件 function tool
+    agent = build_event_researcher(OPENROUTER)
+    assert "web_search" in tool_names(agent)
+    assert not any(isinstance(t, WebSearchTool) for t in agent.tools)
 
 
 def test_permission_matrix_alignment_analyst_has_no_tools():
@@ -126,6 +138,41 @@ def test_list_impls(app):
     listing = list_artifacts_impl(app)
     assert listing["session_id"] == app.workspace.session_id
     assert listing["artifacts"] == []
+
+
+# ---------- OpenRouter 联网搜索 impl ----------
+
+def test_openrouter_web_search_impl_parses_citations_and_records_evidence(tmp_path):
+    import asyncio
+    from types import SimpleNamespace
+
+    from finance_agent.tools.agent_tools import openrouter_web_search_impl
+
+    app = AppContext(settings=OPENROUTER, workspace=Workspace.create(tmp_path / "o"))
+    captured = {}
+
+    class StubCompletions:
+        async def create(self, **kwargs):
+            captured.update(kwargs)
+            message = SimpleNamespace(
+                content="DeepSeek-R1 于 2025-01-20 发布。",
+                annotations=[{
+                    "type": "url_citation",
+                    "url_citation": {"title": "Reuters 报道", "url": "https://reuters.com/x"},
+                }],
+            )
+            return SimpleNamespace(choices=[SimpleNamespace(message=message)])
+
+    stub = SimpleNamespace(chat=SimpleNamespace(completions=StubCompletions()))
+    out = asyncio.run(openrouter_web_search_impl(app, "deepseek r1 发布日期", client=stub))
+
+    assert captured["model"] == "openai/gpt-5-mini"
+    assert captured["extra_body"] == {"plugins": [{"id": "web", "max_results": 3}]}
+    assert out["citations"] == [{"title": "Reuters 报道", "url": "https://reuters.com/x"}]
+    assert out["evidence_id"].startswith("ev-")
+    recorded = app.workspace.evidence.get(out["evidence_id"])
+    assert recorded.kind == "search"
+    assert recorded.source_url == "https://reuters.com/x"
 
 
 # ---------- 契约 ----------

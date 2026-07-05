@@ -21,6 +21,9 @@ MAX_ORCHESTRATOR_TURNS = 30
 
 class SessionCore:
     def __init__(self, settings: Settings, workspace: Workspace) -> None:
+        from finance_agent.llm import configure_llm
+
+        configure_llm(settings)
         self.settings = settings
         self.workspace = workspace
         self.ctx = AppContext(settings=settings, workspace=workspace)

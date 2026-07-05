@@ -75,7 +75,7 @@ function addMsg(cls, text) {
 async function refreshState() {
   const state = await (await fetch('/api/state')).json();
   document.getElementById('sessionInfo').textContent =
-    `会话 ${state.session_id} ｜ 工作区 ${state.workspace_dir}`;
+    `会话 ${state.session_id} ｜ ${state.provider} · ${state.model} ｜ 工作区 ${state.workspace_dir}`;
   const box = document.getElementById('artifacts');
   if (!state.artifacts.length) { box.innerHTML = '<div class="empty">暂无产物</div>'; return; }
   box.innerHTML = '';

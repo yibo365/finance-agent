@@ -34,6 +34,8 @@ def create_app(core: SessionCore) -> FastAPI:
         return {
             "session_id": core.workspace.session_id,
             "workspace_dir": str(core.workspace.dir),
+            "provider": core.settings.provider,
+            "model": core.settings.model,
             "artifacts": core.workspace.list_artifacts(),
             "datasets": core.workspace.dataset_index(),
         }

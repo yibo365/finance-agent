@@ -10,7 +10,7 @@ from finance_agent.session import SessionCore
 from finance_agent.web.app import create_app
 from finance_agent.workspace import Workspace
 
-MOCK = Settings(openai_api_key="", model="gpt-5.5", mock_mode=True)
+MOCK = Settings(mock_mode=True)
 
 
 @pytest.fixture()
@@ -44,6 +44,7 @@ def test_index_served_inline(client):
 def test_state_reports_artifacts_and_datasets(client):
     state = client.get("/api/state").json()
     assert state["session_id"] == "s-20260703-web"
+    assert state["provider"] == "openai" and state["model"]  # 供前端头部显示
     assert state["artifacts"][0]["artifact_id"] == "nvda-kline-report"
     assert "ds-nvda" in state["datasets"]
 

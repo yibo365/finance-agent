@@ -191,6 +191,64 @@ def search_yahoo_finance_news(
     return _json(search_yahoo_news_impl(ctx.context, query, max_items))
 
 
+# ---------- OpenRouter 联网搜索（web 插件） ----------
+
+async def openrouter_web_search_impl(
+    app: AppContext, query: str, max_results: int | None = None, client: Any = None
+) -> dict[str, Any]:
+    """经 OpenRouter web 插件联网检索。返回摘要 + citations，并登记 evidence
+    ——相比 OpenAI 托管 WebSearchTool 的优势：来源 URL 可进溯源链。"""
+    from openai import AsyncOpenAI
+
+    own_client = client is None
+    http = client or AsyncOpenAI(base_url=app.settings.base_url, api_key=app.settings.api_key)
+    try:
+        completion = await http.chat.completions.create(
+            model=app.settings.search_model,
+            messages=[{
+                "role": "user",
+                "content": f"请联网检索：{query}\n总结关键事实（含具体日期），并附来源。",
+            }],
+            extra_body={"plugins": [{
+                "id": "web",
+                "max_results": max_results or app.settings.web_max_results,
+            }]},
+        )
+    finally:
+        if own_client:
+            await http.close()
+    message = completion.choices[0].message
+    citations: list[dict[str, str]] = []
+    for ann in getattr(message, "annotations", None) or []:
+        data = ann.model_dump() if hasattr(ann, "model_dump") else dict(ann)
+        cite = data.get("url_citation") or {}
+        if data.get("type") == "url_citation" and cite.get("url"):
+            citations.append({"title": cite.get("title", ""), "url": cite["url"]})
+    evidence = app.workspace.evidence.record(
+        "search",
+        source_url=citations[0]["url"] if citations else "openrouter:web-plugin",
+        query={"query": query, "model": app.settings.search_model,
+               "max_results": max_results or app.settings.web_max_results},
+        excerpt="；".join(c["title"] or c["url"] for c in citations[:5])
+                or (message.content or "")[:200],
+    )
+    app.workspace.save_evidence()
+    return {"summary": message.content, "citations": citations, "evidence_id": evidence.id}
+
+
+@function_tool
+async def web_search(
+    ctx: RunContextWrapper[AppContext], query: str, max_results: int | None = None
+) -> str:
+    """联网检索（OpenRouter web 插件），返回摘要、来源 citations 与 evidence_id。
+
+    Args:
+        query: 检索问题（自然语言即可，含日期上下文更准）。
+        max_results: 检索结果条数；缺省用全局配置。
+    """
+    return _json(await openrouter_web_search_impl(ctx.context, query, max_results))
+
+
 # ---------- skill 工具（orchestrator / report-builder） ----------
 
 def list_skills_impl(app: AppContext) -> dict[str, Any]:
