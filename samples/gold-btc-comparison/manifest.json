@@ -1,47 +1,47 @@
 {
   "artifacts": [
     {
-      "artifact_id": "gold-btc-comparison-pptx",
-      "kind": "pptx",
-      "title": "黄金与比特币避险/抗通胀比较分析",
-      "current_version": 1,
-      "versions": [
-        {
-          "v": 1,
-          "file": "artifacts/gold_btc_comparison_pptx_v1.pptx",
-          "spec": "specs/gold-btc-comparison-pptx_v1.json",
-          "created_at": "2026-07-05T08:28:59+00:00",
-          "change_summary": "初版：9页决策框架PPT，结论先行——黄金更一致避险、BTC仅在特定危机中类避险。含标题页、框架分节、双资产核心发现(bullets×2)、多维对比矩阵(table)、压力事件反应对照(table)、适用边界(bullets)、数据方法分节与局限性(bullets)，末页自动溯源清单。"
-        }
-      ]
-    },
-    {
-      "artifact_id": "gold-btc-comparison-xlsx",
+      "artifact_id": "artifact-gold-btc-xlsx",
       "kind": "xlsx",
-      "title": "黄金与比特币避险抗通胀资产比较分析 — 回测底稿",
+      "title": "黄金 vs 比特币 避险/抗通胀回测分析（2021-2026）",
       "current_version": 1,
       "versions": [
         {
           "v": 1,
-          "file": "artifacts/gold_btc_comparison_xlsx_v1.xlsx",
-          "spec": "specs/gold-btc-comparison-xlsx_v1.json",
-          "created_at": "2026-07-05T08:31:57+00:00",
-          "change_summary": "初版：黄金与比特币五年回测底稿，含双资产原始数据sheet、参数化指标、关键变化点明细表、事件清单与局限性说明。"
+          "file": "artifacts/artifact_gold_btc_xlsx_v1.xlsx",
+          "spec": "specs/artifact-gold-btc-xlsx_v1.json",
+          "created_at": "2026-07-05T13:10:08+00:00",
+          "change_summary": "初版：黄金vs比特币五年回测底稿，含双资产原始数据、参数化指标联动重算、关键事件对齐分析、局限性声明。"
         }
       ]
     },
     {
-      "artifact_id": "gold-btc-comparison-docx",
-      "kind": "docx",
-      "title": "黄金与比特币避险/抗通胀属性比较分析（2021-2026）",
+      "artifact_id": "artifact-gold-btc-pptx",
+      "kind": "pptx",
+      "title": "黄金 vs 比特币 避险/抗通胀决策框架（2021-2026）",
       "current_version": 1,
       "versions": [
         {
           "v": 1,
-          "file": "artifacts/gold_btc_comparison_docx_v1.docx",
-          "spec": "specs/gold-btc-comparison-docx_v1.json",
-          "created_at": "2026-07-05T08:32:42+00:00",
-          "change_summary": "初版：基于五年黄金与BTC变化点-事件对齐分析，生成结构化策略研究报告，含摘要、研究设定、避险属性、抗通胀属性、相关性分析、局限性及结论七章，附录含32个关键变化点明细表。"
+          "file": "artifacts/artifact_gold_btc_pptx_v1.pptx",
+          "spec": "specs/artifact-gold-btc-pptx_v1.json",
+          "created_at": "2026-07-05T13:10:45+00:00",
+          "change_summary": "初版：10页PPTX决策框架，结论先行——黄金是更纯粹的避险资产、比特币是风险偏好杠杆表达；包含三类宏观场景分析、五维对比矩阵、唯一共振场景（SVB）、抗通胀叙事检验、配置含义与局限性。"
+        }
+      ]
+    },
+    {
+      "artifact_id": "artifact-gold-btc-docx",
+      "kind": "docx",
+      "title": "黄金 vs 比特币 避险/抗通胀策略研究报告（2021-2026）",
+      "current_version": 1,
+      "versions": [
+        {
+          "v": 1,
+          "file": "artifacts/artifact_gold_btc_docx_v1.docx",
+          "spec": "specs/artifact-gold-btc-docx_v1.json",
+          "created_at": "2026-07-05T13:11:43+00:00",
+          "change_summary": "初版：基于黄金GC=F与比特币BTC-USD五年变化点检测与事件对齐，构建六章策略研究报告"
         }
       ]
     }

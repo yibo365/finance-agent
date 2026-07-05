@@ -1,0 +1,254 @@
+{
+  "artifact_id": "nvda-ai-framework-ppt",
+  "kind": "pptx",
+  "title": "NVDA：AI叙事驱动的五年极端波动",
+  "subtitle": "2021.07–2026.07 行情复盘 · 40变化点×14事件对齐 · 决策框架",
+  "skill": "pptx-framework",
+  "blocks": [
+    {
+      "type": "slide",
+      "layout": "title",
+      "title": "NVDA：AI叙事驱动的五年极端波动",
+      "subtitle": "2021.07–2026.07 行情复盘 · 40变化点×14事件对齐 · 决策框架",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "数据来源：Yahoo Finance NVDA 日线（1254个交易日）；事件来源：公开报道（14条，2021-12至2025-02）",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "01 核心结论",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": []
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "三个核心判断",
+      "subtitle": "",
+      "bullets": [
+        "AI叙事是NVDA五年行情的第一驱动力：ChatGPT（2022.11）至Blackwell（2024.03）期间，事件与行情方向吻合度最高，rally/accel_up占比8/11",
+        "DeepSeek冲击（2025-01-27）是研究期内最极端事件：单日-16.97%、-5.9σ偏离、蒸发约$6000亿市值——但次日即+8.93%修复，反映市场对AI算力叙事的高度敏感与流动性深度",
+        "事件覆盖存在显著缺口：40个变化点中match=3、partial=10、none=27；2021H2与2025Q1后事件完全空白，大量行情波动缺乏事件解释"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "match：事件与变化点方向一致且时间吻合；partial：时间接近但方向相悖或传导链较长；none：无对应事件",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-2",
+        "ev-s-20260705-05ef-26",
+        "ev-s-20260705-05ef-5"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "02 关键里程碑与市场反应",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": []
+    },
+    {
+      "type": "slide",
+      "layout": "table",
+      "title": "关键AI事件×NVDA行情对照",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [
+        "时间",
+        "事件",
+        "方向",
+        "NVDA行情反应",
+        "对齐"
+      ],
+      "table_rows": [
+        [
+          "2021-12-02",
+          "FTC起诉阻止ARM收购",
+          "↓",
+          "12月回撤-15.6%",
+          "match"
+        ],
+        [
+          "2022-03-22",
+          "GTC 2022: H100发布",
+          "↑",
+          "反弹+16.1%（提前交易）",
+          "partial"
+        ],
+        [
+          "2022-10-07",
+          "对华出口管制",
+          "↓",
+          "反弹+18.1%（利空出尽）",
+          "partial"
+        ],
+        [
+          "2022-11-30",
+          "ChatGPT发布",
+          "↑",
+          "反弹+17.6%（传导滞后）",
+          "partial"
+        ],
+        [
+          "2023-05-24",
+          "Q1 FY2024财报超预期",
+          "↑",
+          "加速上涨+4.97%",
+          "partial"
+        ],
+        [
+          "2024-03-18",
+          "Blackwell发布",
+          "↑",
+          "回撤-19.8%（买预期卖事实）",
+          "partial"
+        ],
+        [
+          "2025-01-27",
+          "DeepSeek R1冲击",
+          "↓",
+          "单日-17%，-5.9σ极端",
+          "match"
+        ],
+        [
+          "2025-02-26",
+          "Q4 FY2025财报超预期",
+          "↑",
+          "回撤-18.6%（利好兑现）",
+          "partial"
+        ]
+      ],
+      "notes": "方向：↑利好/↓利空；对齐判定来自变化点×事件对齐矩阵（3match/10partial/27none）",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-6",
+        "ev-s-20260705-05ef-13",
+        "ev-s-20260705-05ef-12",
+        "ev-s-20260705-05ef-3",
+        "ev-s-20260705-05ef-19",
+        "ev-s-20260705-05ef-20",
+        "ev-s-20260705-05ef-26",
+        "ev-s-20260705-05ef-23"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "DeepSeek冲击：-5.9σ的极端事件",
+      "subtitle": "",
+      "bullets": [
+        "2025-01-27：NVDA单日-16.97%，前21日分布-5.9σ，市值蒸发约$6000亿，创美股历史最大单日损失",
+        "触发逻辑：DeepSeek R1宣称训练成本仅$560万，市场恐慌AI算力需求被高估——'AI斯普特尼克时刻'",
+        "次日（01-28）即反弹+8.93%（+2.0σ）：过度恐慌后的急速修正，体现NVDA作为AI核心资产的市场深度",
+        "此后两周（至02-13）完成+16.0%反弹，Q4财报（02-26）Blackwell需求'惊人'进一步确认AI算力叙事未破"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "DeepSeek事件是研究期内唯一同时触发accel_down(-5.9σ)与drawdown(-20.8%)两个变化点的单一事件",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-26",
+        "ev-s-20260705-05ef-5",
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "ChatGPT→Blackwell：AI叙事上升期",
+      "subtitle": "2022.11–2024.03",
+      "bullets": [
+        "ChatGPT（2022-11-30）→ GPT-4（2023-03-14）→ Q1财报（2023-05-24）：三重催化推动NVDA市值突破$1万亿（2023-05-30）",
+        "GTC 2024 Blackwell（2024-03-18）：B200拥有2080亿晶体管，AI性能20 petaflops，较H100提升2-5倍——'新工业革命引擎'",
+        "Computex 2024 Rubin预告（2024-06-02）：年度AI芯片迭代节奏确立，强化长期技术领先预期",
+        "上升期变化点以rally/accel_up为主（8/11），事件与行情方向吻合度显著高于其他时段"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "该时期是事件覆盖最密集、方向一致性最高的时段，但2024-04-19 drawdown(-19.8%)提示'买预期卖事实'风险",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-3",
+        "ev-s-20260705-05ef-7",
+        "ev-s-20260705-05ef-19",
+        "ev-s-20260705-05ef-16",
+        "ev-s-20260705-05ef-20"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "03 变化点×事件对齐全貌",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": []
+    },
+    {
+      "type": "slide",
+      "layout": "table",
+      "title": "对齐结论汇总",
+      "subtitle": "40变化点 × 14事件对齐矩阵",
+      "bullets": [],
+      "table_headers": [
+        "判定",
+        "数量",
+        "占比",
+        "典型示例"
+      ],
+      "table_rows": [
+        [
+          "match",
+          "3",
+          "7.5%",
+          "DeepSeek(×2)、FTC起诉ARM"
+        ],
+        [
+          "partial",
+          "10",
+          "25.0%",
+          "ChatGPT传导滞后、Blackwell买预期卖事实、出口管制利空出尽"
+        ],
+        [
+          "none",
+          "27",
+          "67.5%",
+          "2021H2空白(8点)、2022Q2-Q3(5点)、2024H2(4点)、2025-2026全空白(7点)"
+        ]
+      ],
+      "notes": "match=方向一致+时间吻合；partial=时间接近但方向相悖或传导链长；none=无对应事件",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "局限性：当前分析的覆盖边界",
+      "subtitle": "",
+      "bullets": [
+        "2021年7–11月事件完全空白：8个变化点无事件可对应（芯片短缺/加密货币挖矿相关事件未收录在材料中）",
+        "2025年3月–2026年7月事件空白：最后7个变化点全部为none，包括2025-12-12 drawdown(-15.5%)与2026-06-23 drawdown(-15.1%)",
+        "14条事件仅覆盖2021-12至2025-02（约38个月/60个月），五年研究期中约37%时段无事件数据",
+        "结论适用条件：当AI行业事件数据完整覆盖时，NVDA行情与事件的吻合逻辑成立；覆盖缺口期间无法验证，缺口期内行情波动可能由宏观因素（利率、贸易政策等）驱动"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "建议上游补检索：2021H2芯片短缺/加密、2022年美联储加息、2024H2 Blackwell量产进展、2025-2026 Rubin平台及财报",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-2"
+      ]
+    }
+  ]
+}

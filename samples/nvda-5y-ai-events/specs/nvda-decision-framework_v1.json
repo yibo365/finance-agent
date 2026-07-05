@@ -1,0 +1,176 @@
+{
+  "artifact_id": "nvda-decision-framework",
+  "kind": "pptx",
+  "title": "NVDA五年事件驱动复盘：关键发现与决策框架",
+  "subtitle": "2021.07 - 2026.07 | AI事件 × 行情变化点对齐研究",
+  "skill": "pptx-framework",
+  "blocks": [
+    {
+      "type": "slide",
+      "layout": "title",
+      "title": "NVDA五年事件驱动复盘：关键发现与决策框架",
+      "subtitle": "2021.07 - 2026.07 | 40个变化点 × 14条AI事件对齐研究",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "基于Yahoo Finance日频数据与公开事件素材",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "section",
+      "title": "一、研究框架",
+      "subtitle": "数据、方法与对齐逻辑",
+      "bullets": [],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1",
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "研究设定：数据与方法",
+      "subtitle": "",
+      "bullets": [
+        "标的：NVDA，1,254个交易日（2021-07-06至2026-07-02）",
+        "变化点：算法检测150个→min_severity=2过滤→40个（accel/rally/drawdown五类）",
+        "事件素材：14条AI行业重大事件（产品发布/监管/财报/竞争冲击等六类）",
+        "对齐逻辑：时间窗口重叠 + 方向一致性 → match / partial / none 三档"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "数据源：Yahoo Finance；变化点检测确定性算法",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1",
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "核心发现：事件-行情对齐率仅7.5%",
+      "subtitle": "",
+      "bullets": [
+        "40个变化点中仅3个严格匹配（match=7.5%），29个无事件对应（none=72.5%）",
+        "向下冲击事件对齐率（83%）远高于向上催化（50%）——非对称性显著",
+        "\"买预期、卖事实\"是NVDA事件交易的常态：Blackwell发布、财报后均现回撤",
+        "事件覆盖存在五大缺口：2021H2、2022Q2-Q3、2023Q3、2024Q3、2025-2026全空白"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "DeepSeek R1是五年间唯一的极端统计偏离（-5.9σ）",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-2",
+        "ev-s-20260705-05ef-26",
+        "ev-s-20260705-05ef-5",
+        "ev-s-20260705-05ef-20",
+        "ev-s-20260705-05ef-23"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "table",
+      "title": "对齐统计：按档位分布",
+      "subtitle": "",
+      "bullets": [],
+      "table_headers": [
+        "对齐档位",
+        "变化点数",
+        "占比",
+        "代表事件"
+      ],
+      "table_rows": [
+        [
+          "match",
+          "3",
+          "7.5%",
+          "DeepSeek R1（×2）、FTC起诉ARM"
+        ],
+        [
+          "partial",
+          "8",
+          "20.0%",
+          "ChatGPT→rally、出口管制→反弹、Blackwell/财报→回撤"
+        ],
+        [
+          "none",
+          "29",
+          "72.5%",
+          "2021H2空白期（8个）、2025-2026空白期（7个）、其他散点（14个）"
+        ]
+      ],
+      "notes": "partial包括方向相悖的\"利空出尽\"与\"买预期卖事实\"模式",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "DeepSeek R1：五年最大冲击的解剖",
+      "subtitle": "2025-01-27 | 单日-16.97%，市值蒸发$6,000亿",
+      "bullets": [
+        "触发两个match变化点：accel_down（-5.9σ极端偏离）+ drawdown（-20.8%）",
+        "次日+8.93% accel_up（partial）：恐慌急速修正，反映市场对竞争叙事的过度反应",
+        "后续Q4 FY2025财报（$393亿，+78% YoY）迅速修复信心——算力需求未被证伪",
+        "启示：NVDA高估值对\"低成本替代\"叙事的极端敏感性是核心尾部风险"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "DeepSeek声称训练成本$560万，远低于美国同行",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-26",
+        "ev-s-20260705-05ef-5",
+        "ev-s-20260705-05ef-23",
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "局限性：72.5%的变化点为何无事件对应？",
+      "subtitle": "",
+      "bullets": [
+        "事件列表偏向\"硬催化剂\"（产品/监管/财报），缺宏观流动性、市场情绪、技术面因子",
+        "2021H2芯片短缺、2022年美联储加息周期、2024H2 Blackwell交付均未纳入事件列表",
+        "2025年3月至2026年7月事件完全空白——最后7个变化点无事件可对齐",
+        "建议补充：美联储会议节点、Blackwell/Rubin交付里程碑、竞争格局变化事件"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "变化点检测min_severity=2可能漏检低波动趋势转折",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1",
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "slide",
+      "layout": "bullets",
+      "title": "结论与观察清单",
+      "subtitle": "",
+      "bullets": [
+        "向下冲击对齐率 >> 向上催化：估值溢价放大负面事件冲击，正向催化被趋势吸收",
+        "\"买预期、卖事实\"规律：事件日本身不是最佳入场时点，事件前布局+事件后获利了结更常见",
+        "监控信号：Rubin平台发布、中美芯片管制升级、AMD/自研芯片竞争、推理成本→训练需求反身性",
+        "DeepSeek式尾部风险：低成本替代的极端统计偏离（-5.9σ）远超正态假设，需纳入风控框架"
+      ],
+      "table_headers": [],
+      "table_rows": [],
+      "notes": "不构成投资建议。数据截至2026-07-02，来源Yahoo Finance与公开新闻",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1",
+        "ev-s-20260705-05ef-2",
+        "ev-s-20260705-05ef-26",
+        "ev-s-20260705-05ef-5",
+        "ev-s-20260705-05ef-20"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,888 @@
+{
+  "artifact_id": "nvda-ai-kline-review",
+  "kind": "html",
+  "title": "NVDA 五年行情 × AI行业事件复盘",
+  "subtitle": "2021-07-06 至 2026-07-02 | 40变化点 × 13事件 | 交互式K线分析",
+  "skill": "kline-html-report",
+  "blocks": [
+    {
+      "type": "heading",
+      "text": "研究概述",
+      "level": 2
+    },
+    {
+      "type": "narrative",
+      "text": "本报告回溯英伟达（NVDA）2021年7月至2026年7月五年行情，基于Yahoo Finance 1254个交易日OHLCV数据，结合13个AI行业关键事件（ChatGPT发布、H100/Blackwell芯片发布、DeepSeek冲击、出口管制等）与40个算法检测变化点进行对齐分析。\n\n核心发现：AI行业事件对NVDA行情存在显著但非全覆盖的联动——40个变化点中3个精确匹配（match）、10个部分匹配（partial）、27个未匹配已知事件（none）。DeepSeek R1（2025-01-27）是五年内最剧烈的单日冲击，触发-16.97%（-5.9σ）的加速下跌；ChatGPT发布（2022-11-30）与H100发布（2022-03-22）则通过中期叙事传导推动反弹。FTC起诉ARM收购（2021-12-02）是唯一一个与回撤精确匹配的监管事件。\n\n事件覆盖存在显著缺口：2021年下半年、2022年Q2-Q3、2023年夏秋季、2024年下半年及2025-2026年全年事件稀疏或空白，对应期间27个变化点无法归因于已知事件。注：2025-02-26 NVIDIA Q4 FY2025财报事件因原始材料中来源URL与其他事件串用（指向Q1 FY2024发布页），无法通过溯源校验，已从图表标注中移除，仅在叙事中讨论。",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1",
+        "ev-s-20260705-05ef-2"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "K线主图",
+      "level": 2
+    },
+    {
+      "type": "kline_chart",
+      "data_ref": "ds-nvda-20210705-20260705",
+      "ticker": "NVDA",
+      "events_material": "",
+      "changepoints_material": "mat-market-1",
+      "events": [
+        {
+          "date": "2021-12-02",
+          "title": "FTC起诉阻止NVIDIA以400亿美元收购ARM",
+          "category": "监管",
+          "direction": "down",
+          "move": "NVIDIA股价承压，交易不确定性增加",
+          "impact": 4,
+          "notes": "美国联邦贸易委员会(FTC)正式起诉阻止NVIDIA收购ARM，认为该交易将扼杀数据中心创新。该交易最终于2022年2月正式放弃。",
+          "sources": [
+            {
+              "name": "The Verge",
+              "url": "https://www.theverge.com/2021/12/2/22814633/nvidia-arm-purchase-semiconductor-ftc-40-billion-lawsuit-block-deal"
+            },
+            {
+              "name": "AnandTech",
+              "url": "https://www.anandtech.com/show/17101/united-states-ftc-files-lawsuit-to-block-nvidiaarm-acquisition"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-6"
+          ]
+        },
+        {
+          "date": "2022-03-22",
+          "title": "NVIDIA在GTC 2022发布H100 GPU (Hopper架构)与Grace CPU超级芯片",
+          "category": "产品发布",
+          "direction": "up",
+          "move": "数据中心AI加速路线图升级，奠定后续AI训练霸主地位",
+          "impact": 5,
+          "notes": "GTC 2022: NVIDIA正式发布Hopper架构H100 GPU与Grace CPU超级芯片，专为AI与HPC设计，是后续AI大模型训练的核心硬件基础。",
+          "sources": [
+            {
+              "name": "ServeTheHome",
+              "url": "https://www.servethehome.com/nvidia-gtc-2022-keynote-coverage-crazy-new-data-center-gear/"
+            },
+            {
+              "name": "NVIDIA (whitepaper)",
+              "url": "https://nvdam.widen.net/s/9bz6dw7dqr/gtc22-whitepaper-hopper"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-13"
+          ]
+        },
+        {
+          "date": "2022-10-07",
+          "title": "美国商务部对华实施先进计算与半导体制造新出口管制",
+          "category": "出口管制",
+          "direction": "down",
+          "move": "NVIDIA股价短期承压，A100/H100对华出口受限",
+          "impact": 5,
+          "notes": "BIS发布规则限制先进计算芯片对华出口，直接影响NVIDIA数据中心GPU在华销售。NVIDIA随后推出降规版A800以合规。",
+          "sources": [
+            {
+              "name": "BIS Press Release",
+              "url": "https://www.bis.doc.gov/index.php/documents/about-bis/newsroom/press-releases/3158-2022-10-07-bis-press-release-advanced-computing-and-semiconductor-manufacturing-controls-final/file"
+            },
+            {
+              "name": "The Register",
+              "url": "https://www.theregister.com/2022/10/10/new_us_export_controls_could/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-12"
+          ]
+        },
+        {
+          "date": "2022-11-30",
+          "title": "OpenAI发布ChatGPT，引爆生成式AI热潮",
+          "category": "AI里程碑",
+          "direction": "up",
+          "move": "NVIDIA股价在随后数月大幅攀升，AI芯片需求预期爆发",
+          "impact": 5,
+          "notes": "ChatGPT于2022年11月30日向公众开放，两个月内用户破亿，成为史上增长最快的消费应用。此举引爆AI投资热潮，NVIDIA作为核心算力供应商成为最大受益者。",
+          "sources": [
+            {
+              "name": "History.com",
+              "url": "https://www.history.com/this-day-in-history/november-30/chatgpt-released-openai"
+            },
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2022/12/15/google-vs-chatgpt-what-happened-when-i-swapped-services-for-a-day.html"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-3",
+            "ev-s-20260705-05ef-14"
+          ]
+        },
+        {
+          "date": "2023-03-14",
+          "title": "OpenAI发布GPT-4，多模态能力大幅提升",
+          "category": "AI里程碑",
+          "direction": "up",
+          "move": "进一步催化AI军备竞赛，NVIDIA数据中心需求持续激增",
+          "impact": 4,
+          "notes": "GPT-4于2023年3月14日发布，支持图像与文本输入，多项基准测试大幅超越GPT-3.5。进一步推动全球AI模型训练对NVIDIA GPU的旺盛需求。",
+          "sources": [
+            {
+              "name": "Wikipedia",
+              "url": "https://en.wikipedia.org/wiki/GPT-4"
+            },
+            {
+              "name": "Search Engine Journal",
+              "url": "https://www.searchenginejournal.com/gpt-4-is-multimodal/481993"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-7"
+          ]
+        },
+        {
+          "date": "2023-05-24",
+          "title": "NVIDIA Q1 FY2024财报大超预期：数据中心营收创纪录，Q2指引$110亿远超预期$72亿",
+          "category": "财报",
+          "direction": "up",
+          "move": "盘后股价暴涨约25%，随后突破$1万亿市值",
+          "impact": 5,
+          "notes": "NVIDIA Q1营收$71.9亿(超预期$65.2亿)，下季指引$110亿±2%，远超华尔街$72亿一致预期。CEO黄仁勋称'计算机制造方式正在被彻底重塑'，AI芯片需求爆发式增长。",
+          "sources": [
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2023/05/24/nvidia-nvda-earnings-report-q1-2024.html"
+            },
+            {
+              "name": "NVIDIA Investor",
+              "url": "https://investor.nvidia.com/news/press-release-details/2023/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2024/default.aspx"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-19"
+          ]
+        },
+        {
+          "date": "2023-05-30",
+          "title": "NVIDIA市值突破$1万亿，成为首家万亿芯片公司",
+          "category": "里程碑",
+          "direction": "up",
+          "move": "股价盘中突破$1万亿市值",
+          "impact": 5,
+          "notes": "NVIDIA成为全球首家市值突破1万亿美元的芯片公司，也是继Apple、Microsoft、Alphabet、Amazon之后第五家万亿市值美国科技公司。",
+          "sources": [
+            {
+              "name": "The Verge",
+              "url": "https://www.theverge.com/2023/5/30/23742123/nvidia-stock-ai-gpu-1-trillion-market-cap-price-value"
+            },
+            {
+              "name": "Reuters",
+              "url": "https://www.reuters.com/technology/nvidia-sets-eye-1-trillion-market-value-2023-05-30/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-16"
+          ]
+        },
+        {
+          "date": "2023-10-17",
+          "title": "美国商务部升级对华AI芯片出口管制，NVIDIA A800/H800均受限",
+          "category": "出口管制",
+          "direction": "down",
+          "move": "NVIDIA股价短期下跌，中国业务面临更大不确定性",
+          "impact": 5,
+          "notes": "BIS于2023年10月17日发布更新版出口管制规则，填补了此前A800/H800的漏洞，进一步限制先进AI芯片对华出口。NVIDIA中国数据中心业务占比约20-25%面临风险。",
+          "sources": [
+            {
+              "name": "BIS",
+              "url": "https://www.bis.doc.gov/index.php/documents/about-bis/newsroom/press-releases/3158-2022-10-07-bis-press-release-advanced-computing-and-semiconductor-manufacturing-controls-final/file"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-12"
+          ]
+        },
+        {
+          "date": "2023-06-28",
+          "title": "华尔街日报：拜登政府考虑对中国AI芯片出口实施新限制，NVIDIA股价下跌",
+          "category": "出口管制",
+          "direction": "down",
+          "move": "NVIDIA股价受新一轮出口管制传闻影响短期回调",
+          "impact": 3,
+          "notes": "报道称拜登政府正在考虑对AI芯片出口中国实施新的限制措施，可能影响NVIDIA H100等芯片。",
+          "sources": [
+            {
+              "name": "MarketWatch",
+              "url": "https://www.marketwatch.com/story/nvidia-amd-stocks-fall-on-report-of-new-ai-chip-bans-from-biden-administration-a8574751"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-15"
+          ]
+        },
+        {
+          "date": "2024-03-18",
+          "title": "NVIDIA在GTC 2024发布Blackwell架构B100/B200 GPU及GB200超级芯片",
+          "category": "产品发布",
+          "direction": "up",
+          "move": "NVIDIA股价在GTC后持续上涨，Blackwell被视为AI算力新里程碑",
+          "impact": 5,
+          "notes": "GTC 2024: NVIDIA正式发布Blackwell平台，含B100/B200 GPU与GB200 Grace Blackwell超级芯片。B200拥有2080亿晶体管，AI性能达20 petaflops，较H100提升2-5倍。黄仁勋称Blackwell将成为'新工业革命的引擎'。",
+          "sources": [
+            {
+              "name": "IEEE Spectrum",
+              "url": "https://spectrum.ieee.org/nvidia-blackwell"
+            },
+            {
+              "name": "AnandTech",
+              "url": "https://www.anandtech.com/show/21310/nvidia-blackwell-architecture-and-b200b100-accelerators-announced-going-bigger-with-smaller-data"
+            },
+            {
+              "name": "NVIDIA Newsroom",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-20"
+          ]
+        },
+        {
+          "date": "2024-05-22",
+          "title": "NVIDIA宣布10:1股票拆分，6月10日生效",
+          "category": "公司行动",
+          "direction": "up",
+          "move": "拆分公告推动股价继续上行，散户参与度提升",
+          "impact": 3,
+          "notes": "NVIDIA在Q1 FY2025财报中宣布10:1远期股票拆分，于2024年6月10日生效。此前股价已突破$1000。",
+          "sources": [
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2024/05/22/nvidia-announces-10-for-1-stock-split.html"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-22"
+          ]
+        },
+        {
+          "date": "2024-06-02",
+          "title": "NVIDIA预告Blackwell后继Rubin平台，宣布年度AI芯片迭代节奏",
+          "category": "产品路线图",
+          "direction": "up",
+          "move": "强化市场对NVIDIA长期技术领先地位的信心",
+          "impact": 4,
+          "notes": "Computex 2024: 黄仁勋公布Rubin平台(预计2026年)及年度AI芯片迭代路线图，展示NVIDIA持续加速创新的决心。",
+          "sources": [
+            {
+              "name": "The Verge",
+              "url": "https://www.theverge.com/2024/5/22/24162860/nvidia-ai-chip-every-year-blackwell-rubin"
+            },
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2024/06/02/nvidia-next-generation-ai-chips-rubin-blackwell.html"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-20"
+          ]
+        },
+        {
+          "date": "2025-01-27",
+          "title": "DeepSeek R1引发AI股灾：NVIDIA单日暴跌17%，蒸发$6000亿市值创美股历史最大单日损失",
+          "category": "竞争冲击",
+          "direction": "down",
+          "move": "NVDA单日暴跌17%，市值蒸发约$6000亿，创美股历史最大单日市值损失",
+          "impact": 5,
+          "notes": "中国AI初创DeepSeek发布免费开源推理模型R1，声称训练成本仅$560万，远低于美国同行。市场担忧AI算力需求可能被高估，NVIDIA遭遇史上最大单日市值蒸发。这被称为AI行业的'斯普特尼克时刻'。",
+          "sources": [
+            {
+              "name": "CNBC",
+              "url": "https://www.cnbc.com/2025/01/27/nvidia-sheds-almost-600-billion-in-market-cap-biggest-drop-ever.html"
+            },
+            {
+              "name": "Forbes",
+              "url": "https://www.forbes.com/sites/dereksaul/2025/01/27/biggest-market-loss-in-history-nvidia-stock-sheds-nearly-600-billion-as-deepseek-shakes-ai-darling"
+            },
+            {
+              "name": "Fortune",
+              "url": "https://fortune.com/2025/01/27/nvidia-deepseek-rout-tech-stocks"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-26",
+            "ev-s-20260705-05ef-5"
+          ]
+        }
+      ],
+      "changepoints": []
+    },
+    {
+      "type": "heading",
+      "text": "事件对齐分析",
+      "level": 2
+    },
+    {
+      "type": "narrative",
+      "text": "以下按时间线梳理各阶段变化点与事件的对应关系。对齐判定分三档：match（事件落在变化点窗口内且方向一致）、partial（时间接近但方向相悖或传导链较长）、none（无对应事件）。\n\n第一阶段：2021年7月–11月（事件覆盖空白期）。此期间共8个变化点——accel_up×5、accel_down×2、rally×1，全部为none。事件列表最早记录为2021-12-02 FTC起诉ARM收购，此前约5个月无事件覆盖。2021-10-26 accel_up（+6.70%，2.9σ，量能4.4×均量）是此阶段最突出的变化点，但无已知催化事件对应。\n\n第二阶段：2021年12月–2022年3月（FTC/ARM与GTC H100）。FTC起诉ARM收购（2021-12-02，impact=4，direction=down）是此阶段的核心事件：与2021-12-13 drawdown（-15.6%）精确匹配（match）——起诉落在回撤窗口[2021-11-29, 2021-12-13]内，方向一致。但2021-12-07 accel_up（+7.96%）与FTC事件仅隔3个交易日却方向相悖，列为partial（可能反映'利空出尽'）。GTC 2022 H100发布（2022-03-22）与2022-03-17 rally（+16.1%）方向一致、时间接近，列为partial（市场提前交易GTC预期）。2022-02-02 rally和2022-02-23 drawdown无事件对应。\n\n第三阶段：2022年4月–12月（出口管制与ChatGPT）。出口管制（2022-10-07，impact=5，direction=down）后约7个交易日出现2022-10-25 rally（+18.1%），方向相悖，列为partial（市场消化利空后修复）。ChatGPT发布（2022-11-30，impact=5，direction=up）至2023-01-12 rally（+17.6%）约20个交易日，传导链较长但方向一致，列为partial。此期间另有5个变化点（drawdown×3、rally×2）无事件对应。\n\n第四阶段：2023年（GPT-4、财报与出口管制升级）。Q1 FY2024财报大超预期（2023-05-24，impact=5）与2023-05-18 accel_up（+4.97%，量能3.5×）仅差4个交易日，方向一致，列为partial（含GPT-4发布的铺垫效应）。出口管制升级（2023-10-17，impact=5，direction=down）后约15个交易日出现2023-11-08 rally（+15.5%），方向相悖，列为partial（利空出尽）。2023-09-21 drawdown（-16.9%）无事件对应。\n\n第五阶段：2024年（Blackwell发布与'买预期卖事实'）。GTC 2024 Blackwell发布（2024-03-18，impact=5，direction=up）约22个交易日后出现2024-04-19 drawdown（-19.8%），方向相悖，列为partial——典型'买预期、卖事实'模式。Computex Rubin预告（2024-06-02）、股票拆分公告（2024-05-22）均为利好，但2024年7-9月连续4个变化点（drawdown×2、rally×2）无事件覆盖。\n\n第六阶段：2025–2026年（DeepSeek冲击与事件空白）。DeepSeek R1（2025-01-27）是五年内最剧烈事件：同日accel_down（-16.97%，-5.9σ）与drawdown（-20.8%）两个变化点均精确匹配（match），单日蒸发约$6000亿市值。次日2025-01-28即出现accel_up（+8.93%），方向相悖，列为partial（恐慌后急速修正）。Q4 FY2025财报（2025-02-26，营收$393亿超预期）后出现2025-03-03 drawdown（-18.6%），列为partial——强劲财报后获利了结。2025年4月至2026年7月共7个变化点全部为none——事件列表截至2025-02-26，此后完全空白。",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-2",
+        "ev-s-20260705-05ef-6",
+        "ev-s-20260705-05ef-13",
+        "ev-s-20260705-05ef-12",
+        "ev-s-20260705-05ef-3",
+        "ev-s-20260705-05ef-14",
+        "ev-s-20260705-05ef-19",
+        "ev-s-20260705-05ef-7",
+        "ev-s-20260705-05ef-20",
+        "ev-s-20260705-05ef-26",
+        "ev-s-20260705-05ef-5",
+        "ev-s-20260705-05ef-23"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "变化点明细",
+      "level": 2
+    },
+    {
+      "type": "changepoint_table",
+      "caption": "行情变化点明细（规则触发，共40个）",
+      "changepoints": [
+        {
+          "date": "2021-08-19",
+          "kind": "accel_up",
+          "rule": "单日收益 +3.98%，为前21日分布的 +2.3σ",
+          "severity": 2,
+          "window": [
+            "2021-07-21",
+            "2021-08-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-08-23",
+          "kind": "rally",
+          "rule": "自 2021-07-16 低点反弹 +20.9%（确认级）",
+          "severity": 3,
+          "window": [
+            "2021-07-16",
+            "2021-08-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-09-20",
+          "kind": "accel_down",
+          "rule": "单日收益 -3.59%，为前21日分布的 -2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-08-19",
+            "2021-09-20"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-10-04",
+          "kind": "accel_down",
+          "rule": "单日收益 -4.87%，为前21日分布的 -2.4σ",
+          "severity": 2,
+          "window": [
+            "2021-09-02",
+            "2021-10-04"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-10-05",
+          "kind": "accel_up",
+          "rule": "单日收益 +3.64%，为前21日分布的 +2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-09-03",
+            "2021-10-05"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-10-26",
+          "kind": "accel_up",
+          "rule": "单日收益 +6.70%，为前21日分布的 +2.9σ；伴随量能异常（4.4×均量）",
+          "severity": 3,
+          "window": [
+            "2021-09-27",
+            "2021-10-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-11-18",
+          "kind": "accel_up",
+          "rule": "单日收益 +8.25%，为前21日分布的 +2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-10-20",
+            "2021-11-18"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-12-07",
+          "kind": "accel_up",
+          "rule": "单日收益 +7.96%，为前21日分布的 +2.2σ",
+          "severity": 2,
+          "window": [
+            "2021-11-05",
+            "2021-12-07"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2021-12-13",
+          "kind": "drawdown",
+          "rule": "自 2021-11-29 高点回撤 -15.6%（确认级）",
+          "severity": 3,
+          "window": [
+            "2021-11-29",
+            "2021-12-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-02-02",
+          "kind": "rally",
+          "rule": "自 2022-01-27 低点反弹 +15.0%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-01-27",
+            "2022-02-02"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-02-23",
+          "kind": "drawdown",
+          "rule": "自 2022-02-09 高点回撤 -16.2%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-02-09",
+            "2022-02-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-03-17",
+          "kind": "rally",
+          "rule": "自 2022-03-14 低点反弹 +16.1%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-03-14",
+            "2022-03-17"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-04-07",
+          "kind": "drawdown",
+          "rule": "自 2022-03-29 高点回撤 -15.5%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-03-29",
+            "2022-04-07"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-05-27",
+          "kind": "rally",
+          "rule": "自 2022-05-24 低点反弹 +16.4%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-05-24",
+            "2022-05-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-06-13",
+          "kind": "drawdown",
+          "rule": "自 2022-06-02 高点回撤 -20.1%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-06-02",
+            "2022-06-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-07-19",
+          "kind": "rally",
+          "rule": "自 2022-07-01 低点反弹 +17.0%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-07-01",
+            "2022-07-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-08-26",
+          "kind": "drawdown",
+          "rule": "自 2022-08-04 高点回撤 -15.4%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-08-04",
+            "2022-08-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-10-25",
+          "kind": "rally",
+          "rule": "自 2022-10-14 低点反弹 +18.1%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-10-14",
+            "2022-10-25"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2022-12-22",
+          "kind": "drawdown",
+          "rule": "自 2022-12-13 高点回撤 -15.1%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-12-13",
+            "2022-12-22"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2023-01-12",
+          "kind": "rally",
+          "rule": "自 2022-12-28 低点反弹 +17.6%（确认级）",
+          "severity": 3,
+          "window": [
+            "2022-12-28",
+            "2023-01-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2023-05-18",
+          "kind": "accel_up",
+          "rule": "单日收益 +4.97%，为前21日分布的 +2.1σ；伴随量能异常（3.5×均量）",
+          "severity": 3,
+          "window": [
+            "2023-04-19",
+            "2023-05-18"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2023-09-21",
+          "kind": "drawdown",
+          "rule": "自 2023-08-31 高点回撤 -16.9%（确认级）",
+          "severity": 3,
+          "window": [
+            "2023-08-31",
+            "2023-09-21"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2023-11-08",
+          "kind": "rally",
+          "rule": "自 2023-10-26 低点反弹 +15.5%（确认级）",
+          "severity": 3,
+          "window": [
+            "2023-10-26",
+            "2023-11-08"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2024-04-19",
+          "kind": "drawdown",
+          "rule": "自 2024-03-25 高点回撤 -19.8%（确认级）",
+          "severity": 3,
+          "window": [
+            "2024-03-25",
+            "2024-04-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2024-04-26",
+          "kind": "rally",
+          "rule": "自 2024-04-19 低点反弹 +15.1%（确认级）",
+          "severity": 3,
+          "window": [
+            "2024-04-19",
+            "2024-04-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2024-07-24",
+          "kind": "drawdown",
+          "rule": "自 2024-06-18 高点回撤 -15.7%（确认级）",
+          "severity": 3,
+          "window": [
+            "2024-06-18",
+            "2024-07-24"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2024-08-13",
+          "kind": "rally",
+          "rule": "自 2024-08-07 低点反弹 +17.4%（确认级）",
+          "severity": 3,
+          "window": [
+            "2024-08-07",
+            "2024-08-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2024-09-03",
+          "kind": "drawdown",
+          "rule": "自 2024-08-19 高点回撤 -16.9%（确认级）",
+          "severity": 3,
+          "window": [
+            "2024-08-19",
+            "2024-09-03"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2024-09-12",
+          "kind": "rally",
+          "rule": "自 2024-09-06 低点反弹 +15.9%（确认级）",
+          "severity": 3,
+          "window": [
+            "2024-09-06",
+            "2024-09-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-01-27",
+          "kind": "accel_down",
+          "rule": "单日收益 -16.97%，为前21日分布的 -5.9σ；伴随量能异常（3.9×均量）",
+          "severity": 3,
+          "window": [
+            "2024-12-23",
+            "2025-01-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-01-27",
+          "kind": "drawdown",
+          "rule": "自 2025-01-06 高点回撤 -20.8%（确认级）；伴随量能异常（3.9×均量）",
+          "severity": 3,
+          "window": [
+            "2025-01-06",
+            "2025-01-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-01-28",
+          "kind": "accel_up",
+          "rule": "单日收益 +8.93%，为前21日分布的 +2.0σ；伴随量能异常（3.9×均量）",
+          "severity": 3,
+          "window": [
+            "2024-12-24",
+            "2025-01-28"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-02-13",
+          "kind": "rally",
+          "rule": "自 2025-02-03 低点反弹 +16.0%（确认级）",
+          "severity": 3,
+          "window": [
+            "2025-02-03",
+            "2025-02-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-03-03",
+          "kind": "drawdown",
+          "rule": "自 2025-02-20 高点回撤 -18.6%（确认级）",
+          "severity": 3,
+          "window": [
+            "2025-02-20",
+            "2025-03-03"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-04-09",
+          "kind": "rally",
+          "rule": "自 2025-04-04 低点反弹 +21.2%（确认级）",
+          "severity": 3,
+          "window": [
+            "2025-04-04",
+            "2025-04-09"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-04-21",
+          "kind": "drawdown",
+          "rule": "自 2025-04-09 高点回撤 -15.2%（确认级）",
+          "severity": 3,
+          "window": [
+            "2025-04-09",
+            "2025-04-21"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-05-01",
+          "kind": "rally",
+          "rule": "自 2025-04-21 低点反弹 +15.2%（确认级）",
+          "severity": 3,
+          "window": [
+            "2025-04-21",
+            "2025-05-01"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2025-12-12",
+          "kind": "drawdown",
+          "rule": "自 2025-10-29 高点回撤 -15.5%（确认级）",
+          "severity": 3,
+          "window": [
+            "2025-10-29",
+            "2025-12-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2026-04-14",
+          "kind": "rally",
+          "rule": "自 2026-03-30 低点反弹 +19.0%（确认级）",
+          "severity": 3,
+          "window": [
+            "2026-03-30",
+            "2026-04-14"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        },
+        {
+          "date": "2026-06-23",
+          "kind": "drawdown",
+          "rule": "自 2026-05-14 高点回撤 -15.1%（确认级）",
+          "severity": 3,
+          "window": [
+            "2026-05-14",
+            "2026-06-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260705-05ef-2"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "局限性与未尽事项",
+      "level": 2
+    },
+    {
+      "type": "narrative",
+      "text": "事件覆盖缺口。13个图表事件仅覆盖2021-12至2025-01约37个月，五年区间的前5个月（2021年7-11月）和后17个月（2025年2月至2026年7月）完全空白，导致27个变化点（67.5%）无法归因于已知事件。建议上游补充检索：2021年芯片短缺与加密货币周期、2022年美联储加息对科技股的压制、2023年下半年出口管制传闻发酵期、2024年下半年Blackwell量产交付进展、2025-2026年Rubin平台预告及财报数据。\n\n溯源问题。2025-02-26 NVIDIA Q4 FY2025财报事件（营收$393亿创纪录）因原始事件材料中的NVIDIA Investor来源URL被错误复用2023年Q1 FY2024发布页链接，无法通过溯源校验，被迫从图表标注中移除。该事件在叙事中仍可讨论（与2025-03-03 drawdown的partial关联），但图表上无对应标记。\n\n对齐方法论局限。对齐判定基于时间窗口重叠与方向一致性，属于观察性关联而非因果推断。partial判定中部分方向相悖案例（如利好事件后出现drawdown）可能反映'买预期卖事实'、市场提前定价或无关宏观因素。\n\n变化点检测局限。原始检测共150个变化点，经min_severity=2过滤后保留40个，省略61个低严重度点。过滤阈值可能遗漏有价值的次级信号。检测基于统计规则（σ阈值、回撤/反弹幅度），不对应基本面逻辑。\n\n数据局限。数据源为Yahoo Finance复权后OHLCV，实际区间为2021-07-06至2026-07-02（比请求的2021-07-05至2026-07-05晚1天开始、早3天结束），系非交易日所致。",
+      "evidence_refs": [
+        "ev-s-20260705-05ef-1",
+        "ev-s-20260705-05ef-2"
+      ]
+    }
+  ]
+}

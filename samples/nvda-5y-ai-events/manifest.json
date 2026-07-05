@@ -1,69 +1,69 @@
 {
   "artifacts": [
     {
-      "artifact_id": "nvda-5y-kline-review",
+      "artifact_id": "nvda-ai-kline-review",
       "kind": "html",
-      "title": "NVDA 五年 K 线 × AI 事件对齐复盘",
+      "title": "NVDA 五年行情 × AI行业事件复盘",
+      "current_version": 1,
+      "versions": [
+        {
+          "v": 1,
+          "file": "artifacts/nvda_ai_kline_review_v1.html",
+          "spec": "specs/nvda-ai-kline-review_v1.json",
+          "created_at": "2026-07-05T12:53:36+00:00",
+          "change_summary": "初版：NVDA五年行情K线+AI事件对齐复盘，含40变化点明细与全链路溯源"
+        }
+      ]
+    },
+    {
+      "artifact_id": "nvda-ai-framework-ppt",
+      "kind": "pptx",
+      "title": "NVDA：AI叙事驱动的五年极端波动",
+      "current_version": 1,
+      "versions": [
+        {
+          "v": 1,
+          "file": "artifacts/nvda_ai_framework_ppt_v1.pptx",
+          "spec": "specs/nvda-ai-framework-ppt_v1.json",
+          "created_at": "2026-07-05T12:56:32+00:00",
+          "change_summary": "初版：基于NVDA五年行情、14事件、40变化点对齐结论的决策框架PPT"
+        }
+      ]
+    },
+    {
+      "artifact_id": "nvda-strategy-report",
+      "kind": "docx",
+      "title": "NVDA五年行情复盘：AI叙事驱动、事件对齐与覆盖缺口分析",
       "current_version": 2,
       "versions": [
         {
           "v": 1,
-          "file": "artifacts/nvda_5y_kline_review_v1.html",
-          "spec": "specs/nvda-5y-kline-review_v1.json",
-          "created_at": "2026-07-05T07:49:28+00:00",
-          "change_summary": "初版：NVDA 五年 K 线 × 事件对齐 HTML 报告，含 K 线主图（事件标注+变化点标记）、六段时段对齐叙事、40 个变化点明细表、局限性说明"
+          "file": "artifacts/nvda_strategy_report_v1.docx",
+          "spec": "specs/nvda-strategy-report_v1.json",
+          "created_at": "2026-07-05T12:57:19+00:00",
+          "change_summary": "初版：基于NVDA五年行情、14事件、40变化点对齐结论的策略研究报告"
         },
         {
           "v": 2,
-          "file": "artifacts/nvda_5y_kline_review_v2.html",
-          "spec": "specs/nvda-5y-kline-review_v2.json",
-          "created_at": "2026-07-05T08:04:19+00:00",
-          "change_summary": "v2：基于 mat-events-2 补全 24 个新事件（总计 40），以 mat-alignment-2 重写对齐分析（match 15/partial 5/none 20），新增六至八节覆盖 2024H2–2026H1 叙事，DeepSeek R1 暴跌、Blackwell B200 延迟、Meta 元宇宙等关键节点实现 match 级归因，更新局限性说明"
+          "file": "artifacts/nvda_strategy_report_v2.docx",
+          "spec": "specs/nvda-strategy-report_v2.json",
+          "created_at": "2026-07-05T12:58:48+00:00",
+          "change_summary": "新增「研究参数总览」表格与「行情变化点明细」changepoint_table（40条），补全变化点明细表要求"
         }
       ]
     },
     {
-      "artifact_id": "nvda-5y-decision-framework",
+      "artifact_id": "nvda-decision-framework",
       "kind": "pptx",
-      "title": "NVDA：AI叙事是五年行情的核心定价锚",
+      "title": "NVDA五年事件驱动复盘：关键发现与决策框架",
       "current_version": 1,
       "versions": [
         {
           "v": 1,
-          "file": "artifacts/nvda_5y_decision_framework_v1.pptx",
-          "spec": "specs/nvda-5y-decision-framework_v1.json",
-          "created_at": "2026-07-05T08:11:49+00:00",
-          "change_summary": "初版：基于NVDA五年行情、40AI事件与对齐矩阵，生成9页决策框架PPT，结论先行，包含框架页、核心发现页、关键事件对照表、缺口与边界页、结论页"
-        }
-      ]
-    },
-    {
-      "artifact_id": "nvda-5y-strategy-report",
-      "kind": "docx",
-      "title": "NVDA 五年策略研究报告（2021-2026）",
-      "current_version": 1,
-      "versions": [
-        {
-          "v": 1,
-          "file": "artifacts/nvda_5y_strategy_report_v1.docx",
-          "spec": "specs/nvda-5y-strategy-report_v1.json",
-          "created_at": "2026-07-05T08:12:33+00:00",
-          "change_summary": "初版：基于 40 事件 × 40 变化点对齐的结构化策略研究报告，含摘要、五阶段分析、对齐统计、变化点明细表、局限性与结论"
-        }
-      ]
-    },
-    {
-      "artifact_id": "nvda-5y-strategy-ppt",
-      "kind": "pptx",
-      "title": "NVDA：AI算力军备竞赛的五年——事件驱动的行情复盘",
-      "current_version": 1,
-      "versions": [
-        {
-          "v": 1,
-          "file": "artifacts/nvda_5y_strategy_ppt_v1.pptx",
-          "spec": "specs/nvda-5y-strategy-ppt_v1.json",
-          "created_at": "2026-07-05T08:13:09+00:00",
-          "change_summary": "初版：基于 40 事件 × 40 变化点对齐的决策框架 PPT，10 页含核心发现、五阶段概览、对齐统计表、影响力排名、风险边界与结论"
+          "file": "artifacts/nvda_decision_framework_v1.pptx",
+          "spec": "specs/nvda-decision-framework_v1.json",
+          "created_at": "2026-07-05T12:57:40+00:00",
+          "change_summary": "初版：NVDA五年事件驱动复盘决策框架PPT，8页涵盖研究框架、核心发现、对齐统计、DeepSeek案例、局限性与结论"
         }
       ]
     }

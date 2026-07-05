@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>finance-agent 交付说明</title>
+<style>
+  :root {
+    --text:#1f2733; --muted:#5b6b81; --accent:#2a63e8; --line:#d7dee9;
+    --panel:#f4f7fb; --ok:#1e8e5a; --warn:#b4690e; --bad:#c0392b;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--text); line-height:1.75; background:#fff; }
+  .wrap { max-width:980px; margin:0 auto; padding:48px 28px 80px; }
+  header.hero { border-bottom:2px solid var(--accent); padding-bottom:24px; margin-bottom:8px; }
+  h1 { font-size:30px; margin:0 0 8px; }
+  .sub { color:var(--muted); font-size:15px; }
+  .stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:20px; }
+  .stat { position:relative; min-height:92px; background:linear-gradient(180deg,#fff,#f6f8fc);
+    border:1px solid var(--line); border-radius:10px; padding:14px 16px 12px;
+    box-shadow:0 10px 24px rgba(31,39,51,.05); overflow:hidden; }
+  .stat::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; background:var(--accent); }
+  .stat b { display:block; font-size:18px; color:var(--text); line-height:1.2; margin-bottom:8px; }
+  .stat span { display:block; font-size:12.5px; color:var(--muted); line-height:1.45; }
+  .stat em { display:inline-block; margin-bottom:6px; color:var(--accent); font-style:normal;
+    font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+  nav.toc { background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:14px 22px; margin:24px 0; font-size:14px; }
+  nav.toc a { color:var(--accent); text-decoration:none; margin-right:16px; white-space:nowrap; }
+  h2 { font-size:22px; margin:52px 0 14px; padding-left:12px; border-left:4px solid var(--accent); }
+  h3 { font-size:17px; margin:30px 0 10px; }
+  p { margin:10px 0; }
+  table { border-collapse:collapse; width:100%; margin:14px 0; font-size:13.5px; }
+  th, td { border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top; }
+  th { background:var(--panel); white-space:nowrap; }
+  .fit-table { border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .fit-table table { margin:0; }
+  .fit-table th { background:#eef2fa; color:#22324a; font-size:12px; letter-spacing:.05em; }
+  .fit-table td:first-child { width:22%; font-weight:700; color:#263142; background:#fbfcff; }
+  .fit-table td:nth-child(2) { width:52%; }
+  .fit-table td:nth-child(3) { width:26%; color:#44546a; }
+  .fit-table tr:nth-child(even) td { background:#fcfdff; }
+  code { background:rgba(42,99,232,.08); color:#24509d; padding:1px 6px; border-radius:5px;
+    font-size:.9em; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:14px 20px; margin:14px 0; }
+  .good { color:var(--ok); font-weight:600; } .warn { color:var(--warn); font-weight:600; }
+  .bad { color:var(--bad); font-weight:600; }
+  ul, ol { padding-left:24px; } li { margin:5px 0; }
+  .timeline { list-style:none; padding:0; margin:18px 0; }
+  .timeline li { position:relative; padding:0 0 18px 30px; border-left:2px solid var(--line);
+    margin-left:8px; }
+  .timeline li::before { content:""; position:absolute; left:-7px; top:6px; width:12px;
+    height:12px; border-radius:50%; background:var(--accent); }
+  .timeline .t { font-size:12px; color:var(--muted); }
+  .timeline b { display:block; }
+  .tool-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:18px 0 8px; }
+  .tool-card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px;
+    display:grid; grid-template-columns:56px 1fr; gap:14px; align-items:start;
+    box-shadow:0 12px 28px rgba(31,39,51,.06); }
+  .tool-logo { width:56px; height:56px; border-radius:14px; display:grid; place-items:center;
+    background:#fff; border:1px solid var(--line); }
+  .tool-logo.claude { background:#fff7f3; border-color:#efd0c2; }
+  .tool-logo img { display:block; width:34px; height:34px; object-fit:contain; }
+  .tool-card h3 { margin:0 0 4px; font-size:16px; }
+  .tool-card .role { color:var(--accent); font-weight:700; font-size:12px; margin:0 0 6px; }
+  .tool-card p { margin:0; color:var(--muted); font-size:13.5px; line-height:1.65; }
+  .prompt-samples { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:16px 0 22px; }
+  .prompt-card { border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+    background:linear-gradient(180deg,#fff,#f8faff); box-shadow:0 10px 24px rgba(31,39,51,.05); }
+  .prompt-card h3 { margin:0 0 6px; font-size:16px; }
+  .prompt-card .prompt-meta { margin:0 0 10px; color:var(--muted); font-size:12.5px; }
+  .prompt-card blockquote { margin:0; padding:10px 12px; border-left:3px solid var(--accent);
+    background:rgba(42,99,232,.06); border-radius:8px; color:#263142; font-size:13px; line-height:1.65; }
+  .prompt-card .prompt-result { margin:10px 0 0; color:var(--muted); font-size:13px; line-height:1.6; }
+  figure { margin:20px 0; text-align:center; }
+  figure svg { max-width:100%; height:auto; background:#fff; border:1px solid var(--line);
+    border-radius:12px; }
+  figcaption { font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .small { font-size:12.5px; color:var(--muted); }
+  footer { margin-top:60px; padding-top:16px; border-top:1px solid var(--line);
+    color:var(--muted); font-size:12.5px; }
+  @media (max-width:820px) {
+    .stats, .tool-grid, .prompt-samples { grid-template-columns:1fr; }
+    .tool-card { grid-template-columns:48px 1fr; }
+    .tool-logo { width:48px; height:48px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>finance-agent 交付说明</h1>
+  <div class="sub">投研 Agent 工作台：自然语言任务 → 行情 × 事件对齐分析 → 可交互、可溯源的 HTML / Excel / PPT / Word 产物。
+  本文是面向题目要求的完整交付叙述：过程、决策、架构、工程与复盘。</div>
+  <div class="stats">
+    <div class="stat"><em>Trace</em><b>过程可回放</b><span>提交历史、运行审计与 evidence 串起完整演进。</span></div>
+    <div class="stat"><em>Product</em><b>工作台形态</b><span>后端、前端、设置、停止、预览与下载一体化。</span></div>
+    <div class="stat"><em>Quality</em><b>离线可测</b><span>核心测试不碰真实网络/LLM，CI 覆盖前后端。</span></div>
+    <div class="stat"><em>Artifacts</em><b>多格式交付</b><span>HTML、Excel、PPT、Word 都带溯源与版本管理。</span></div>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#s0">题目对照</a>
+  <a href="#s1">一、怎么做的</a>
+  <a href="#s2">二、核心决策</a>
+  <a href="#s3">三、架构与图解</a>
+  <a href="#s4">四、工程实践</a>
+  <a href="#s5">五、回顾与限制</a>
+  <a href="#s6">附录</a>
+</nav>
+
+<h2 id="s0">〇、题目要求逐条对照</h2>
+<div class="fit-table"><table>
+  <tr><th>题目期望</th><th>实现</th><th>证据指路</th></tr>
+  <tr><td>业内 agent SDK 自选，体现 tools / subagent / skill 协作与划分判断</td>
+      <td>OpenAI Agents SDK。<b>刻意不选</b>自带这三个概念的框架——tools（确定性能力）/ subagents（独立上下文判断单元）/ skills（方法论+渲染骨架资产，自研加载机制）的边界是自己的架构判断而非框架赠品</td>
+      <td><code>src/finance_agent/tools|subagents|skills</code>，划分理由见 §二</td></tr>
+  <tr><td>数据源覆盖行情与资讯两类</td>
+      <td>行情：Yahoo Chart 多源降级链（query1→query2→本地缓存种子）；资讯三路：Tavily 联网检索、HN Algolia 历史检索、Yahoo 资讯——检索均为确定性 HTTP API，不经 LLM 转述</td>
+      <td><code>tools/market.py</code>、<code>tools/news.py</code>、<code>tools/websearch.py</code></td></tr>
+  <tr><td>事件与行情拐点吻合、有关联逻辑</td>
+      <td>拐点由确定性算法检出（带触发规则与数据窗口）→ 事件研究围绕拐点时间窗"带着问题去检索" → 独立的对齐分析环节逐拐点论证 match/partial/none——<b>none 是合法结论，不强行归因</b></td>
+      <td><code>tools/changepoints.py</code>、<code>subagents/alignment_analyst.py</code></td></tr>
+  <tr><td>产物 HTML（浏览器）+ Word/PPT/Excel（本地），可交互、可溯源</td>
+      <td>HTML 自包含交互 K 线（缩放/悬浮/事件点击展开，断网可开）；Excel 全公式底稿（改参数联动重算）；PPT 16:9；Word 尾注回链。每个结论/事件/拐点持有 evidence 回链，产物内可逐级回查；<b>事件 URL 必须真实出自检索记录，渲染层做成员校验，编造即拒绝</b></td>
+      <td><code>artifacts/renderers/</code>、<code>samples/</code>、校验见 §四</td></tr>
+  <tr><td>前端依赖资源的安全与跨域</td>
+      <td>HTML 产物零外部请求（Plotly 本地内嵌）、外部文本进产物前全部转义；Web 界面仅绑定 127.0.0.1；有"产物模板无外链"的看护测试</td>
+      <td><code>skills/builtin/kline-html-report/assets/</code>、<code>tests/kline_render.test.cjs</code></td></tr>
+  <tr><td>可运行代码 + README + 设计说明 + 测试 + 产物样例</td>
+      <td>README 中英双语一键运行；文档四篇（产品/技术/架构/AI 过程）；自动化测试 + CI；双场景真实产物样例入库</td>
+      <td><code>README.md</code>、<code>docs/</code>、<code>samples/</code>、<code>.github/workflows/ci.yml</code></td></tr>
+  <tr><td>工程方法论、Prompt 与工具；AI 参与过程记录</td>
+      <td>Claude Code 作为主力结对编码环境；Codex 作为第二视角参与代码审查、结构复核与交付页/README 打磨。prompt 资产即运行时资产（agent prompt + SKILL.md 都在仓库）；过程记录含关键人工判断与联调问题清单</td>
+      <td><code>docs/ai-process.md</code>、本文 §一/§四</td></tr>
+  <tr><td>密钥不入库、不出现在前端产物</td>
+      <td>密钥仅经环境变量/.env（gitignore）注入；设置接口外发打码；提交前做过全仓可移植性审查（含 Office 二进制元数据）</td>
+      <td><code>config.py</code>、<code>.env.example</code></td></tr>
+</table></div>
+
+<h2 id="s1">一、我是怎么做的（过程）</h2>
+
+<p>整体节奏：<b>文档先行 → 里程碑实现 → 真实联调加固 → 产品化迭代 → 验收整理</b>。
+提交历史可完整回放，以下是五个阶段的浓缩。</p>
+
+<ul class="timeline">
+  <li><span class="t">设计阶段</span><b>① 产品与技术设计</b>
+    先交 HTML 原型验证渲染路线，随后 PRD / 技术设计 / 运行流程图解三份文档逐轮评审定稿。
+    设计期就敲定的方向性问题：SDK 选型、"一次性命令 → 有状态研究工作台"的形态升级、
+    无沙箱下的 WorkspaceFS 文件安全、四类意图路由防误触发、TaskBrief 传参失真治理。
+    <b>先写文档不是仪式——后面每次架构争议都回到这几份文档裁决。</b></li>
+  <li><span class="t">里程碑实现</span><b>② 里程碑实现 M0→M8</b>
+    骨架 → 工具层（行情降级链/资讯/拐点检测/溯源）→ 自研 skill 机制 + ArtifactSpec 渲染管线
+    （原型收编为 skill 资产而非推倒）→ 工作区与版本管理 → agent 编排 + CLI → Office 三渲染器
+    → Web 薄层。每个里程碑独立提交、测试全绿才进下一个。</li>
+  <li><span class="t">真实联调</span><b>③ 真实联调与加固</b>
+    八次真实运行迭代到双场景验收通过，暴露并修复九个问题（schema 兼容、token 截断、
+    检索战术零命中、时间基准失真、自造 evidence id 等——完整清单见 ai-process.md）。
+    方法论：<b>每次真跑 → evidence/产物审计定位根因 → 优先工具侧确定性纠错 → 回归测试看护</b>。
+    产物样例入库，外部代码评审（Codex）四项问题落实。</li>
+  <li><span class="t">产品化迭代</span><b>④ 产品化迭代</b>
+    Web 工作台 v2（agent 事件流实时可见、多会话并行、停止机制、前后端分离 Vite、
+    运行时设置弹窗、Markdown 渲染）；鲁棒性体系（上下文治理四道防线、结构化输出修复链、
+    供应方兼容层）；产物质量（PPT 16:9 版式重做、Excel 指标能力下沉、spec 按引用挂材料）。
+    这一阶段的每个特性几乎都由一次真实事故驱动——详见第四部分：事故→防线表。</li>
+  <li><span class="t">验收整理</span><b>⑤ 验收与整理</b>
+    全项目架构回顾（P0/P1/P2 分级修复：锁生命周期竞态、evidence 原子写、注册表 LRU、
+    审计日志、CI 补前端构建）；全仓可移植性审查（陌生人克隆即用）；文档体系重构
+    （产品/技术/架构三篇对齐实现，AGENTS.md/CLAUDE.md 开发指南，中英 README）。</li>
+</ul>
+
+<h3>使用的 AI 工具</h3>
+<div class="tool-grid">
+  <div class="tool-card">
+    <div class="tool-logo claude" aria-label="Claude Code logo">
+      <img src="docs/assets/logos/claude-code.svg" alt="Claude Code logo">
+    </div>
+    <div>
+      <h3>Claude Code</h3>
+      <div class="role">主力结对 · 实现与联调</div>
+      <p>贯穿脚手架、Agent 编排、工具层、渲染器、Web 工作台、测试与文档。重点承担连续实现、真实运行联调、事故复盘与回归测试沉淀。</p>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-logo" aria-label="Codex logo">
+      <img src="docs/assets/logos/codex-openai.svg" alt="Codex logo">
+    </div>
+    <div>
+      <h3>Codex</h3>
+      <div class="role">第二视角 · 审查与打磨</div>
+      <p>用于代码评审、架构复核、README 与交付说明优化，以及对关键工程防线做反向检查。它更像一位独立 reviewer，负责发现叙述、结构和边界上的遗漏。</p>
+    </div>
+  </div>
+</div>
+
+<h2 id="s2">二、核心决策（架构划分与边界判断）</h2>
+
+<h3>2.1 总纲：判断交给 LLM，事实与纪律交给代码</h3>
+<p>整个系统只有一条铁律：<b>所有"硬要求"必须落在确定性校验层（落盘前拒绝 + 报错引导自我修正），
+prompt 只做战术引导</b>。prompt 能降低出错概率，校验才能保证下限——这条铁律在实践中被
+真实事故反复验证（§四）。</p>
+
+<table>
+  <tr><th>职责</th><th>归属</th><th>为什么</th></tr>
+  <tr><td>行情拐点判定</td><td class="good">代码（确定性算法）</td>
+      <td>拐点是可定义的数学事实（趋势拐头/加速/回撤/量能异常，每个点带触发规则与数据窗口）。
+      LLM 判拐点不可复现、不可审计；算法宁多勿漏 + severity 分级，筛选权留给下游判断</td></tr>
+  <tr><td>事件发现</td><td class="warn">LLM 决策 + 代码执行</td>
+      <td>"往哪个方向查、查什么关键词"是判断（LLM，围绕拐点时间窗带着问题检索）；
+      "检索本身"是确定性 HTTP API（Tavily/HN/Yahoo，<b>不经 LLM 转述</b>——换模型不改变检索数据）。
+      检索次数有确定性预算，耗尽强制收敛</td></tr>
+  <tr><td>拐点×事件归因</td><td class="warn">LLM 论证 + 契约约束</td>
+      <td>归因本质是论证，交给独立的 alignment-analyst（零检索工具，只基于给定材料，可复现性最好）；
+      但结论被契约收窄为 match/partial/none 枚举 + "时间吻合 + 影响逻辑"措辞纪律，
+      <b>不强行归因</b>——none 是合法且常见的结论</td></tr>
+  <tr><td>产物生成</td><td class="warn">LLM 组织结构 + 代码渲染</td>
+      <td>LLM 只产出 ArtifactSpec（结构化中间表示：几章、哪些 block）；文件由确定性渲染器生成。
+      指标数字不允许 LLM 手写：Excel 全公式、图表数据来自数据集缓存、
+      事件/变化点按引用挂材料由渲染器注入</td></tr>
+  <tr><td>质量底线</td><td class="good">代码（校验层）</td>
+      <td>溯源回链存在性、事件 URL 真实性（对照检索记录成员校验）、占位符拒绝、
+      结构约束——渲染前确定性拒绝，报错文案即修正指引，模型在重试循环内自我修正</td></tr>
+</table>
+
+<h3>2.2 关键选型</h3>
+<table>
+  <tr><th>决策</th><th>选择</th><th>理由与放弃项</th></tr>
+  <tr><td>Agent SDK</td><td>OpenAI Agents SDK</td>
+      <td>轻量、原语干净（Agent/Runner/function_tool/Session）。刻意不选自带 tools/subagent/skill
+      概念的框架——本题考的就是划分判断，框架代劳等于交白卷。skill 机制完全自研
+      （SKILL.md 方法论 + 模板 + 资产，importlib.resources 随包分发）</td></tr>
+  <tr><td>编排模式</td><td>agents-as-tools + TaskBrief 契约</td>
+      <td>不用裸 as_tool：自定义包装的参数 schema 即 TaskBrief，<b>强制携带用户原话</b>治理传话失真；
+      subagent 每次调用干净上下文，对话记忆只在 orchestrator。放弃 handoff 模式（控制权转移
+      不利于流水线终检）</td></tr>
+  <tr><td>行情源</td><td>Yahoo Chart 多源降级</td>
+      <td>免 key 可复跑（评审友好）。Stooq 联调发现已加 JS 反爬，移出默认链但保留实现与注释。
+      本地 NVDA 种子兜底 + mock 模式完全离线</td></tr>
+  <tr><td>联网检索</td><td>Tavily（确定性 API）</td>
+      <td>初版用 OpenRouter web 插件（LLM 摘要+citations），实际使用中发现两个致命问题：
+      换 LLM 供应方检索数据就变（不可复现）、插件失效时模型"嘴答"。
+      换成独立搜索 API 后检索与 LLM 完全解耦，结构化结果直接进溯源</td></tr>
+  <tr><td>LLM 供应</td><td>任何 OpenAI 兼容 API</td>
+      <td>三元组 base_url+key+model；供应方差异（response_format 支持度、消息邻接校验、
+      max_tokens 上限）全部收口在 llm.py 兼容层的确定性纯函数变换——
+      业务代码零 if-某供应方。DeepSeek 官方/Kimi/OpenRouter 实测通过</td></tr>
+  <tr><td>大数据传递</td><td>材料按引用</td>
+      <td>初版按值传递（变化点/事件 JSON 在 brief 与输出间复制），真实事故：51KB brief 驻留历史、
+      子代理单请求 7.8M tokens 超 8MB 上限。改为落盘 material + 上下文只传 id +
+      下游按需加载 + 渲染器注入，主对话历史从此恒小</td></tr>
+  <tr><td>文件安全</td><td>WorkspaceFS（无 OS 沙箱）</td>
+      <td>在实现约束下不上沙箱，改应用层三原则：agent 无通用文件工具；LLM 只传逻辑标识不传路径
+      （路径注入在参数层就不存在）；解析后路径禁闭在会话工作区。守卫行为全量单测，
+      剩余风险如实记录</td></tr>
+  <tr><td>前端</td><td>Vite + 原生 JS，会话表存 localStorage</td>
+      <td>单用户本地工具，不需要框架与服务端会话列表；类 ChatGPT 三栏 + SSE 事件流。
+      产物 HTML 零外链（本地 Plotly），跨域问题在源头消灭</td></tr>
+</table>
+
+<h2 id="s3">三、架构说明</h2>
+
+<h3>3.1 分层架构</h3>
+<figure>
+<svg viewBox="0 0 920 560" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0 0 L10 5 L0 10 z" fill="#5b6b81"/></marker></defs>
+  <!-- 前端 -->
+  <rect x="20" y="20" width="560" height="64" rx="10" fill="#eef2fa" stroke="#2a63e8"/>
+  <text x="300" y="46" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2733">Web 前端（webapp/，Vite + 原生 JS）</text>
+  <text x="300" y="68" text-anchor="middle" font-size="12" fill="#5b6b81">多会话（localStorage）· 执行时间线 · 运行态/停止 · Markdown · 设置弹窗</text>
+  <!-- CLI -->
+  <rect x="600" y="20" width="300" height="64" rx="10" fill="#f4f7fb" stroke="#d7dee9"/>
+  <text x="750" y="46" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2733">CLI（辅助入口）</text>
+  <text x="750" y="68" text-anchor="middle" font-size="12" fill="#5b6b81">REPL / -p 一次性 / --resume</text>
+  <!-- FastAPI -->
+  <rect x="20" y="112" width="560" height="58" rx="10" fill="#fff" stroke="#2a63e8"/>
+  <text x="300" y="136" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2733">FastAPI（web/app.py，仅 127.0.0.1）</text>
+  <text x="300" y="156" text-anchor="middle" font-size="12" fill="#5b6b81">SSE 聊天 · 会话注册表(LRU) · 每会话执行锁(绑定运行任务) · 停止 · 历史回放 · 设置</text>
+  <line x1="300" y1="84" x2="300" y2="112" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <!-- SessionCore -->
+  <rect x="20" y="198" width="880" height="58" rx="10" fill="#fff" stroke="#2a63e8"/>
+  <text x="460" y="222" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2733">SessionCore.stream_turn —— 唯一执行引擎（Web 与 CLI 同源事件流）</text>
+  <text x="460" y="242" text-anchor="middle" font-size="12" fill="#5b6b81">SQLiteSession 落库全量 · TrimmedSession 读时修剪 · 事件协议 session/tool_call/…/done</text>
+  <line x1="300" y1="170" x2="300" y2="198" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <line x1="750" y1="84" x2="750" y2="198" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <!-- orchestrator -->
+  <rect x="20" y="284" width="880" height="56" rx="10" fill="#eef2fa" stroke="#2a63e8"/>
+  <text x="460" y="307" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2733">orchestrator（意图路由 · TaskBrief 契约 · 材料落盘与摘要 · 输出修复/兜底 · 终检）</text>
+  <text x="460" y="327" text-anchor="middle" font-size="12" fill="#5b6b81">对话记忆仅此层 · agents-as-tools 调度以下四个独立上下文 subagent</text>
+  <line x1="460" y1="256" x2="460" y2="284" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <!-- subagents -->
+  <g font-size="12.5">
+    <rect x="20"  y="368" width="205" height="66" rx="10" fill="#fff" stroke="#d7dee9"/>
+    <text x="122" y="392" text-anchor="middle" font-weight="700">data-collector</text>
+    <text x="122" y="412" text-anchor="middle" fill="#5b6b81">行情多源降级 + 拐点检测</text>
+    <rect x="245" y="368" width="205" height="66" rx="10" fill="#fff" stroke="#d7dee9"/>
+    <text x="347" y="392" text-anchor="middle" font-weight="700">event-researcher</text>
+    <text x="347" y="412" text-anchor="middle" fill="#5b6b81">三路检索 · 预算收敛 · 增量提交</text>
+    <rect x="470" y="368" width="205" height="66" rx="10" fill="#fff" stroke="#d7dee9"/>
+    <text x="572" y="392" text-anchor="middle" font-weight="700">alignment-analyst</text>
+    <text x="572" y="412" text-anchor="middle" fill="#5b6b81">零检索纯论证 · 不强行归因</text>
+    <rect x="695" y="368" width="205" height="66" rx="10" fill="#fff" stroke="#d7dee9"/>
+    <text x="797" y="392" text-anchor="middle" font-weight="700">report-builder</text>
+    <text x="797" y="412" text-anchor="middle" fill="#5b6b81">skill 方法论 → spec → 渲染</text>
+  </g>
+  <line x1="122" y1="340" x2="122" y2="368" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <line x1="347" y1="340" x2="347" y2="368" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <line x1="572" y1="340" x2="572" y2="368" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <line x1="797" y1="340" x2="797" y2="368" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <!-- workspace -->
+  <rect x="20" y="462" width="590" height="78" rx="10" fill="#eef7f1" stroke="#1e8e5a"/>
+  <text x="315" y="486" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2733">Workspace + 确定性校验层（WorkspaceFS 守卫）</text>
+  <text x="315" y="506" text-anchor="middle" font-size="12" fill="#5b6b81">materials/ 引用传递 · manifest 版本 append-only · evidence 溯源 · run_events 审计</text>
+  <text x="315" y="524" text-anchor="middle" font-size="12" fill="#5b6b81">校验：溯源回链 / URL 成员 / 占位符 / 结构约束 —— 不过校验就没有产物</text>
+  <line x1="315" y1="434" x2="315" y2="462" stroke="#5b6b81" marker-end="url(#ar)"/>
+  <!-- llm compat -->
+  <rect x="640" y="462" width="260" height="78" rx="10" fill="#fdf3e7" stroke="#b4690e"/>
+  <text x="770" y="486" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2733">llm.py 供应方兼容层</text>
+  <text x="770" y="506" text-anchor="middle" font-size="12" fill="#5b6b81">json_schema 降级 · 消息序列规整</text>
+  <text x="770" y="524" text-anchor="middle" font-size="12" fill="#5b6b81">max_tokens 超限去参重试</text>
+</svg>
+<figcaption>图 1 · 分层架构：蓝=LLM 判断层入口，绿=确定性代码与校验层，橙=供应方兼容唯一收口</figcaption>
+</figure>
+
+<h3>3.2 新建研究的数据流</h3>
+<figure>
+<svg viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif" font-size="12.5">
+  <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0 0 L10 5 L0 10 z" fill="#2a63e8"/></marker></defs>
+  <g>
+    <rect x="15" y="30" width="150" height="52" rx="9" fill="#eef2fa" stroke="#2a63e8"/>
+    <text x="90" y="52" text-anchor="middle" font-weight="700">① 数据采集</text>
+    <text x="90" y="70" text-anchor="middle" fill="#5b6b81">OHLCV + 拐点(算法)</text>
+    <rect x="205" y="30" width="150" height="52" rx="9" fill="#eef2fa" stroke="#2a63e8"/>
+    <text x="280" y="52" text-anchor="middle" font-weight="700">② 事件研究</text>
+    <text x="280" y="70" text-anchor="middle" fill="#5b6b81">按拐点窗口定向检索</text>
+    <rect x="395" y="30" width="150" height="52" rx="9" fill="#eef2fa" stroke="#2a63e8"/>
+    <text x="470" y="52" text-anchor="middle" font-weight="700">③ 对齐分析</text>
+    <text x="470" y="70" text-anchor="middle" fill="#5b6b81">match/partial/none</text>
+    <rect x="585" y="30" width="150" height="52" rx="9" fill="#eef2fa" stroke="#2a63e8"/>
+    <text x="660" y="52" text-anchor="middle" font-weight="700">④ 报告构建</text>
+    <text x="660" y="70" text-anchor="middle" fill="#5b6b81">spec（引用挂材料）</text>
+    <rect x="775" y="30" width="130" height="52" rx="9" fill="#eef7f1" stroke="#1e8e5a"/>
+    <text x="840" y="52" text-anchor="middle" font-weight="700">⑤ 确定性渲染</text>
+    <text x="840" y="70" text-anchor="middle" fill="#5b6b81">HTML/xlsx/pptx/docx</text>
+    <line x1="165" y1="56" x2="205" y2="56" stroke="#2a63e8" marker-end="url(#ar2)"/>
+    <line x1="355" y1="56" x2="395" y2="56" stroke="#2a63e8" marker-end="url(#ar2)"/>
+    <line x1="545" y1="56" x2="585" y2="56" stroke="#2a63e8" marker-end="url(#ar2)"/>
+    <line x1="735" y1="56" x2="775" y2="56" stroke="#2a63e8" marker-end="url(#ar2)"/>
+  </g>
+  <!-- materials bus -->
+  <rect x="15" y="130" width="890" height="46" rx="9" fill="#fff" stroke="#d7dee9" stroke-dasharray="5 4"/>
+  <text x="460" y="149" text-anchor="middle" fill="#1f2733" font-weight="700">materials/（mat-market-1 · mat-events-1 · mat-alignment-1）—— 全量数据按引用传递</text>
+  <text x="460" y="167" text-anchor="middle" fill="#5b6b81">上游包装层自动落盘，orchestrator 历史只留 id + 摘要；下游 load_material 按需读，渲染器直接注入</text>
+  <g stroke="#5b6b81" marker-end="url(#ar)">
+    <line x1="90" y1="82" x2="90" y2="130"/><line x1="280" y1="82" x2="280" y2="130"/>
+    <line x1="470" y1="130" x2="470" y2="82"/><line x1="660" y1="130" x2="660" y2="82"/>
+    <line x1="840" y1="130" x2="840" y2="82"/>
+  </g>
+  <!-- evidence -->
+  <rect x="15" y="216" width="890" height="46" rx="9" fill="#eef7f1" stroke="#1e8e5a"/>
+  <text x="460" y="235" text-anchor="middle" font-weight="700">evidence 溯源贯穿全程：每次抓取/计算登记（URL·抓取记录·摘录·候选链接全集）</text>
+  <text x="460" y="253" text-anchor="middle" fill="#5b6b81">产物 block 以 evidence_id 回链；事件 URL 渲染前对照溯源全集做成员校验——编造链接过不了落盘</text>
+  <line x1="150" y1="176" x2="150" y2="216" stroke="#1e8e5a" marker-end="url(#ar)"/>
+  <line x1="770" y1="176" x2="770" y2="216" stroke="#1e8e5a" marker-end="url(#ar)"/>
+</svg>
+<figcaption>图 2 · 流水线数据流：修改类请求不重跑①②③——read_artifact 读回 spec 定点变更后重渲染</figcaption>
+</figure>
+
+<p class="small">更完整的机制阐述（会话/工作区布局、Web 并发模型、安全模型）见
+<code>docs/architecture.md</code>；本节只保留读懂系统所需的最小集。</p>
+
+<h2 id="s4">四、工程实践：事故驱动的防线体系</h2>
+
+<p>项目里最有信息量的部分：<b>每一次真实事故 → 一道确定性防线 → 一组还原事故样本的回归测试</b>。
+下表全部可在提交历史与测试代码中对证。</p>
+
+<table>
+  <tr><th>真实事故</th><th>防线（全部确定性，无 LLM 修复调用）</th></tr>
+  <tr><td>报告里的事件链接全是编造的 404（材料传递丢字段，模型凭记忆造 reuters 链接）</td>
+      <td>evidence 记录检索的<b>全部候选 URL</b>；渲染前对事件 URL 做溯源集合<b>成员校验</b>，报错列出修正指引</td></tr>
+  <tr><td>子代理单次请求滚到 7.8M tokens 超 8MB 上限；51KB brief 驻留主历史全程陪跑</td>
+      <td><b>材料引用传递</b>（值→引用）+ 主历史读时修剪（最近 2 轮完整，旧轮只留对话文本）+ 失败消息截断（错误回显整段参数会翻倍滚雪球）</td></tr>
+  <tr><td>event-researcher 无预算连搜，达到轮次上限后整体作废（阶段性成果全丢）</td>
+      <td><b>检索预算</b>（默认 36 次/运行）：耗尽时工具返回收敛指令而非结果，软着陆保住半途成果</td></tr>
+  <tr><td>研究完成但最终 JSON 损坏（围栏/野引号/截断），SDK 解析失败 → 整体重跑</td>
+      <td>三层：<b>submit_events 增量提交</b>（小批量落盘，坏一批只丢一批）→ <b>json_repair 修复链</b>（剥围栏→截花括号窗→迭代转义坏引号→截断数组逐项打捞）→ <b>兜底合并</b>（Max turns 打满也能用已提交事件返回成功）</td></tr>
+  <tr><td>换 DeepSeek 官方/Kimi 后 400 连环：response_format 不支持、tool_calls 邻接校验、max_tokens 超上限</td>
+      <td><b>llm.py 兼容层唯一收口</b>：json_schema→json_object 降级（schema 改随提示词）、消息序列规整（插队文本并入、回执按序紧随、缺失补占位）、超限自动去参重试。业务代码零供应方分支</td></tr>
+  <tr><td>早期为控成本设的 12K max_tokens 上限埋雷：spec 内联几十条事件超出输出上限，参数截断 → "Invalid JSON input" 死循环（撞限当时不可诊断）</td>
+      <td>spec 支持 <b>events_material/changepoints_material 按引用挂载</b>，渲染器从工作区注入全量——LLM 不再抄写数据，spec 体积缩 ~90%；同时暴露 <b>finish_reason</b>，"限制"类配置从此配套"撞限可诊断"</td></tr>
+  <tr><td>Excel"年度收益/核心指标"两表全是字面量"公式"占位符（渲染器没这能力，方法论又禁手写数字）</td>
+      <td><b>能力下沉渲染器</b>（年度收益 sheet 按真实年份边界生成公式，行号经 pandas 独立对拍）+ <b>占位符确定性拒绝</b></td></tr>
+  <tr><td>浏览器刷新释放了会话锁，但 SDK 运行没停——幽灵旧轮与新轮并发写同一 session.db</td>
+      <td>锁生命周期<b>绑定运行任务</b>而非 SSE 连接；停止是真取消（一路到 SDK result.cancel()）；断连只停推送不停任务</td></tr>
+  <tr><td>界面停在 "run event"，无法判断卡死还是工作（只能看文件 mtime）</td>
+      <td><b>agent 事件流协议</b>：子代理每次工具调用实时转发到前端时间线/CLI；嵌套运行另落 run_events.jsonl 审计日志供事故复盘</td></tr>
+</table>
+
+<h3>可观测性与日志</h3>
+<ul>
+  <li><b>三层记录</b>：session.db（对话全量，落库不修剪）/ run_events.jsonl（嵌套 subagent 的工具调用审计——8MB 事故当时只能靠推理还原，之后补的）/ evidence.json（数据溯源）；</li>
+  <li>事件流 detail 定长截断（错误类放宽到 600 字符——曾把 pydantic 错误切在字段名处导致无法定位）；</li>
+  <li>前端执行时间线即用户侧日志：历史轮次可回放（从 session.db 重建）。</li>
+</ul>
+
+<h3>测试与 CI</h3>
+<ul>
+  <li>自动化测试覆盖核心确定性层，<b>不碰真实网络与 LLM</b>（httpx MockTransport / 打桩事件流 / mock 模式）；</li>
+  <li>惯例：真实事故必沉淀为"还原事故样本"的回归用例（docstring 标注「真实事故：……」）；
+      安全设计（路径守卫、权限矩阵、密钥打码）直接写成可执行断言；</li>
+  <li>CI：uv 安装 → ruff → pytest → 前端 install+build+node 测试——每次提交即干净环境可移植性验证；
+      交付前另做全仓审查（无个人路径/身份，Office 二进制元数据核对）。</li>
+</ul>
+
+<h2 id="s5">五、回顾汇总</h2>
+
+<h3><span class="good">做得好</span></h3>
+<ul>
+  <li><b>三层边界贯穿始终</b>：每一类事故（编造 URL、占位符、
+      上下文爆仓、供应方 400）最终都收敛为"一道确定性防线 + 回归测试"，架构没有为任何事故打过补丁式特例；</li>
+  <li><b>文档先行真实回本</b>：形态升级、文件安全、传参失真都在写代码前定了原则，后期迭代反复引用；</li>
+  <li><b>evidence 审计驱动调试</b>：几乎所有疑难问题（检索零命中、假成功、截断死循环）都是先读
+      evidence/审计日志锁定根因再动代码，而不是猜；</li>
+  <li><b>ArtifactSpec 中间表示保住产物质量下限</b>：LLM 只产出结构化 spec，不写文件、不手算数字——
+      Excel 公式联动、PPT 防溢出分页、溯源成员校验全部由渲染器与校验层确定性强制；</li>
+  <li><b>材料引用传递贯穿多 agent 协作</b>：事件集、拐点集、任务 brief 等大材料只传 material_id，
+      子代理按需读取——一套机制同时解决上下文爆仓、跨 agent 传参失真、模型抄写截断三类事故；</li>
+  <li><b>应用层文件安全收口</b>：agent 无通用文件读写工具，工具参数只传 artifact_id/dataset_id
+      逻辑标识，真实路径由系统派生并守卫在会话工作区内；版本文件 append-only、注册表原子写；</li>
+  <li><b>增量修改由架构直接保证</b>：spec 中间表示 + 版本化工作区，让"改一处评级"真正只定点变更重渲染、
+      不重抓数据，历史版本全保留——产品的关键承诺不靠模型配合，靠机制成立；</li>
+  <li><b>免 key 可演示</b>：三路资讯源 + 行情多源降级 + 本地缓存，除 LLM key 外零配置，
+      断网环境也能完整演示核心产物链路；</li>
+  <li><b>主动引入外部第二视角并闭环</b>：Codex 独立评审（8/10）暴露的全部问题
+      （代理环境兼容、文档漂移、校验缺口、CI 缺失）逐项修复并沉淀为回归测试与可复用教训。</li>
+</ul>
+
+<h3><span class="warn">做得不足 / 可改进</span></h3>
+<ul>
+  <li><b>低估了弱工具调用模型的输出脆性</b>：结构化输出/工具参数的 JSON 损坏问题分了四次才修透
+      （截断→围栏→野引号→参数内联），如果第一次就把"LLM 输出大 JSON"识别为结构性风险，
+      材料引用传递会更早成为基础设计；</li>
+  <li><b>无真实 LLM 的自动化端到端回归</b>：确定性层全测，但流水线协议改动（如引用传递）
+      仍靠人工真跑验收——可补一个每日限额的真实冒烟任务；</li>
+  <li><b>没有系统性测评集</b>：agent 输出质量（事件相关性、归因合理性、产物完整度）目前靠
+      人工验收与真实冒烟判断，缺一套可重复打分的评测集来量化不同模型/prompt 改动前后的效果回归；</li>
+  <li>URL 溯源校验目前是全局并集而非逐事件对照（防伪度换误拒率的 v1 权衡）；
+      事件研究对中文财经资讯实质只有 Tavily 一路，A 股场景可补国内源。</li>
+</ul>
+
+<h3><span class="bad">当前限制（如实声明）</span></h3>
+<ul>
+  <li>单次完整研究任务耗时较长：涉及多路数据采集、事件检索与溯源校准的完整链路，一次真实搜索任务可能需要 15 分钟以上，属深度研究型工作流的固有开销而非缺陷；</li>
+  <li>国内环境实测仅覆盖 DeepSeek 与 Kimi 两个模型，其他模型未做验证——<b>建议验收时也使用这两个模型</b>；</li>
+  <li>单用户本地工具：仅 127.0.0.1、无鉴权、单进程内存注册表；</li>
+  <li>行情依赖 Yahoo 非官方接口（多源降级但无 SLA）；供应方 5xx 无自动重试退避；</li>
+  <li>子代理无墙钟超时（有轮次上限 + 检索预算兜底）；</li>
+  <li>产物如需执行用户自定义代码（自定义指标脚本），必须补真沙箱——明确 out of scope。</li>
+</ul>
+
+<h2 id="s6">附录：Prompt 示例与交付物索引</h2>
+
+<h3>AI 对话 Prompt 示例（整理版）</h3>
+<p class="small">以下是从真实开发对话中整理出的三条代表性引导提示词，
+分别对应产品形态、架构设计、工程质量三个维度的方向设定。</p>
+
+<div class="prompt-samples" style="grid-template-columns:1fr;">
+  <div class="prompt-card">
+    <h3>① 产品形态要求：有状态的研究工作台，产物可交互、可溯源、可增量修改</h3>
+    <blockquote>这个投研 Agent 不要做成"跑一次就结束"的命令工具，我要的是一个有状态的研究工作台。用户用自然语言下达研究任务后，系统自主完成行情采集、变化点检测、事件研究、拐点与事件的对齐归因、产物生成的完整链路；产物要覆盖可交互 HTML（K 线上标记事件、断网也能打开）、全公式 Excel（改参数能联动重算）、PPT 和 Word 报告。最关键的两点：第一，所有结论必须可溯源——每个事件要能回链到真实的检索来源 URL，每个指标要能回链到原始行情数据，不可回溯的结论不允许出现在产物里；第二，支持多轮增量修改——比如我说"把 DeepSeek 事件的评级改成高"，系统应该只定点修改这一处并重新渲染，不能把整个研究流程推倒重跑、重新抓数据，而且历史版本要全部保留，可以随时回看。界面上要像 ChatGPT 那样多会话并行，执行过程中每个 agent 在查什么、算什么要实时可见，运行中可以随时停止。</blockquote>
+  </div>
+
+  <div class="prompt-card">
+    <h3>② 架构设计要求：三层自研划分，判断交给 LLM、事实与纪律交给代码</h3>
+    <blockquote>架构上我明确不用自带 tools/subagents/skills 概念的框架，用 OpenAI Agents SDK 打底，但三层划分要完全自己设计：tools 层只放确定性能力（行情抓取、检索 API、渲染器），subagents 是四个职责单一、上下文互相隔离的判断单元（数据采集、事件研究、对齐分析、报告生成），skills 是可复用的产物方法论资产（方法论文档 + 模板 + 渲染骨架），加载机制自研——我要让"怎么划分一个 agent 系统的边界"体现的是我自己的判断，而不是框架送的结构。划分的总原则是：能用确定性代码解决的绝不交给 LLM。行情拐点是可定义的数学事实，用确定性算法检出，保证可复现、可回归测试；检索本身走确定性 HTTP API，LLM 只决定"查什么"，检索结果不经模型转述；产物文件由代码渲染器生成，LLM 只产出结构化的 spec，数字一律来自公式或数据注入，不允许模型手写。对齐归因这种真正需要语义判断的环节才交给 LLM，但结论必须收敛到受控枚举（match/partial/none），不许强行归因。</blockquote>
+  </div>
+
+  <div class="prompt-card">
+    <h3>③ 工程质量要求：硬要求进校验层，事故驱动测试，不靠 prompt 自觉</h3>
+    <blockquote>质量上我的底线是：所有硬性要求必须落成代码校验，不能写在 prompt 里指望模型自觉遵守。事件 URL 必须逐字出自真实检索记录，模型编造的链接要在落盘前被成员校验拦截；evidence 引用必须真实存在，悬空引用直接拒绝渲染；TBD、待填这类占位符内容不允许出现在正式产物里——校验不通过就没有产物，同时把报错信息设计成能引导模型自我修正的形式。测试策略上，确定性层（工具、渲染器、工作区、校验）单测优先，测试不碰真实网络和真实 LLM；但每层完成后必须做一次真实链路冒烟，专抓 mock 测不出来的问题。每次真实运行暴露的事故，都要沉淀成能还原事故现场的回归测试，修 bug 先去运行日志和会话数据库里找事故现场再动代码，不许凭猜想修。另外供应方兼容问题只在一个适配层收口，业务代码里不许出现任何针对特定供应方的分支判断。</blockquote>
+  </div>
+</div>
+
+<h3>交付物索引</h3>
+<table>
+  <tr><th>交付物</th><th>位置</th></tr>
+  <tr><td>可运行代码（一键运行）</td><td>仓库根目录；<code>./scripts/dev.sh</code> 或 README 三步启动</td></tr>
+  <tr><td>README（中/英）</td><td><code>README.md</code> / <code>README.en.md</code></td></tr>
+  <tr><td>设计说明</td><td><code>docs/product.md</code>（产品）· <code>docs/technical.md</code>（技术）· <code>docs/architecture.md</code>（架构）</td></tr>
+  <tr><td>AI 辅助开发过程（工具/环节/人工判断/联调问题清单）</td><td><code>docs/ai-process.md</code></td></tr>
+  <tr><td>Prompt 资产（运行时即交付物）</td><td><code>src/finance_agent/orchestrator.py</code>、<code>subagents/*.py</code>、<code>skills/builtin/*/SKILL.md</code></td></tr>
+  <tr><td>产物样例（真实运行产出）</td><td><code>samples/nvda-5y-ai-events/</code>（NVDA 五年行情与 AI 事件复盘：HTML / PPT / Word）· <code>samples/gold-btc-comparison/</code>（黄金×比特币比较分析：Excel / PPT / Word）</td></tr>
+  <tr><td>测试</td><td><code>tests/</code>（pytest + node --test）；CI：<code>.github/workflows/ci.yml</code></td></tr>
+</table>
+
+<footer>finance-agent 交付说明 · 2026-07 · 页面与本地 logo 资产无外部网络请求，可直接浏览器打开或随仓库分发。</footer>
+</div>
+</body>
+</html>

@@ -2,8 +2,8 @@
   "ds-gc-f-20210705-20260705": {
     "file": "data/ds-gc-f-20210705-20260705.json",
     "ticker": "GC=F",
-    "source": "Yahoo Finance (query2)",
-    "evidence_id": "ev-s-20260705-745a-1",
+    "source": "Yahoo Finance (query1)",
+    "evidence_id": "ev-s-20260705-9270-1",
     "rows": 1257,
     "start": "2021-07-06",
     "end": "2026-07-03"
@@ -11,8 +11,8 @@
   "ds-btc-usd-20210705-20260705": {
     "file": "data/ds-btc-usd-20210705-20260705.json",
     "ticker": "BTC-USD",
-    "source": "Yahoo Finance (query2)",
-    "evidence_id": "ev-s-20260705-745a-39",
+    "source": "Yahoo Finance (query1)",
+    "evidence_id": "ev-s-20260705-9270-2",
     "rows": 1826,
     "start": "2021-07-05",
     "end": "2026-07-05"
