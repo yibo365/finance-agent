@@ -54,6 +54,24 @@
 | "无 CDN"断言误伤（Plotly 源码含 cdn.plot.ly 字符串常量） | M2 pytest 假死 3 分钟 | 改为断言可执行位置外链（script src / 外链样式）；记录 pytest 对超大字符串断言失败的成本问题 |
 | 默认阈值下五年数据检出 150 个变化点偏密 | M2 冒烟观察 | 保持工具层"宁多勿漏+severity 分级"，筛选权交给 report-builder（符合"工具不做判断"边界） |
 
+## 端到端联调期的问题清单（2026-07-04，共八次运行迭代到验收通过）
+
+| # | 问题 | 发现方式 | 处置 |
+|---|---|---|---|
+| 1 | `tuple[str,str]` 生成 prefixItems schema，被 OpenAI 结构化输出 400 拒绝 | 首次真跑 | 契约全面改 list[str]；加"全部对外 schema 无 prefixItems"看护测试 |
+| 2 | OpenRouter 低额度 key 因未设 max_tokens 被预算预检 402 | 第二跑 | 全 agent 挂 ModelSettings(max_tokens)，可配 |
+| 3 | 150 个变化点全量穿过模型输出撞 token 上限截断 | 第三跑（mini） | 检测工具加确定性硬上限（severity 降序截取） |
+| 4 | 一次性模式下 agent 抛"选 A 还是 B"死锁 | 第三跑 | 输入附"用户离线"标注；prompt 加失败自决规则 |
+| 5 | HN 检索用 OR 长组合语法 12 连败零命中 | 第四跑 evidence 审计 | 工具确定性拒绝并指导拆分；检索战术重写（具名事件锚点必做） |
+| 6 | SDK MultiProvider 不认 deepseek/ 前缀 | 换模型后 | 非直连改用 OpenAIChatCompletionsModel 原样透传 |
+| 7 | "近五年"被算成 2020-2025（模型时间直觉停在训练年代） | 第五跑 | 全 subagent prompt 注入今天日期 + 区间合理性校验规则 |
+| 8 | 运行中会话目录被误删（操作方失误）致晦涩 sqlite 报错 | 第五/六跑排障 | run_turn 前置工作区存活检查，快速失败给出人话报错 |
+| 9 | report-builder 自造语义化 evidence id，页面锚点悬空 | 第七跑产物审计 | 渲染前校验全部 evidence 引用真实存在，悬空即拒绝（第八跑验证：自我修正生效） |
+
+方法论小结：**每次真跑 → evidence/产物审计定位根因 → 优先工具侧确定性纠错（schema、
+硬上限、校验拒绝），prompt 战术其次 → 回归测试看护**。九个问题中六个由确定性机制
+拦截修复，仅三个依赖 prompt——这也验证了"判断与执行分离"架构的可维护性。
+
 ## 提交历史即过程记录
 
 每个里程碑一个提交，提交信息包含该阶段的设计意图与测试状态，`git log` 可完整回放开发过程。
