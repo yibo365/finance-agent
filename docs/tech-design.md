@@ -2,6 +2,7 @@
 
 > 版本 v1.1 ｜ 2026-07-03 ｜ 配套 [prd.md](prd.md)，记录架构划分与关键取舍
 > v1.1：从"一次性命令行任务"升级为"有状态研究工作台"——新增会话与工作区（§5）、ArtifactSpec 产物管线（§6）、Web 聊天薄层（§11）
+> v1.2：无沙箱取舍下的文件访问设计——WorkspaceFS 层（§5）、data_ref 改逻辑键、路径守卫入测试与风险
 
 ## 1. 选型与理由
 
@@ -10,6 +11,7 @@
 | Agent SDK | **OpenAI Agents SDK（Python）** | 刻意不用自带 tools/subagents/skills 三概念的框架（如 Claude Agent SDK）——skill 机制与 subagent 边界**自研**，架构划分是自己的判断而非框架赠品。放弃 LangGraph：偏 workflow 编排，"agent 自主完成任务"的味道弱。 |
 | 模型 | gpt-5.5（`FINANCE_AGENT_MODEL` 可覆盖） | 影响评级与拐点对齐是判断密集环节；开发迭代可切轻量档。 |
 | 入口与会话 | 终端 REPL（默认）+ `-p` 一次性 + 本地 Web 聊天薄层；SDK `SQLiteSession` 持久化，`--resume` 跨进程恢复 | 投研修改是常态，一次性命令产完即忘不可用；Web 层薄到只是同一会话核心的另一张脸，排期在 e2e 之后，可被时间盒裁剪的是它而不是核心。 |
+| 文件安全 | **无 OS 沙箱，应用层 WorkspaceFS 约束**（§5） | 时间盒取舍：容器/seccomp 级隔离做不完且收益有限——本项目不执行 LLM 生成的代码，威胁面是"LLM 生成的参数"，用"只传逻辑标识不传路径 + 路径守卫"在参数层拦截更对症。 |
 | 语言/工程 | Python 3.12 + uv；`src/` 布局 | docx/pptx/xlsx 生态最成熟；uv 保证评审者一键复现。 |
 | 图表 | Plotly 2.35（本地 vendor） | 沿用已验证的原型资产；本地 vendor 解决 CDN 依赖安全/跨域/断网问题。 |
 | 行情源 | Yahoo Chart API → Stooq → 本地缓存 | 全部免 key。放弃原型中的 Nasdaq API：需伪装 UA，反爬不稳定，评审复跑易挂。 |
@@ -131,7 +133,25 @@ evidence.json    # 溯源记录
 
 对话中 agent 以 `[artifact_id vN]` 指代产物，用户始终知道改的是哪个、第几版、改了什么（change_summary 由 report-builder 撰写，进 manifest 也进回复）。
 
-**数据缓存的意义**：修改类请求（调评级、改文案、增删章节）不重抓行情/资讯，直接改 spec 重渲染——快、省 API、且保证"只改我说的那处"。
+**数据缓存的意义**：修改类请求（调评级、改文案、增删章节）不重抓行情/资讯，直接改 spec 重渲染——快、省 API、且保证"只改我说的那处"。数据文件由 `data/index.json` 注册表管理：`dataset_id → {文件路径, 来源 evidence, schema, 行数}`，spec 与工具均以 `dataset_id` 引用数据，不见路径。
+
+### WorkspaceFS：无沙箱前提下的文件访问设计
+
+时间盒内不引入 OS 级沙箱，代之以应用层约束。三条核心原则：
+
+1. **agent 不持有通用文件工具。** 不向 LLM 暴露 read_file/write_file 这类原始能力；所有文件 I/O 都发生在确定性领域工具（render_artifact / update_artifact / fetch_ohlcv 的缓存写入等）内部，并统一经 WorkspaceFS 单点中介——文件安全逻辑只需在一处实现、一处测试。
+2. **LLM 永远不提供文件路径。** 工具参数只有逻辑标识：`artifact_id`、`dataset_id`、skill name。实际路径由系统派生：产物文件名 = `slug(artifact_id)_v{n}.{ext}`，扩展名由 `kind` 查表决定（白名单 html/xlsx/pptx/docx）；数据路径经注册表解析。**路径注入在参数层就不存在**，而非依赖运行时拦截。
+3. **所有解析后的路径必须落在会话工作区内。** WorkspaceFS 对每次读写守卫：`resolve()` 后必须以 workspace root 为前缀（防符号链接逃逸）；拒绝绝对路径与含 `..` 的输入（纵深防御，即使按原则 2 它们不应出现）；写入仅限白名单子目录（artifacts/ specs/ data/）。
+
+写入语义：
+
+- **版本文件 append-only**：渲染从不覆盖已有版本文件，重渲染只产生新版本号——用户对照旧版的能力不依赖"没被覆盖"的运气；
+- **注册表原子写**：manifest.json 与 data/index.json 用临时文件 + `os.replace` 更新，进程中断不产生半写状态；
+- 单文件大小上限，防失控输出撑爆磁盘。
+
+skill 静态资产（如 plotly.min.js）由渲染器从 `skills/<name>/assets/` 按白名单复制进产物目录，agent 无法指定来源路径。
+
+**如实陈述的剩余风险**：工具与渲染器本身是可信代码（纯库调用，无 shell/exec/eval）；威胁面是 LLM 生成的参数与外部数据内容，分别被"逻辑标识 + pydantic 校验"与"转义 + 白名单"拦截。若未来产物需要执行用户自定义代码（如自定义指标脚本），必须补真沙箱——明确 out of scope。
 
 ## 6. 产物管线：ArtifactSpec 中间表示
 
@@ -152,7 +172,7 @@ report-builder（判断，自由）      ArtifactSpec（结构化 IR）        �
   "blocks": [
     {"type": "heading", "text": "一、五年行情全景"},
     {"type": "narrative", "md": "…", "evidence_refs": ["ev-…-3"]},
-    {"type": "kline_chart", "data_ref": "data/nvda_ohlcv.parquet",
+    {"type": "kline_chart", "data_ref": "ds-nvda-ohlcv-5y",
      "annotations": [{"date": "2022-11-30", "event": "ChatGPT 发布",
                       "rating": "高/正面", "evidence_refs": ["ev-…-12"]}]},
     {"type": "event_card", "…": "…"},
@@ -162,6 +182,7 @@ report-builder（判断，自由）      ArtifactSpec（结构化 IR）        �
 ```
 
 - **block 类型库**由各渲染器声明支持集合：通用（heading/narrative/table/footnote）+ 专用（kline_chart/event_card/slide/formula_sheet/pivot_summary…）。遇到不支持的 block 显式报错，不静默丢弃。
+- **spec 里没有文件路径**：`data_ref` 是 dataset_id（经工作区 `data/index.json` 注册表解析），渲染器经 WorkspaceFS 取数——LLM 产出的 spec 无法表达"读工作区外的文件"。
 - **skill 与 spec 的关系**：skill 的 SKILL.md 告诉 report-builder"这类产物惯常怎么组织论证、有哪些 block 可用、评级怎么呈现"（方法论），templates/assets 提供渲染骨架（Plotly 交互外壳、docx 样式集）——**内容结构在 spec 里，每次都是新的**。
 - **修改 = spec 定点变更 + 重渲染**：`read_artifact` 读回当前 spec → report-builder 只改目标 block → `update_artifact` 校验、渲染、版本 +1、写 manifest。未涉及的 block 原样保留，"定点生效"由此保证，且两版 spec 的 diff 就是改动审计记录。
 - **可测试性**：渲染器用 spec fixture 做单测（断言 HTML 含标注锚点、xlsx 公式存在、pptx 页数正确），完全不依赖 LLM。
@@ -187,18 +208,20 @@ skills/<name>/
 
 | 工具 | 输入 → 输出 | 要点 |
 |---|---|---|
-| `fetch_ohlcv` | ticker, start, end → OHLCV 行 + evidence_id | 降级链 Yahoo→Stooq→本地缓存；三源解析统一 schema；记录实际命中源；结果缓存进工作区 data/ |
+| `fetch_ohlcv` | ticker, start, end → 数据摘要 + **dataset_id** + evidence_id | 降级链 Yahoo→Stooq→本地缓存；三源解析统一 schema；记录实际命中源；数据落工作区 data/ 并登记 index.json，后续环节以 dataset_id 引用 |
 | `search_hn_news` | query, date_range → 条目[{title,url,points,date}] + evidence_id | Algolia `search_by_date` + `numericFilters` 查历史 |
 | `fetch_yahoo_news` | ticker/keyword → 条目 + evidence_id | 财经视角补充 |
 | `web_search` | query → 摘要+来源 | SDK hosted WebSearchTool，供 event-researcher 补漏与交叉验证 |
-| `detect_changepoints` | OHLCV → 变化点[{date,type,rule,window,severity}] + evidence_id | 见 §9 |
+| `detect_changepoints` | dataset_id → 变化点[{date,type,rule,window,severity}] + evidence_id | 见 §9；输入经注册表取数，不接受路径 |
 | `load_skill` | name → SKILL.md 全文 | 见 §7 |
 | `list_artifacts` | — → manifest 摘要 | 工作区感知：有哪些产物、各自最新版本与变更摘要 |
 | `read_artifact` | artifact_id → 当前 spec | 供修改流程读回结构 |
-| `render_artifact` | spec → 文件 + manifest 登记（v1） | 新建产物 |
-| `update_artifact` | artifact_id, 新 spec → 文件 + 版本 +1 | spec 校验（pydantic）失败即拒绝，不产出半成品 |
+| `render_artifact` | spec → 文件 + manifest 登记（v1） | 新建产物；文件名由系统派生（slug + 版本 + kind 查表扩展名），LLM 不传路径 |
+| `update_artifact` | artifact_id, 新 spec → 文件 + 版本 +1 | spec 校验（pydantic）失败即拒绝，不产出半成品；append-only 不覆盖旧版 |
 
 失败语义统一：工具对外抛结构化错误（含已尝试的源与原因），重试/换源的决策权在 subagent。
+
+**文件访问原则**（呼应 §5 WorkspaceFS）：上表没有、也不会有通用 read_file/write_file 工具；所有涉盘操作都在领域工具内部经 WorkspaceFS 完成，工具参数一律为逻辑标识（artifact_id / dataset_id / skill name）。
 
 ## 9. 拐点检测算法（确定性）
 
@@ -241,6 +264,7 @@ Evidence {
 ## 12. 安全与跨域
 
 - 密钥仅 `OPENAI_API_KEY`，环境变量注入，`.env` gitignore，产物与 manifest 中不出现；
+- agent 无通用文件读写工具，全部文件 I/O 经 WorkspaceFS 单点守卫（§5）：工作区禁闭、白名单子目录/扩展名、append-only 版本、注册表原子写；
 - HTML 产物零外部请求：Plotly 内联/同目录分发，数据内嵌 JSON，`file://` 断网可开；
 - skill 模板经受控渲染器执行，不 eval 仓库内文本；spec 经 pydantic 校验后才进渲染器；
 - 外部数据（资讯标题等）进入 HTML 前做转义，防注入；
@@ -253,7 +277,7 @@ Evidence {
 | tools | pytest 单测：三源解析 fixture、降级链（mock HTTP）、拐点规则合成序列断言 |
 | skill 机制 | 索引扫描、frontmatter 解析、load_skill 行为 |
 | spec/渲染器 | spec fixture → 断言产物结构（HTML 标注锚点与 evidence 面板、xlsx 公式、pptx 页数、docx 章节）；非法 spec 被拒 |
-| 工作区 | manifest 读写、版本递增、update_artifact 定点变更后未涉及 block 不变 |
+| 工作区 | manifest 读写、版本递增、update_artifact 定点变更后未涉及 block 不变；WorkspaceFS 路径守卫（`..`/绝对路径/symlink 逃逸被拒）、注册表原子写、版本文件 append-only |
 | 编排 | mock 模式（录制工具返回）跑通"新建→修改"全流水线的集成测试，不烧 API |
 | 前端资产 | 保留 node 测试：渲染骨架行为 + 产物 HTML 无 CDN 依赖断言 |
 | 产物 | 冒烟：xlsx/pptx/docx 能被对应库重新打开解析 |
@@ -266,5 +290,6 @@ Evidence {
 | 事件检索质量不稳 | 拐点定向检索 + 三路交叉；允许"无对应事件"诚实输出 |
 | LLM 输出结构漂移 | subagent 间传递与 spec 全部 pydantic 校验，不传自由文本 |
 | spec 定点修改误伤其他 block | update_artifact 前后 diff 落盘；单测覆盖"改 A 不动 B" |
+| 无沙箱下的文件误写/路径注入 | LLM 只传逻辑标识不传路径（参数层消除）；WorkspaceFS 单点守卫 + 白名单 + append-only（运行时纵深）；守卫行为全量单测 |
 | Web 层挤占时间盒 | 薄层设计 + 排期最后（M7）；核心验收不依赖它，必要时降级交付 REPL |
 | 时间盒超支 | M4 跑通场景 A 即具备最小可交付；文档 skills 相互独立可裁剪 |
