@@ -1,0 +1,288 @@
+"""SDK function_tool 层：把 M1 工具与工作区操作暴露给各 subagent。
+
+结构约定：每个工具 = 纯逻辑 impl 函数（接 AppContext，可直接单测）
++ 薄 @function_tool 包装（只做 ctx 解包与 JSON 序列化）。
+LLM 侧参数一律逻辑标识（ticker / dataset_id / artifact_id / skill name），
+没有任何文件路径参数——WorkspaceFS 三原则的工具层落地。
+"""
+
+from __future__ import annotations
+
+import json
+import re
+from typing import Any
+
+from agents import RunContextWrapper, function_tool
+
+from finance_agent.artifacts.spec import ArtifactSpec
+from finance_agent.config import PACKAGE_ROOT
+from finance_agent.context import AppContext
+from finance_agent.contracts import ChangepointOut
+from finance_agent.tools import changepoints as cp_mod
+from finance_agent.tools import market as market_mod
+from finance_agent.tools import news as news_mod
+
+NVDA_SEED = PACKAGE_ROOT / "seeds" / "nvda_ohlcv_nasdaq.json"
+
+# mock 模式下的离线资讯（供无网/无检索环境跑通场景 A 流水线）
+_MOCK_NEWS = [
+    {"title": "ChatGPT: Optimizing Language Models for Dialogue", "url": "https://openai.com/index/chatgpt/",
+     "source": "hn", "published_at": "2022-11-30T18:00:00+00:00", "score": 1414},
+    {"title": "US restricts Nvidia chip exports to China", "url": "https://www.reuters.com/technology/us-restricts-exports-some-nvidia-chips-china-nvidia-says-2022-08-31/",
+     "source": "hn", "published_at": "2022-08-31T12:00:00+00:00", "score": 890},
+    {"title": "NVIDIA Blackwell Platform Arrives (B200/GB200/B100)", "url": "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing",
+     "source": "hn", "published_at": "2024-03-18T20:00:00+00:00", "score": 640},
+    {"title": "DeepSeek-R1 release sets off AI market rout", "url": "https://www.reuters.com/technology/chinas-deepseek-sets-off-ai-market-rout-2025-01-27/",
+     "source": "hn", "published_at": "2025-01-27T14:00:00+00:00", "score": 2100},
+]
+
+
+def _slug(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def _json(payload: Any) -> str:
+    return json.dumps(payload, ensure_ascii=False)
+
+
+# ---------- data-collector 工具 ----------
+
+def fetch_market_data_impl(app: AppContext, ticker: str, start: str, end: str) -> dict[str, Any]:
+    seed = NVDA_SEED if ticker.upper() == "NVDA" and NVDA_SEED.is_file() else None
+    if app.settings.mock_mode:
+        if seed is None:
+            raise market_mod.FetchError(ticker, [f"mock 模式仅有 NVDA 种子数据，无法获取 {ticker}"])
+        sources: list[market_mod.MarketSource] = [market_mod.LocalCacheSource(seed)]
+    else:
+        sources = market_mod.default_sources(cache_path=seed)
+    data = market_mod.fetch_ohlcv(
+        ticker, start, end, sources=sources, evidence_log=app.workspace.evidence
+    )
+    dataset_id = f"ds-{_slug(ticker)}-{start.replace('-', '')}-{end.replace('-', '')}"
+    app.workspace.store_dataset(
+        dataset_id, data.df, ticker=ticker, source=data.source,
+        evidence_id=data.evidence.id if data.evidence else "",
+    )
+    app.workspace.save_evidence()
+    return {
+        "dataset_id": dataset_id,
+        "ticker": ticker,
+        "rows": len(data.df),
+        "start": str(data.df["date"].iloc[0]),
+        "end": str(data.df["date"].iloc[-1]),
+        "source": data.source,
+        "evidence_id": data.evidence.id if data.evidence else "",
+    }
+
+
+def detect_changepoints_impl(
+    app: AppContext, dataset_id: str, min_severity: int = 1
+) -> dict[str, Any]:
+    df = app.workspace.load_dataset(dataset_id)
+    entry = app.workspace.dataset_index()[dataset_id]
+    result = cp_mod.detect_changepoints(
+        df, evidence_log=app.workspace.evidence,
+        source_evidence_id=entry.get("evidence_id") or None,
+    )
+    app.workspace.save_evidence()
+    evidence_id = result.evidence.id if result.evidence else ""
+    points = [
+        ChangepointOut(
+            date=p.date, kind=p.kind, rule=p.rule, severity=p.severity,
+            window=p.window, evidence_refs=[evidence_id] if evidence_id else [],
+        ).model_dump()
+        for p in result.points
+        if p.severity >= min_severity
+    ]
+    return {
+        "dataset_id": dataset_id,
+        "evidence_id": evidence_id,
+        "total_detected": len(result.points),
+        "returned": len(points),
+        "min_severity": min_severity,
+        "changepoints": points,
+    }
+
+
+@function_tool
+def fetch_market_data(ctx: RunContextWrapper[AppContext], ticker: str, start: str, end: str) -> str:
+    """拉取标的的日线 OHLCV（多源降级链），缓存进工作区并登记 dataset_id。
+
+    Args:
+        ticker: 标的代码，如 NVDA、GC=F（COMEX 黄金期货）、BTC-USD。
+        start: 起始日期 YYYY-MM-DD。
+        end: 结束日期 YYYY-MM-DD。
+    """
+    return _json(fetch_market_data_impl(ctx.context, ticker, start, end))
+
+
+@function_tool
+def run_changepoint_detection(
+    ctx: RunContextWrapper[AppContext], dataset_id: str, min_severity: int = 1
+) -> str:
+    """对已缓存的 dataset 执行确定性变化点检测（趋势拐头/加速/回撤反弹/量能异常）。
+
+    Args:
+        dataset_id: fetch_market_data 返回的 dataset_id。
+        min_severity: 仅返回不低于该严重度（1-3）的变化点；总检出数照实报告。
+    """
+    return _json(detect_changepoints_impl(ctx.context, dataset_id, min_severity))
+
+
+# ---------- event-researcher 工具 ----------
+
+def search_hn_impl(
+    app: AppContext, query: str, start: str, end: str, max_hits: int = 30
+) -> dict[str, Any]:
+    if app.settings.mock_mode:
+        items = [n for n in _MOCK_NEWS if start <= n["published_at"][:10] <= end]
+        return {"query": query, "items": items, "evidence_id": "", "mock": True}
+    result = news_mod.search_hn_news(
+        query, start, end, evidence_log=app.workspace.evidence, max_hits=max_hits
+    )
+    app.workspace.save_evidence()
+    return {
+        "query": query,
+        "items": [item.model_dump() for item in result.items],
+        "evidence_id": result.evidence.id if result.evidence else "",
+    }
+
+
+def search_yahoo_news_impl(app: AppContext, query: str, max_items: int = 20) -> dict[str, Any]:
+    if app.settings.mock_mode:
+        return {"query": query, "items": [], "evidence_id": "", "mock": True,
+                "note": "mock 模式下 Yahoo 资讯不可用"}
+    result = news_mod.fetch_yahoo_news(
+        query, evidence_log=app.workspace.evidence, max_items=max_items
+    )
+    app.workspace.save_evidence()
+    return {
+        "query": query,
+        "items": [item.model_dump() for item in result.items],
+        "evidence_id": result.evidence.id if result.evidence else "",
+    }
+
+
+@function_tool
+def search_hn_news(
+    ctx: RunContextWrapper[AppContext], query: str, start: str, end: str, max_hits: int = 30
+) -> str:
+    """按关键词 + 日期范围检索 Hacker News 历史（适合围绕变化点时间窗做定向回溯）。
+
+    Args:
+        query: 检索关键词（英文效果更好，如 chatgpt / nvidia export / deepseek）。
+        start: 范围起点 YYYY-MM-DD。
+        end: 范围终点 YYYY-MM-DD。
+        max_hits: 最多返回条数。
+    """
+    return _json(search_hn_impl(ctx.context, query, start, end, max_hits))
+
+
+@function_tool
+def search_yahoo_finance_news(
+    ctx: RunContextWrapper[AppContext], query: str, max_items: int = 20
+) -> str:
+    """检索 Yahoo Finance 近期资讯（财经媒体视角；无历史范围能力，适合补充近况）。
+
+    Args:
+        query: 标的代码或关键词。
+        max_items: 最多返回条数。
+    """
+    return _json(search_yahoo_news_impl(ctx.context, query, max_items))
+
+
+# ---------- skill 工具（orchestrator / report-builder） ----------
+
+def list_skills_impl(app: AppContext) -> dict[str, Any]:
+    from finance_agent.skills.loader import index_lines, scan_skills
+
+    return {"skills": index_lines(scan_skills())}
+
+
+def load_skill_impl(app: AppContext, name: str) -> str:
+    from finance_agent.skills.loader import load_skill, scan_skills
+
+    return load_skill(name, scan_skills())
+
+
+@function_tool
+def list_skills(ctx: RunContextWrapper[AppContext]) -> str:
+    """列出可用的产物 skill（名称、产物类型、一句话说明）。"""
+    return _json(list_skills_impl(ctx.context))
+
+
+@function_tool
+def load_skill(ctx: RunContextWrapper[AppContext], name: str) -> str:
+    """读入指定 skill 的完整方法论（组织建议、标注要求、写作规范）。
+
+    Args:
+        name: skill 名称，见 list_skills。
+    """
+    return load_skill_impl(ctx.context, name)
+
+
+# ---------- 工作区/产物工具 ----------
+
+def list_artifacts_impl(app: AppContext) -> dict[str, Any]:
+    return {
+        "session_id": app.workspace.session_id,
+        "artifacts": app.workspace.list_artifacts(),
+        "datasets": app.workspace.dataset_index(),
+    }
+
+
+@function_tool
+def list_artifacts(ctx: RunContextWrapper[AppContext]) -> str:
+    """列出当前会话工作区的全部产物（版本历史）与已缓存 dataset。"""
+    return _json(list_artifacts_impl(ctx.context))
+
+
+@function_tool
+def read_artifact(
+    ctx: RunContextWrapper[AppContext], artifact_id: str, version: int | None = None
+) -> str:
+    """读回产物的 ArtifactSpec（默认当前版本），用于定点修改。
+
+    Args:
+        artifact_id: 产物标识。
+        version: 指定历史版本号；缺省为当前版本。
+    """
+    spec = ctx.context.workspace.read_artifact_spec(artifact_id, version)
+    return spec.model_dump_json()
+
+
+@function_tool
+def render_artifact(
+    ctx: RunContextWrapper[AppContext], spec: ArtifactSpec, change_summary: str = "初版"
+) -> str:
+    """按 ArtifactSpec 渲染新产物（v1）并登记 manifest。spec 校验失败会报错，请修正后重试。
+
+    Args:
+        spec: 完整的 ArtifactSpec（block 树；data_ref 用 dataset_id）。
+        change_summary: 一句话版本说明。
+    """
+    version = ctx.context.workspace.render_artifact(spec, change_summary=change_summary)
+    return _json({
+        "artifact_id": spec.artifact_id, "version": version.v, "kind": spec.kind,
+        "file": str(ctx.context.workspace.dir / version.file),
+        "change_summary": version.change_summary,
+    })
+
+
+@function_tool
+def update_artifact(
+    ctx: RunContextWrapper[AppContext], artifact_id: str, spec: ArtifactSpec, change_summary: str
+) -> str:
+    """对既有产物做定点修改后的重渲染：版本 +1，旧版全部保留。只改动需要变的 block。
+
+    Args:
+        artifact_id: 要修改的产物标识（不可变更）。
+        spec: 修改后的完整 ArtifactSpec（未涉及的 block 原样保留）。
+        change_summary: 一句话说明本次改了什么。
+    """
+    version = ctx.context.workspace.update_artifact(artifact_id, spec, change_summary=change_summary)
+    return _json({
+        "artifact_id": artifact_id, "version": version.v, "kind": spec.kind,
+        "file": str(ctx.context.workspace.dir / version.file),
+        "change_summary": version.change_summary,
+    })
