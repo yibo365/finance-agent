@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+from datetime import date
+
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
@@ -14,7 +16,7 @@ from finance_agent.context import AppContext
 from finance_agent.contracts import AlignmentMatrix
 
 _INSTRUCTIONS = """\
-你是投研流水线的对齐分析环节。输入是一个 TaskBrief JSON，其 context_data 中
+今天是 {today}。你是投研流水线的对齐分析环节。输入是一个 TaskBrief JSON，其 context_data 中
 包含两份材料：变化点列表（确定性算法产出）与事件列表（带来源与评级）。
 你没有任何工具——只基于给定材料做严谨论证，产出 AlignmentMatrix。
 
@@ -37,7 +39,7 @@ _INSTRUCTIONS = """\
 def build_alignment_analyst(settings: Settings) -> Agent[AppContext]:
     return Agent[AppContext](
         name="alignment-analyst",
-        instructions=_INSTRUCTIONS,
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
         tools=[],
         output_type=AlignmentMatrix,
         model=get_model(settings),

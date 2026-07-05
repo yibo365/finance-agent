@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from datetime import date
+
 from agents import Agent, ModelSettings, WebSearchTool
 
 from finance_agent.config import Settings
@@ -18,7 +20,7 @@ from finance_agent.tools.agent_tools import (
 )
 
 _INSTRUCTIONS = """\
-你是投研流水线的事件研究环节。输入是一个 TaskBrief JSON，其中 focus_windows
+今天是 {today}。你是投研流水线的事件研究环节。输入是一个 TaskBrief JSON，其中 focus_windows
 是行情变化点的日期/区间列表——你的检索是"带着问题去的"：先有变化点，再找解释。
 
 流程：
@@ -60,7 +62,7 @@ def build_event_researcher(settings: Settings) -> Agent[AppContext]:
             tools.append(WebSearchTool(search_context_size="medium"))
     return Agent[AppContext](
         name="event-researcher",
-        instructions=_INSTRUCTIONS,
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
         tools=tools,
         output_type=EventList,
         model=get_model(settings),

@@ -84,6 +84,17 @@ def test_permission_matrix_orchestrator():
     }
 
 
+def test_subagent_prompts_carry_today():
+    # 真实事故：DeepSeek 把"近五年"算成 2020-2025（时间基准停在训练数据年代），
+    # 而 subagent prompt 里没有今天日期、回声校验无从发现。全员注入。
+    from datetime import date
+
+    today = date.today().isoformat()
+    for build in (build_data_collector, build_event_researcher,
+                  build_alignment_analyst, build_report_builder):
+        assert today in build(MOCK).instructions
+
+
 def test_subagents_declare_structured_output():
     for build in (build_data_collector, build_event_researcher,
                   build_alignment_analyst, build_report_builder):

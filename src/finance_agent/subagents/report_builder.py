@@ -6,6 +6,8 @@ spec 不过校验就没有产物。
 
 from __future__ import annotations
 
+from datetime import date
+
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
@@ -22,7 +24,7 @@ from finance_agent.tools.agent_tools import (
 )
 
 _INSTRUCTIONS = """\
-你是投研流水线的报告构建环节。输入是一个 TaskBrief JSON，context_data 中包含
+今天是 {today}。你是投研流水线的报告构建环节。输入是一个 TaskBrief JSON，context_data 中包含
 成文所需的全部材料（dataset_id、变化点、事件、对齐结论等）。
 
 新建产物流程：
@@ -52,7 +54,7 @@ spec 纪律：
 def build_report_builder(settings: Settings) -> Agent[AppContext]:
     return Agent[AppContext](
         name="report-builder",
-        instructions=_INSTRUCTIONS,
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
         tools=[list_skills, load_skill, list_artifacts, read_artifact, render_artifact, update_artifact],
         output_type=ArtifactRefs,
         model=get_model(settings),

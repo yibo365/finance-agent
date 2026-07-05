@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import date
+
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
@@ -11,13 +13,15 @@ from finance_agent.contracts import MarketData
 from finance_agent.tools.agent_tools import fetch_market_data, run_changepoint_detection
 
 _INSTRUCTIONS = """\
-你是投研流水线的数据采集环节。输入是一个 TaskBrief JSON。
+今天是 {today}。你是投研流水线的数据采集环节。输入是一个 TaskBrief JSON。
 
 职责：按 brief 拉取行情日线、执行变化点检测、把关数据质量，产出 MarketData。
 
 规则：
-1. 先核对 original_request（用户原话）与结构化参数是否矛盾（如原话说"近五年"而
-   date 区间只有三年）——矛盾时以原话为准调整，并在 quality_notes 中说明。
+1. 先核对 original_request（用户原话）与结构化参数是否矛盾。**区间合理性校验**：
+   回顾类任务（"近N年/回顾"）的 end 应为今天或最近交易日、start≈今天-N年；
+   发现整体错位（如按往年日期推算出 2020-2025 而今天是 2026 年）→ 以原话+今天
+   重算区间执行，并在 quality_notes 声明修正。
 2. 每个标的调用一次 fetch_market_data。失败会返回各源的失败原因：可换参数重试一次，
    仍失败则如实上报，不得虚构数据。
 3. 数据质量校验：行数明显偏少（如五年应有约 1250 个交易日）、区间头尾缺口大时，
@@ -34,7 +38,7 @@ _INSTRUCTIONS = """\
 def build_data_collector(settings: Settings) -> Agent[AppContext]:
     return Agent[AppContext](
         name="data-collector",
-        instructions=_INSTRUCTIONS,
+        instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),
         tools=[fetch_market_data, run_changepoint_detection],
         output_type=MarketData,
         model=get_model(settings),
