@@ -131,6 +131,8 @@ input#input { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var
 input#input:focus { border-color: var(--accent); background: #fff; }
 button#send { height: 44px; padding: 0 22px; border-radius: 12px; border: 1px solid rgba(42, 99, 232, 0.35); background: linear-gradient(180deg, #3b74f2, #2a63e8); color: #fff; cursor: pointer; font-weight: 600; }
 button#send:disabled { opacity: 0.5; cursor: wait; }
+button#send.stop { border-color: rgba(217, 72, 72, 0.4); background: linear-gradient(180deg, #e05a5a, #cf4444); }
+input#input:disabled { background: #eef1f6; color: var(--muted); cursor: not-allowed; }
 
 /* ---- 右栏：产物 ---- */
 aside { display: flex; flex-direction: column; overflow: hidden; min-height: 0; background: var(--bg); }

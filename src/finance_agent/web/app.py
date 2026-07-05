@@ -70,6 +70,7 @@ class SessionRegistry:
         self.max_loaded = max_loaded
         self._cores: dict[str, SessionCore] = {}   # 插入序即 LRU 序
         self._locks: dict[str, asyncio.Lock] = {}
+        self._tasks: dict[str, asyncio.Task] = {}  # 会话 → 运行中的轮次任务（供停止）
 
     def add(self, core: SessionCore) -> SessionCore:
         self._cores[core.workspace.session_id] = core
@@ -112,18 +113,38 @@ class SessionRegistry:
     def lock(self, session_id: str) -> asyncio.Lock:
         return self._locks.setdefault(session_id, asyncio.Lock())
 
+    def running(self, session_id: str) -> bool:
+        lock = self._locks.get(session_id)
+        return lock is not None and lock.locked()
+
+    def set_task(self, session_id: str, task: asyncio.Task) -> None:
+        self._tasks[session_id] = task
+
+    def stop(self, session_id: str) -> bool:
+        """取消该会话运行中的轮次。返回是否确有任务被取消。"""
+        task = self._tasks.get(session_id)
+        if task is None or task.done():
+            return False
+        task.cancel()
+        return True
+
 
 def _sse(event: dict) -> str:
     return f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
 
 
-def start_locked_turn(core: SessionCore, lock: asyncio.Lock, message: str) -> asyncio.Queue:
+def start_locked_turn(
+    core: SessionCore, lock: asyncio.Lock, message: str
+) -> tuple[asyncio.Queue, asyncio.Task]:
     """在独立任务中执行一轮，事件经队列外发；锁随任务完成释放。
 
     锁的生命周期必须绑定"运行"而非"SSE 连接"：浏览器刷新会取消响应生成器，
     但 SDK 的运行任务并不随之停止——若锁跟着连接释放，用户再发消息就会与
     幽灵旧轮并发写同一 session.db 与工作区（历史交错、事件回调被改挂）。
     调用前必须已持有 lock（await lock.acquire()）。
+
+    返回 (事件队列, 运行任务)——任务句柄供人工停止（task.cancel() 会沿
+    stream_turn 一路取消到 SDK 的 result.cancel()）。
     """
     queue: asyncio.Queue[dict | None] = asyncio.Queue()
 
@@ -131,14 +152,21 @@ def start_locked_turn(core: SessionCore, lock: asyncio.Lock, message: str) -> as
         try:
             async for event in core.stream_turn(message):
                 queue.put_nowait(event)
+        except asyncio.CancelledError:
+            queue.put_nowait({
+                "type": "error",
+                "text": "任务已被手动停止（本轮未完成的结果不会进入对话历史；"
+                        "已抓取的数据与溯源记录保留在工作区）。",
+            })
+            raise  # 保持任务的取消语义
         except Exception as exc:  # noqa: BLE001 —— 错误也以事件形式送达前端
             queue.put_nowait({"type": "error", "text": str(exc)})
         finally:
             queue.put_nowait(None)  # 结束哨兵
             lock.release()
 
-    asyncio.get_running_loop().create_task(_run())
-    return queue
+    task = asyncio.get_running_loop().create_task(_run())
+    return queue, task
 
 
 def create_app(
@@ -205,7 +233,8 @@ def create_app(
             return StreamingResponse(busy_stream(), media_type="text/event-stream")
 
         await lock.acquire()
-        queue = start_locked_turn(core, lock, request.message)  # 锁由运行任务释放
+        queue, task = start_locked_turn(core, lock, request.message)  # 锁由运行任务释放
+        registry.set_task(session_id, task)
 
         async def event_stream():
             # 客户端断连只会取消本生成器；运行任务继续消化到完成并释放锁
@@ -231,9 +260,15 @@ def create_app(
         return {
             "session_id": session_id,
             "workspace_dir": str(workspace.dir),
+            "running": registry.running(session_id),  # 前端据此恢复运行态 UI
             "artifacts": workspace.list_artifacts(),
             "datasets": workspace.dataset_index(),
         }
+
+    @app.post("/api/sessions/{session_id}/stop")
+    def stop_session(session_id: str) -> dict:
+        registry.workspace(session_id)  # 校验会话存在（不存在 → 404）
+        return {"session_id": session_id, "stopped": registry.stop(session_id)}
 
     @app.get("/api/sessions/{session_id}/artifacts/{artifact_id}/file")
     def artifact_file(session_id: str, artifact_id: str, version: int | None = None) -> FileResponse:

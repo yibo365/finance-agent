@@ -82,9 +82,60 @@ function renderSessionList() {
   }
 }
 
+/* ---------- 运行态 UI：发送 ⇄ 停止 双态按钮 ----------
+ * 本地流（liveTurns）与服务端运行态（/state 的 running，刷新/多标签场景）
+ * 都会把当前视图切到运行态：输入框禁用、按钮变"停止"。 */
+let remoteRunning = false;        // 服务端在跑但本地没有流（刷新后接不回流）
+let remotePoller = null;
+
+function activeRunning() {
+  return !!(activeId && (turnFor(activeId) || remoteRunning));
+}
+
 function updateSendState() {
-  // 只在"当前视图对应的会话正在跑"时禁用；别的会话在跑不影响这里发新任务
-  send.disabled = !!(activeId && turnFor(activeId));
+  const running = activeRunning();
+  const pending = !activeId && !!pendingTurn;   // 新会话首条消息，session_id 未返回
+  input.disabled = running || pending;
+  send.textContent = running ? '⏹ 停止' : '发送';
+  send.classList.toggle('stop', running);
+  // 运行中按钮可点（用于停止）；pending 窗口极短，禁用防误触
+  send.disabled = pending;
+}
+
+function stopRemotePolling() {
+  if (remotePoller) { clearInterval(remotePoller); remotePoller = null; }
+  remoteRunning = false;
+}
+
+function watchRemoteRun(id) {
+  // 刷新页面后接不回 SSE 流：轮询运行态，跑完自动加载完整历史
+  remoteRunning = true;
+  updateSendState();
+  remotePoller = setInterval(async () => {
+    try {
+      const resp = await fetch(`/api/sessions/${id}/state`);
+      if (id !== activeId) { stopRemotePolling(); return; }
+      const state = await resp.json();
+      if (!state.running) {
+        stopRemotePolling();
+        updateSendState();
+        await Promise.all([loadHistory(id), refreshArtifacts()]);
+      }
+    } catch { /* 下一轮再试 */ }
+  }, 4000);
+}
+
+async function stopActiveRun() {
+  if (!activeId) return;
+  send.disabled = true;
+  try {
+    await fetch(`/api/sessions/${activeId}/stop`, { method: 'POST' });
+    // 本地流场景：停止事件会经 SSE 送达并结束轮次；远程场景：下一次轮询收敛
+  } catch (err) {
+    addMsg('error', '停止请求失败：' + err.message);
+  } finally {
+    send.disabled = false;
+  }
 }
 
 /* ---------- 头部与产物面板（按会话） ---------- */
@@ -101,14 +152,14 @@ function renderHeader(workspaceDir) {
 
 async function refreshArtifacts() {
   const box = $('artifacts');
-  if (!activeId) { box.textContent = ''; box.appendChild(el('div', 'empty', '暂无产物')); return; }
+  if (!activeId) { box.textContent = ''; box.appendChild(el('div', 'empty', '暂无产物')); return null; }
   const forId = activeId;
   const resp = await fetch(`/api/sessions/${forId}/state`);
-  if (!resp.ok || forId !== activeId) return;
+  if (!resp.ok || forId !== activeId) return null;
   const state = await resp.json();
   renderHeader(state.workspace_dir);
   box.textContent = '';
-  if (!state.artifacts.length) { box.appendChild(el('div', 'empty', '暂无产物')); return; }
+  if (!state.artifacts.length) { box.appendChild(el('div', 'empty', '暂无产物')); return state; }
   for (const a of state.artifacts) {
     const card = el('div', 'card');
     const idLine = el('div', 'id', a.artifact_id);
@@ -125,6 +176,7 @@ async function refreshArtifacts() {
     card.appendChild(link);
     box.appendChild(card);
   }
+  return state;
 }
 
 /* ---------- 消息渲染 ---------- */
@@ -270,17 +322,27 @@ async function loadHistory(id) {
 
 /* ---------- 会话切换 / 新建 ---------- */
 async function selectSession(id) {
+  stopRemotePolling();
   detachActiveTurn();
   viewEpoch += 1;
   activeId = id; store.active = id;
   renderSessionList(); renderHeader(); updateSendState();
-  await Promise.all([loadHistory(id), refreshArtifacts()]);
+  const [, state] = await Promise.all([loadHistory(id), refreshArtifacts()]);
+  if (id !== activeId) return;
   const turn = turnFor(id);
-  if (turn && id === activeId) attachTurn(turn);  // 正在跑的这一轮接在历史后面
+  if (turn) {
+    attachTurn(turn);            // 正在跑的这一轮接在历史后面
+  } else if (state && state.running) {
+    // 服务端在跑但本地没有流（刷新/多标签）：进入运行态并轮询收敛
+    addMsg('bot', '⏳ 服务端正在执行上一条消息……完成后将自动加载结果。也可点"停止"中断。');
+    watchRemoteRun(id);
+  }
+  updateSendState();
   input.focus();
 }
 
 function newChat() {
+  stopRemotePolling();
   detachActiveTurn();
   viewEpoch += 1;
   activeId = null; store.active = null;
@@ -339,9 +401,9 @@ $('settingsForm').addEventListener('submit', async e => {
 /* ---------- 发送 + SSE 事件流（协议见 docs/prd-web-ui-v2.md） ---------- */
 form.addEventListener('submit', async e => {
   e.preventDefault();
+  if (activeRunning()) { await stopActiveRun(); return; }  // 运行态下按钮语义 = 停止
   const text = input.value.trim();
   if (!text) return;
-  if (activeId && turnFor(activeId)) return;  // 当前会话正在跑（按钮本已禁用，兜底）
   input.value = '';
   const epoch = viewEpoch;
   const originId = activeId;                  // null = 新会话
@@ -389,6 +451,7 @@ form.addEventListener('submit', async e => {
               renderHeader();
             }
             renderSessionList();
+            updateSendState();
           }
           continue;
         }

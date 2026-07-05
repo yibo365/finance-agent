@@ -239,7 +239,7 @@ def test_start_locked_turn_survives_consumer_absence():
 
         core = SimpleNamespace(stream_turn=fake_stream)
         await lock.acquire()
-        queue = start_locked_turn(core, lock, "任务")
+        queue, _task = start_locked_turn(core, lock, "任务")
         # 消费者完全不读（模拟浏览器刷新断连）
         for _ in range(100):
             if not lock.locked():
@@ -273,6 +273,54 @@ def test_registry_lru_eviction_skips_locked_sessions(outputs):
     assert set(registry._cores) == {cid}             # 回落到容量内，LRU 先出
     # 被淘汰的会话可经 resume 无损重建
     assert registry.core(bid).workspace.session_id == bid
+
+
+def test_stop_cancels_running_turn(outputs):
+    # 停止链路在单事件循环内直测（HTTP 层的 TestClient 每请求一个循环线程，
+    # 跨线程断言/取消本身就是被修复的那类竞态，不适合做这条链路的载体）
+    import asyncio
+
+    from finance_agent.config import SettingsStore
+    from finance_agent.web.app import SessionRegistry, start_locked_turn
+
+    async def scenario():
+        registry = SessionRegistry(SettingsStore(MOCK), outputs)
+        core = registry.core(SEEDED)
+
+        async def slow_stream(_msg):
+            yield {"type": "session", "session_id": SEEDED}
+            await asyncio.sleep(30)   # 长任务；停止应在此处被取消
+            yield {"type": "done", "reply": "不该到这", "artifacts": []}  # pragma: no cover
+
+        core.stream_turn = slow_stream
+        lock = registry.lock(SEEDED)
+        await lock.acquire()
+        queue, task = start_locked_turn(core, lock, "长任务")
+        registry.set_task(SEEDED, task)
+        await asyncio.sleep(0.05)
+        assert registry.running(SEEDED) is True
+
+        assert registry.stop(SEEDED) is True
+        await asyncio.wait([task], timeout=2)
+        assert registry.running(SEEDED) is False   # 锁随取消释放，可立即发下一条
+        assert registry.stop(SEEDED) is False      # 无任务可停
+
+        events = []
+        while not queue.empty():
+            events.append(queue.get_nowait())
+        assert events[-1] is None                  # 哨兵送达（前端得以收尾）
+        assert any(e and "手动停止" in e.get("text", "") for e in events if e)
+
+    asyncio.run(scenario())
+
+
+def test_stop_endpoint_semantics(client):
+    # 空闲会话：无任务可停；未知会话：404；state 携带 running 字段
+    assert client.post(f"/api/sessions/{SEEDED}/stop").json() == {
+        "session_id": SEEDED, "stopped": False,
+    }
+    assert client.post("/api/sessions/s-20990101-dead/stop").status_code == 404
+    assert client.get(f"/api/sessions/{SEEDED}/state").json()["running"] is False
 
 
 # ---------- 端口预检与工作区守卫（行为不变） ----------

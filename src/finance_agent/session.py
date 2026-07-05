@@ -171,6 +171,7 @@ class SessionCore:
                 queue.put_nowait(None)  # 结束哨兵：无论正常/异常都解除消费端等待
 
         pump = asyncio.create_task(_pump())
+        completed = False
         try:
             while True:
                 event = await queue.get()
@@ -178,9 +179,17 @@ class SessionCore:
                     break
                 yield event
             await pump  # 让运行期异常在此浮出，由入口层转成 error 事件
+            completed = True
         finally:
             if not pump.done():
                 pump.cancel()
+            if not completed:
+                # 消费端中止（用户点停止 / 任务被取消）：必须取消 SDK 的
+                # 运行任务——它不随消费者停止，放任会变成幽灵旧轮继续跑
+                try:
+                    result.cancel()
+                except Exception:  # noqa: BLE001 —— 尽力取消，失败不掩盖原异常
+                    pass
             self.ctx.on_event = None
         yield {
             "type": "done",
