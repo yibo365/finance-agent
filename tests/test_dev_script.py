@@ -75,7 +75,9 @@ def _run_dev_script(tmp_path: Path, mode: str) -> subprocess.CompletedProcess[st
         """
         #!/usr/bin/env bash
         echo "npm $*" >> "$DEV_TEST_LOG"
-        touch "$DEV_TEST_STATE/npm_started"
+        if [[ "$*" == *" run dev "* ]]; then
+          touch "$DEV_TEST_STATE/npm_started"
+        fi
         exit 0
         """,
     )
@@ -106,7 +108,9 @@ def test_dev_script_waits_for_backend_before_starting_vite(tmp_path: Path) -> No
 
     assert result.returncode == 0, result.stderr + result.stdout
     assert "curl -fsS http://127.0.0.1:8765/api/state" in result.command_log
-    assert result.command_log.index("curl ") < result.command_log.index("npm ")
+    assert result.command_log.index("curl ") < result.command_log.index(
+        "npm --prefix webapp run dev"
+    )
 
 
 def test_dev_script_restarts_when_backend_port_is_occupied(tmp_path: Path) -> None:
