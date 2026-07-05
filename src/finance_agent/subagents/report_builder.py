@@ -11,9 +11,9 @@ from datetime import date
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
-from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import ArtifactRefs
+from finance_agent.llm import get_model
 from finance_agent.tools.agent_tools import (
     list_artifacts,
     list_skills,

@@ -6,8 +6,8 @@
 from __future__ import annotations
 
 import io
-from datetime import datetime, timezone
-from typing import Mapping
+from collections.abc import Mapping
+from datetime import UTC, datetime
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
@@ -129,7 +129,7 @@ def render_pptx(
         # 自动补齐封面，保证任何 spec 都有标题页
         _add_title_slide(prs, SlideBlock(
             layout="title", title=spec.title,
-            subtitle=spec.subtitle or datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            subtitle=spec.subtitle or datetime.now(UTC).strftime("%Y-%m-%d"),
         ))
     for block in slides:
         _LAYOUT_DISPATCH[block.layout](prs, block)

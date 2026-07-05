@@ -38,7 +38,7 @@ uv run finance-agent --resume s-20260703-a1b2   # REPL 里直接说"把 DeepSeek
 
 ```bash
 # 测试
-uv run pytest                  # Python：88 个（工具/渲染器/工作区/agent 层/Web）
+uv run pytest                  # Python 全量单测（工具/渲染器/工作区/agent 层/Web）
 node --test tests/*.test.cjs   # 前端渲染骨架纯函数 + 模板无外链断言
 
 # 离线冒烟（不消耗 API 的数据管线验证；agent 对话仍需 key）

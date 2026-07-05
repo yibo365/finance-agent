@@ -195,6 +195,18 @@ def test_dangling_evidence_refs_rejected(ws, df):
     assert ws.render_artifact(spec).v == 1
 
 
+def test_event_without_source_url_rejected(ws, df):
+    # PRD 硬要求确定性化：事件必须带可点击原文 URL，不靠 prompt 自律
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    spec = html_spec()
+    spec.blocks[2].events = [
+        {"date": "2024-01-03", "title": "无来源事件", "impact": 3, "sources": []}
+    ]
+    spec = ArtifactSpec.model_validate(spec.model_dump())
+    with pytest.raises(WorkspaceError, match="缺少可点击的原始来源"):
+        ws.render_artifact(spec)
+
+
 def test_unknown_skill_rejected(ws, df):
     ws.store_dataset("ds-nvda", df, ticker="NVDA")
     spec = html_spec(skill="no-such-skill")

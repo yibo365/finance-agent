@@ -6,8 +6,8 @@
 from __future__ import annotations
 
 import io
-from datetime import datetime, timezone
-from typing import Mapping
+from collections.abc import Mapping
+from datetime import UTC, datetime
 
 from docx import Document
 from docx.shared import Pt, RGBColor
@@ -82,7 +82,7 @@ def render_docx(
     meta = doc.add_paragraph()
     run = meta.add_run(
         (spec.subtitle + "　" if spec.subtitle else "")
-        + f"生成于 {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"
+        + f"生成于 {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')}"
         "　｜　本报告为研究复盘工具，不构成投资建议"
     )
     run.font.size = Pt(9)

@@ -7,7 +7,6 @@ from openpyxl import load_workbook
 from pptx import Presentation
 
 from finance_agent.artifacts.spec import ArtifactSpec
-from finance_agent.provenance import EvidenceLog
 from finance_agent.workspace import Workspace
 
 

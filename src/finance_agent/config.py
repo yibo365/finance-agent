@@ -37,7 +37,7 @@ class Settings:
     mock_mode: bool = False
 
     @classmethod
-    def from_env(cls) -> "Settings":
+    def from_env(cls) -> Settings:
         load_dotenv(PROJECT_ROOT / ".env")
         openai_key = os.environ.get("OPENAI_API_KEY", "")
         openrouter_key = os.environ.get("OPENROUTER_API_KEY", "")

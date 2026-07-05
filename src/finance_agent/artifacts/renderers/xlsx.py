@@ -8,8 +8,8 @@
 from __future__ import annotations
 
 import io
-from datetime import datetime, timezone
-from typing import Mapping
+from collections.abc import Mapping
+from datetime import UTC, datetime
 
 import pandas as pd
 from openpyxl import Workbook
@@ -141,7 +141,7 @@ def _metrics_sheets(
     chart.title = "归一化净值（起点=100）"
     chart.height, chart.width = 12, 24
     dates_ref = Reference(mx, min_col=1, min_row=2, max_row=last)
-    for a, label in enumerate(labels):
+    for a, _label in enumerate(labels):
         col = 2 + a * 4 + 1  # 净值列
         series_ref = Reference(mx, min_col=col, min_row=1, max_row=last)
         chart.add_data(series_ref, titles_from_data=True)
@@ -223,7 +223,7 @@ def render_xlsx(
 
     props = wb.properties
     props.title = spec.title
-    props.description = f"生成于 {datetime.now(timezone.utc).isoformat(timespec='seconds')}（finance-agent）"
+    props.description = f"生成于 {datetime.now(UTC).isoformat(timespec='seconds')}（finance-agent）"
     buffer = io.BytesIO()
     wb.save(buffer)
     return buffer.getvalue()

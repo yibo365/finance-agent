@@ -10,9 +10,9 @@ from datetime import date
 from agents import Agent, ModelSettings, WebSearchTool
 
 from finance_agent.config import Settings
-from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import EventList
+from finance_agent.llm import get_model
 from finance_agent.tools.agent_tools import (
     search_hn_news,
     search_yahoo_finance_news,

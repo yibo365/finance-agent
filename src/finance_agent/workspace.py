@@ -25,7 +25,7 @@ import os
 import re
 import secrets
 import tempfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -71,11 +71,11 @@ class Manifest(BaseModel):
 
 
 def _utcnow() -> str:
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def new_session_id() -> str:
-    return f"s-{datetime.now(timezone.utc):%Y%m%d}-{secrets.token_hex(2)}"
+    return f"s-{datetime.now(UTC):%Y%m%d}-{secrets.token_hex(2)}"
 
 
 class Workspace:
@@ -93,7 +93,7 @@ class Workspace:
     # ---------- 生命周期 ----------
 
     @classmethod
-    def create(cls, outputs_dir: Path, session_id: str | None = None, **kwargs) -> "Workspace":
+    def create(cls, outputs_dir: Path, session_id: str | None = None, **kwargs) -> Workspace:
         ws = cls(outputs_dir, session_id or new_session_id(), **kwargs)
         if ws.dir.exists():
             raise WorkspaceError(f"工作区已存在：{ws.session_id}")
@@ -102,7 +102,7 @@ class Workspace:
         return ws
 
     @classmethod
-    def open(cls, outputs_dir: Path, session_id: str, **kwargs) -> "Workspace":
+    def open(cls, outputs_dir: Path, session_id: str, **kwargs) -> Workspace:
         ws = cls(outputs_dir, session_id, **kwargs)
         if not ws.dir.is_dir():
             existing = sorted(
@@ -317,8 +317,27 @@ class Workspace:
                 "数据集引用请用 data_ref 字段而非 evidence_refs。"
             )
 
+    def _validate_event_sources(self, spec: ArtifactSpec) -> None:
+        """PRD 硬要求：产物中每个事件标注必须带至少一条可点击原文 URL。
+
+        确定性校验而非 prompt 自律（评审指出的口径落差）：schema 允许空列表
+        是为了不破坏结构化输出兼容性，落盘前在此拦截。
+        """
+        missing: list[str] = []
+        for block in spec.blocks:
+            for event in getattr(block, "events", None) or []:
+                if not any(s.url.startswith(("http://", "https://")) for s in event.sources):
+                    missing.append(f"{event.date} {event.title}")
+        if missing:
+            sample = "；".join(missing[:5])
+            raise WorkspaceError(
+                f"以下事件缺少可点击的原始来源 URL（共 {len(missing)} 个）：{sample}…。"
+                "每个事件的 sources 至少一条 http(s) 链接——没有来源支撑的事件不得进产物。"
+            )
+
     def _write_version(self, spec: ArtifactSpec, v: int, change_summary: str) -> ArtifactVersion:
         self._validate_evidence_refs(spec)
+        self._validate_event_sources(spec)
         content = self._render(spec)  # 先渲染后落盘：渲染失败不产生任何文件
         ext = _ARTIFACT_EXT[spec.kind]
         slug = spec.artifact_id.replace("-", "_")

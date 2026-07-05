@@ -11,9 +11,9 @@ from datetime import date
 from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
-from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import AlignmentMatrix
+from finance_agent.llm import get_model
 
 _INSTRUCTIONS = """\
 今天是 {today}。你是投研流水线的对齐分析环节。输入是一个 TaskBrief JSON，其 context_data 中

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import io
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -66,7 +66,7 @@ def parse_yahoo_chart(payload: dict[str, Any]) -> pd.DataFrame:
     return pd.DataFrame(
         {
             "date": [
-                datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
+                datetime.fromtimestamp(ts, tz=UTC).strftime("%Y-%m-%d")
                 for ts in timestamps
             ],
             "open": quotes.get("open"),
@@ -152,8 +152,8 @@ class YahooChartSource:
         self.label = f"Yahoo Finance ({host})"
 
     def fetch(self, client: httpx.Client, ticker: str, start: str, end: str) -> SourceResult:
-        period1 = int(datetime.strptime(start, "%Y-%m-%d").replace(tzinfo=timezone.utc).timestamp())
-        end_next = datetime.strptime(end, "%Y-%m-%d").replace(tzinfo=timezone.utc) + timedelta(days=1)
+        period1 = int(datetime.strptime(start, "%Y-%m-%d").replace(tzinfo=UTC).timestamp())
+        end_next = datetime.strptime(end, "%Y-%m-%d").replace(tzinfo=UTC) + timedelta(days=1)
         url = f"https://{self.host}.finance.yahoo.com/v8/finance/chart/{ticker}"
         response = client.get(
             url,
@@ -198,11 +198,14 @@ class LocalCacheSource:
     """本地缓存/种子文件，兼容 Nasdaq 导出与本工具缓存两种格式（按结构自动识别）。"""
 
     label = "Local Cache"
+    needs_http = False  # 离线源：降级链不会为它创建 HTTP 客户端
 
     def __init__(self, path: Path) -> None:
         self._path = Path(path).resolve()  # as_uri 与溯源记录都需要绝对路径
 
-    def fetch(self, client: httpx.Client, ticker: str, start: str, end: str) -> SourceResult:
+    def fetch(
+        self, client: httpx.Client | None, ticker: str, start: str, end: str
+    ) -> SourceResult:
         import json
 
         payload = json.loads(self._path.read_text(encoding="utf-8"))
@@ -243,17 +246,31 @@ def fetch_ohlcv(
     evidence_log: EvidenceLog | None = None,
     cache_path: Path | None = None,
 ) -> MarketData:
-    """按降级链拉取日线 OHLCV。任一源成功即返回；全失败抛 FetchError。"""
+    """按降级链拉取日线 OHLCV。任一源成功即返回；全失败抛 FetchError。
+
+    HTTP 客户端惰性创建：本地缓存等离线源不触碰网络栈——否则在配置了
+    socks 代理环境变量的机器上，纯离线路径也会因 httpx 初始化代理支持而失败
+    （评审实测：socks5 代理环境下 mock 测试挂 6 个）。
+    """
     chain = sources if sources is not None else default_sources(cache_path)
-    own_client = client is None
-    http = client or httpx.Client(
-        timeout=20.0, headers={"User-Agent": USER_AGENT}, follow_redirects=True
-    )
+    http: httpx.Client | None = client
+    own_client = False
+
+    def _http() -> httpx.Client:
+        nonlocal http, own_client
+        if http is None:
+            http = httpx.Client(
+                timeout=20.0, headers={"User-Agent": USER_AGENT}, follow_redirects=True
+            )
+            own_client = True
+        return http
+
     attempts: list[str] = []
     try:
         for source in chain:
             try:
-                result = source.fetch(http, ticker, start, end)
+                needs_http = getattr(source, "needs_http", True)
+                result = source.fetch(_http() if needs_http else None, ticker, start, end)
                 df = _clean(result.df, start, end)
                 if df.empty:
                     raise ValueError("未取得有效 OHLCV 数据")
@@ -276,5 +293,5 @@ def fetch_ohlcv(
             )
         raise FetchError(ticker, attempts)
     finally:
-        if own_client:
+        if own_client and http is not None:
             http.close()

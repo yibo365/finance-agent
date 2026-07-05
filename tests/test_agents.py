@@ -4,6 +4,7 @@ import json
 
 import pytest
 from agents import RunContextWrapper, WebSearchTool
+from pydantic import ValidationError
 
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
@@ -247,7 +248,10 @@ def test_llm_facing_schemas_have_no_prefix_items():
 
     from finance_agent.artifacts.spec import ArtifactSpec
     from finance_agent.contracts import (
-        AlignmentMatrix, ArtifactRefs, EventList, MarketData,
+        AlignmentMatrix,
+        ArtifactRefs,
+        EventList,
+        MarketData,
     )
 
     for model in (MarketData, EventList, AlignmentMatrix, ArtifactRefs,
@@ -262,5 +266,5 @@ def test_taskbrief_requires_original_request():
     brief = TaskBrief(original_request="回顾英伟达近五年行情", objective="采集行情")
     payload = json.loads(brief.model_dump_json())
     assert payload["original_request"].startswith("回顾")
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         TaskBrief(objective="缺原话")  # type: ignore[call-arg]

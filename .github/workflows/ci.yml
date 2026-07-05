@@ -1,0 +1,23 @@
+name: ci
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: 依赖安装
+        run: uv sync --frozen
+      - name: 静态检查（ruff）
+        run: uv run ruff check .
+      - name: Python 单测
+        run: uv run pytest -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 前端资产单测
+        run: node --test tests/*.test.cjs

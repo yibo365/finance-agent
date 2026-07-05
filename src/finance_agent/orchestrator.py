@@ -12,7 +12,6 @@ from datetime import date
 from agents import Agent, ModelSettings, RunContextWrapper, Runner, function_tool
 
 from finance_agent.config import Settings
-from finance_agent.llm import get_model
 from finance_agent.context import AppContext
 from finance_agent.contracts import (
     AlignmentMatrix,
@@ -21,6 +20,7 @@ from finance_agent.contracts import (
     MarketData,
     TaskBrief,
 )
+from finance_agent.llm import get_model
 from finance_agent.subagents.alignment_analyst import build_alignment_analyst
 from finance_agent.subagents.data_collector import build_data_collector
 from finance_agent.subagents.event_researcher import build_event_researcher

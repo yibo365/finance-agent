@@ -11,7 +11,7 @@
 用户输入 → SessionCore（挂载 SQLiteSession 对话历史）
         → Runner.run(orchestrator)          ← SDK 的 agent 循环
         → orchestrator 判断意图：新建研究 or 修改既有产物
-        → 按需调度 4 个 subagent（as_tool 方式，每次调用都是无状态的独立运行）
+        → 按需调度 4 个 subagent（function_tool 包装的 agents-as-tools，每次调用都是无状态的独立运行）
         → 产物落盘工作区（经 WorkspaceFS），manifest 登记版本
         → 回复用户：结论 + [artifact_id vN] + 文件路径
 ```
@@ -40,18 +40,18 @@ sequenceDiagram
     U->>S: 回顾NVDA近五年行情，梳理AI大事件，生成HTML
     S->>O: Runner.run，输入+会话历史
     Note over O: 解析任务：标的NVDA、5年窗口、产物形态HTML
-    O->>DC: as_tool：tickers、时间范围、数据要求
+    O->>DC: subagent工具调用：tickers、时间范围、数据要求
     DC->>WS: fetch_ohlcv：Yahoo→Stooq→缓存降级，落data/，登记dataset_id
     DC->>DC: detect_changepoints，确定性算法
     DC-->>O: MarketDataset：dataset_id、变化点列表、evidence
-    O->>ER: as_tool：主题关键词+变化点时间窗
+    O->>ER: subagent工具调用：主题关键词+变化点时间窗
     Note over ER: 先有拐点、再找解释：对每个时间窗做定向检索
     ER->>ER: search_hn_news ／ fetch_yahoo_news ／ web_search
     ER-->>O: EventList：事件、影响评级、来源URL、evidence
-    O->>AA: as_tool：变化点×事件打包传入
+    O->>AA: subagent工具调用：变化点×事件打包传入
     Note over AA: 无工具，纯推理：时间吻合+影响逻辑论证，不强行归因
     AA-->>O: AlignmentMatrix：吻合／部分吻合／无对应事件
-    O->>RB: as_tool：数据+事件+对齐结论+产物要求
+    O->>RB: subagent工具调用：数据+事件+对齐结论+产物要求
     RB->>RB: list_skills → load_skill：kline-html-report 方法论
     RB->>RB: 组织 ArtifactSpec：block 树，结构按任务现场决定
     RB->>WS: render_artifact：pydantic校验→渲染→artifacts/…_v1.html→manifest登记
@@ -84,9 +84,9 @@ sequenceDiagram
     S->>O: Runner.run，同一session，历史在
     O->>WS: list_artifacts → read_artifact：nvda-kline-report 当前spec
     Note over O: 拆解：①评级修改——改spec即可，不需新数据<br>②财报季分析——缺事件材料，需增量检索
-    O->>ER: as_tool：仅2024财报季时间窗的定向检索
+    O->>ER: subagent工具调用：仅2024财报季时间窗的定向检索
     ER-->>O: 增量EventList
-    O->>RB: as_tool：修改指令+当前spec+增量材料
+    O->>RB: subagent工具调用：修改指令+当前spec+增量材料
     Note over RB: 定点变更：只改评级block、追加财报季章节block<br>其余block原样保留
     RB->>WS: update_artifact：校验→渲染v2→manifest版本+1，v1文件与spec保留
     RB-->>O: ArtifactRef：v2 + 变更摘要
@@ -164,10 +164,10 @@ flowchart TB
     WEB --> SC
     SC <--> SQ
     SC --> O
-    O -. "as_tool（无状态调用）" .-> DC
-    O -. as_tool .-> ER
-    O -. as_tool .-> AA
-    O -. as_tool .-> RB
+    O -. "subagent工具（无状态调用）" .-> DC
+    O -. subagent工具 .-> ER
+    O -. subagent工具 .-> AA
+    O -. subagent工具 .-> RB
     O --> AT
     O --> SKT
     DC --> MT
@@ -190,7 +190,7 @@ flowchart TB
 
 读图要点：
 
-- **虚线 = as_tool 调用**：subagent 对 orchestrator 而言就是一个工具；每次虚线触发，SDK 内部为该 subagent 起一轮独立的 agent 循环（自己的 prompt、自己的工具、跑完即弃）。
+- **虚线 = subagent 工具调用**（自定义 function_tool 包装，非 SDK 裸 as_tool）：subagent 对 orchestrator 而言就是一个工具；每次虚线触发，SDK 内部为该 subagent 起一轮独立的 agent 循环（自己的 prompt、自己的工具、跑完即弃）。
 - **L4 是唯一有副作用的层**，且写盘动作全部汇到 WorkspaceFS 单点；L3 的 agent 只做判断与编排。
 - **alignment-analyst 没有指向 L4 的任何连线**——这是刻意的（见 §4）。
 - L5 渲染器被 artifacts.py 调用而非被 agent 直接调用：agent 给的是 spec（逻辑描述），文件名、路径、资产复制全部由系统派生。
@@ -203,7 +203,7 @@ flowchart TB
 |---|---|
 | 职责 | 意图解析（新建研究 or 修改产物）、任务拆解、subagent 调度、结果终检、面向用户的回复 |
 | 模型 | gpt-5.5 |
-| 工具 | 4 个 subagent（as_tool）＋ `list_skills`、`list_artifacts`、`read_artifact` |
+| 工具 | 4 个 subagent 包装工具 ＋ `list_skills`、`list_artifacts`、`read_artifact` |
 | 输入 | 用户消息 + SQLiteSession 对话历史 + skill 索引（frontmatter 常驻 prompt） |
 | 输出 | 面向用户的自然语言回复（引用 `[artifact_id vN]`） |
 | prompt 要点 | 四类意图路由（§2.3），不需要的链路一步都不调；意图不明先澄清再动手，不凭猜测启动昂贵的采集链；修改类请求先查 manifest 定位目标产物；能用缓存数据就不重抓；终检清单（产物存在、evidence 完整、任务要求逐条覆盖）；诚实原则（数据缺失/事件未找到要明说） |
@@ -257,7 +257,7 @@ flowchart TB
 
 | 工具 | orchestrator | data-collector | event-researcher | alignment-analyst | report-builder |
 |---|:---:|:---:|:---:|:---:|:---:|
-| subagent × 4（as_tool） | ✅ | — | — | — | — |
+| subagent × 4（function_tool 包装） | ✅ | — | — | — | — |
 | `fetch_ohlcv` | — | ✅ | — | — | — |
 | `detect_changepoints` | — | ✅ | — | — | — |
 | `search_hn_news` | — | — | ✅ | — | — |
@@ -275,7 +275,7 @@ flowchart TB
 ## 6. SDK 运行机制（实现者须知）
 
 - **Runner 循环**：`Runner.run(orchestrator, input, session=…)` 驱动主循环——模型产出 → 若含 tool call 则执行工具/子 agent → 结果回填 → 再进模型，直至产出最终回复或触达 `max_turns` 护栏。
-- **as_tool 的嵌套语义**：`subagent.as_tool(name, description)` 把整个子 agent 包装成一个工具。orchestrator 调用它时，SDK 在内部为 subagent 起**独立的 Runner 循环**（自己的 system prompt、自己的工具、干净上下文），跑完把最终输出作为 tool result 返回。subagent 之间不能互相调用——调度权只在 orchestrator。
+- **subagent 工具的嵌套语义**：自定义 function_tool（参数 schema 为 TaskBrief，内部 `Runner.run`）把整个子 agent 包装成一个工具——模式属 agents-as-tools，但不用 SDK 裸 `as_tool()`。orchestrator 调用它时，SDK 在内部为 subagent 起**独立的 Runner 循环**（自己的 system prompt、自己的工具、干净上下文），跑完把最终输出作为 tool result 返回。subagent 之间不能互相调用——调度权只在 orchestrator。
 - **嵌套循环的展开（以 report-builder 为例）**：subagent 在自己的循环里自主决定调几次工具、何时完成——循环终止条件是产出符合 `output_type` 的最终输出，`max_turns` 兜底。典型轨迹：
 
   ```

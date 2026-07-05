@@ -33,13 +33,13 @@ class SessionCore:
         self.orchestrator = build_orchestrator(settings)
 
     @classmethod
-    def start(cls, settings: Settings, outputs_dir: Path | None = None) -> "SessionCore":
+    def start(cls, settings: Settings, outputs_dir: Path | None = None) -> SessionCore:
         return cls(settings, Workspace.create(outputs_dir or OUTPUTS_DIR))
 
     @classmethod
     def resume(
         cls, settings: Settings, session_id: str, outputs_dir: Path | None = None
-    ) -> "SessionCore":
+    ) -> SessionCore:
         return cls(settings, Workspace.open(outputs_dir or OUTPUTS_DIR, session_id))
 
     def _ensure_workspace_alive(self) -> None:

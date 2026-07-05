@@ -9,7 +9,7 @@ computation 类 evidence 的 source_url 指向输入 evidence（形成链），
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal
 
@@ -47,7 +47,7 @@ class EvidenceLog:
             kind=kind,
             source_url=source_url,
             query=query or {},
-            fetched_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            fetched_at=datetime.now(UTC).isoformat(timespec="seconds"),
             excerpt=excerpt,
         )
         self._items.append(evidence)
@@ -70,7 +70,7 @@ class EvidenceLog:
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     @classmethod
-    def load(cls, path: Path) -> "EvidenceLog":
+    def load(cls, path: Path) -> EvidenceLog:
         payload = json.loads(path.read_text(encoding="utf-8"))
         log = cls(run_id=payload["run_id"])
         log._items = [Evidence.model_validate(item) for item in payload["items"]]

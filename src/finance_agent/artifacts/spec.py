@@ -12,7 +12,7 @@ report-builder（LLM 判断）产出 spec，渲染器（确定性代码）把 sp
 
 from __future__ import annotations
 
-from typing import Annotated, Literal, Union
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field
 
@@ -132,10 +132,7 @@ class SlideBlock(BaseModel):
 
 
 Block = Annotated[
-    Union[
-        HeadingBlock, NarrativeBlock, TableBlock, KlineChartBlock, ChangepointTableBlock,
-        DataSheetBlock, MetricsSheetBlock, SlideBlock,
-    ],
+    HeadingBlock | NarrativeBlock | TableBlock | KlineChartBlock | ChangepointTableBlock | DataSheetBlock | MetricsSheetBlock | SlideBlock,
     Field(discriminator="type"),
 ]
 

@@ -156,6 +156,23 @@ def test_local_cache_source_nasdaq_format(tmp_path):
     assert data.df["close"].tolist() == [48.8, 47.6]
 
 
+def test_offline_sources_never_touch_http_stack(tmp_path, monkeypatch):
+    """纯离线路径不得初始化 httpx.Client。
+
+    评审实测事故：机器配置 socks5 代理环境变量但未装 socksio 时，
+    连本地缓存/mock 路径都因客户端初始化失败——离线源必须惰性绕开网络栈。
+    """
+    cache = tmp_path / "nvda.json"
+    cache.write_text(json.dumps(NASDAQ_PAYLOAD), encoding="utf-8")
+
+    def exploding_client(*args, **kwargs):
+        raise RuntimeError("代理环境下 httpx 初始化失败（模拟）")
+
+    monkeypatch.setattr("finance_agent.tools.market.httpx.Client", exploding_client)
+    data = fetch_ohlcv("NVDA", "2024-01-01", "2024-12-31", sources=[LocalCacheSource(cache)])
+    assert data.source == "Local Cache" and len(data.df) == 2
+
+
 def test_local_cache_rejects_ticker_mismatch(tmp_path):
     cache = tmp_path / "nvda.json"
     cache.write_text(json.dumps(NASDAQ_PAYLOAD), encoding="utf-8")

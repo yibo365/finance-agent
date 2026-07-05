@@ -30,7 +30,7 @@ finance-agent -p "…" ──┤── 会话核心（SQLiteSession 多轮记忆
         ▼
 ┌─ orchestrator（主 agent，gpt-5.5）─────────────────────────┐
 │  职责：解析任务/修改意图 → 规划 → 调度 subagent → 汇总把关  │
-│  可见工具：4 个 subagent（as_tool）+ list_skills            │
+│  可见工具：4 个 subagent 包装工具 + list_skills             │
 │           + list_artifacts / read_artifact（工作区感知）    │
 │                                                            │
 │  ┌────────────────┐  ┌────────────────┐                    │
@@ -74,7 +74,7 @@ finance-agent -p "…" ──┤── 会话核心（SQLiteSession 多轮记忆
 
 ## 4. 编排：agents-as-tools
 
-orchestrator 通过 `agent.as_tool()` 调用 4 个 subagent，**全程握有控制权**，放弃 handoffs（控制权转移适合客服分流，研究流水线需要中央汇总组装）。
+orchestrator **全程握有控制权**，放弃 handoffs（控制权转移适合客服分流，研究流水线需要中央汇总组装）。实现上不用 SDK 裸 `as_tool()`：每个 subagent 经自定义 function_tool 包装（内部嵌套 `Runner.run`），参数 schema 即 TaskBrief（见 architecture-and-flow §6 的传参失真治理）——模式仍属 agents-as-tools，但传参契约是自己的。
 
 **新建产物**的典型执行序（由 orchestrator 自主决定，非硬编码）：
 

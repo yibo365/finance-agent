@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import html as html_escape
 import json
-from datetime import datetime, timezone
-from typing import Mapping
+from collections.abc import Mapping
+from datetime import UTC, datetime
 
 import pandas as pd
 
@@ -162,7 +162,7 @@ def render_html(
         "meta": {
             "ticker": chart.ticker,
             "title": spec.title,
-            "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         },
         "rows": df.to_dict(orient="records"),
         "events": [e.model_dump() for e in chart.events],

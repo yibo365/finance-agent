@@ -8,7 +8,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import httpx
@@ -36,13 +36,13 @@ class NewsResult:
 
 
 def _to_iso(unix_seconds: int | float) -> str:
-    return datetime.fromtimestamp(int(unix_seconds), tz=timezone.utc).isoformat(
+    return datetime.fromtimestamp(int(unix_seconds), tz=UTC).isoformat(
         timespec="seconds"
     )
 
 
 def _epoch(day: str, *, end_of_day: bool = False) -> int:
-    moment = datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    moment = datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=UTC)
     if end_of_day:
         moment = moment.replace(hour=23, minute=59, second=59)
     return int(moment.timestamp())

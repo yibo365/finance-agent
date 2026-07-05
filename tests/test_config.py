@@ -75,8 +75,9 @@ def test_model_override(monkeypatch):
 
 
 def test_get_model_openrouter_binds_custom_client(monkeypatch):
-    import finance_agent.llm as llm
     from agents import OpenAIChatCompletionsModel
+
+    import finance_agent.llm as llm
 
     monkeypatch.setattr(llm, "set_tracing_disabled", lambda flag: None)
     settings = Settings(provider="openrouter", api_key="sk-or-x",

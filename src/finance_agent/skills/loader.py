@@ -11,7 +11,7 @@ FINANCE_AGENT_SKILLS_DIR 追加，同名时外部覆盖内置（便于用户定�
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 from finance_agent.config import BUILTIN_SKILLS_DIR
