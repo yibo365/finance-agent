@@ -7,28 +7,32 @@
 </head>
 <body>
 
-<nav>
-  <div class="top"><button id="newChat">＋ 新建会话</button></div>
-  <div id="sessionList"></div>
-  <div class="bottom"><button id="openSettings" type="button">⚙ 设置</button></div>
-</nav>
+<div class="app-shell">
+  <nav>
+    <div class="top"><button id="newChat">＋ 新建会话</button></div>
+    <div id="sessionList"></div>
+    <div class="bottom"><button id="openSettings" type="button">⚙ 设置</button></div>
+  </nav>
 
-<main>
-  <header>
-    <h1>finance-agent 投研工作台</h1>
-    <div class="sub" id="sessionInfo">连接中…</div>
-  </header>
-  <div id="log"></div>
-  <form id="form">
-    <input id="input" placeholder="例如：回顾英伟达近五年行情，梳理AI大事件，生成HTML" autocomplete="off" />
-    <button id="send" type="submit">发送</button>
-  </form>
-</main>
+  <main>
+    <header>
+      <h1>finance-agent 投研工作台</h1>
+      <div class="sub" id="sessionInfo">连接中…</div>
+    </header>
+    <div id="log"></div>
+    <form id="form">
+      <input id="input" placeholder="例如：回顾英伟达近五年行情，梳理AI大事件，生成HTML" autocomplete="off" />
+      <button id="send" type="submit">发送</button>
+    </form>
+  </main>
 
-<aside>
-  <h2>产物（点击打开 / 版本历史）</h2>
-  <div id="artifacts"><div class="empty">暂无产物</div></div>
-</aside>
+  <aside>
+    <div class="aside-head">
+      <h2>产物（点击打开 / 版本历史）</h2>
+    </div>
+    <div id="artifacts"><div class="empty">暂无产物</div></div>
+  </aside>
+</div>
 
 <dialog id="settingsDialog">
   <form id="settingsForm" method="dialog">
