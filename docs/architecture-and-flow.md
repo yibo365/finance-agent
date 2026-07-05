@@ -18,7 +18,7 @@
 
 两个关键事实，后面所有图都建立在这之上：
 
-- **对话记忆只在 orchestrator 一层**。subagent 每次被调用都是全新上下文（无状态），它们需要的信息全部由 orchestrator 在调用参数里显式传入——这就是"上下文隔离"的落地方式。
+- **对话记忆只在 orchestrator 一层**。subagent 每次被调用都是全新上下文（无状态），它们需要的信息全部由 orchestrator 在调用参数里显式传入——这就是"上下文隔离"的落地方式。传参失真（传话游戏）的风险由 TaskBrief 契约治理：调用参数强制携带用户原话（见 §6）。
 - **只有工具能碰文件系统**，且全部经 WorkspaceFS 禁闭在 `outputs/<session-id>/` 内；agent（含 orchestrator）手里没有任何通用文件读写能力。
 
 ## 2. 时序图
@@ -215,7 +215,7 @@ flowchart TB
 |---|---|
 | 职责 | 行情数据采集与质量把关、变化点检测的触发 |
 | 工具 | `fetch_ohlcv`、`detect_changepoints` |
-| 输入（调用参数） | tickers、时间范围、数据粒度要求 |
+| 输入（调用参数） | TaskBrief：original_request 原话 + tickers、时间范围、数据粒度要求 + assumptions |
 | 输出（output_type） | `MarketDataset`：dataset_id、覆盖区间、实际命中源、行数、变化点列表、evidence ids |
 | 判断点 | 降级链失败后的重试/换源决策；数据质量校验（行数异常、区间缺口）后是否接受 |
 | 为什么独立 | 采集含多轮"尝试→校验→决策"，过程性内容多；隔离后 orchestrator 只见结论 |
@@ -287,6 +287,11 @@ flowchart TB
 
   **试错被隔离在子循环内**：render 失败→修正→重试的反复 orchestrator 全程不感知，只见"一次工具调用、一个结构化结果"。event-researcher（每个拐点窗口连调多次检索）、data-collector（降级重试）同理。质量把关因此是三层：工具的确定性校验（schema、dataset_id 存在性）→ subagent 循环内自我修正 → orchestrator 终检。超 `max_turns` 未完成则作为工具错误返回，重试或改道的决策权回到 orchestrator。
 - **会话记忆**：`SQLiteSession` 只挂在 orchestrator 的 Runner 上；subagent 每次调用无历史。跨轮信息（"上次那个报告"）由 orchestrator 从会话历史 + manifest 恢复，再显式传参给 subagent。
+- **subagent 输入契约（TaskBrief）——治理"传话游戏"失真**：subagent 看不见对话历史，orchestrator 提参提错它无从发现（用户说"近五年"、参数被写成三年）。三道防线：
+  1. **调用参数强制携带用户原话**：TaskBrief pydantic 模型含 `original_request`（逐字引用）+ 结构化提取（tickers/date_range/…）+ `assumptions`（orchestrator 的默认假设声明）。subagent prompt 要求核对两者，矛盾时以原话为准或在输出中上报；
+  2. **不用裸 `as_tool` 的自由字符串**：自己包一层 function_tool（内部 `Runner.run` 子 agent），参数 schema 即 TaskBrief——漏填/瞎填在 schema 层暴露，不埋进自由文本；
+  3. **回声校验**：subagent 输出带"实际做了什么"（实际解析的 ticker、实际覆盖区间、实际命中源），orchestrator 终检对照意图，并在回复中向用户复述（如"已取 NVDA 2021-07 至 2026-07 日线"）——用户是最后一道纠错，接多轮修改能力闭环。
+  配合 §2.3：真正模糊的输入先澄清再动手；采用默认值必须在回复中声明假设。
 - **结构化输出**：subagent 一律声明 `output_type`（pydantic：MarketDataset / EventList / AlignmentMatrix / ArtifactRef），SDK 强制 schema——环节间不传自由文本，漂移在源头拦截。
 - **mock 模式**：`FINANCE_AGENT_MOCK=1` 时工具层换为录制数据实现，agent 层不感知——集成测试跑全流水线不烧 API。
 - **护栏**：每层 Runner 设 `max_turns`；工具抛结构化错误时，重试决策在持有该工具的 subagent，orchestrator 只见最终成败与原因。
