@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>__TITLE__</title>
+  <link rel="icon" href="data:," />
+  <style>
+    :root {
+      --bg: #0b1020; --panel: #121a2e; --panel2: #17223a;
+      --text: #eef3ff; --muted: #9fb0d0; --line: rgba(255,255,255,0.12);
+      --accent: #79a8ff; --green: #16c784; --red: #ff5c72;
+      --amber: #f8b84e; --blue: #5aa8ff; --chip: #253654;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      background: radial-gradient(circle at 20% 0%, #1d2a4d 0, transparent 32%), var(--bg);
+      color: var(--text);
+    }
+    a { color: #a9c6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1440px; margin: 0 auto; padding: 22px; }
+    header { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end; margin-bottom: 16px; }
+    h1 { font-size: clamp(24px, 3vw, 38px); margin: 0 0 8px; letter-spacing: -0.02em; }
+    .subtitle { color: var(--muted); line-height: 1.55; max-width: 920px; }
+    .pillbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      background: rgba(121,168,255,0.12); color: #d7e5ff;
+      border: 1px solid rgba(121,168,255,0.25);
+      padding: 6px 10px; border-radius: 999px; font-size: 12px;
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(18,26,46,0.95), rgba(18,26,46,0.82));
+      border: 1px solid var(--line); border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+    }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+    .card { padding: 16px; }
+    .card .label { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+    .card .value { font-size: 24px; font-weight: 750; }
+    .card .small { color: var(--muted); font-size: 12px; margin-top: 8px; line-height: 1.45; }
+    .controls {
+      display: grid; grid-template-columns: 1.15fr 0.75fr 0.75fr 0.75fr auto auto;
+      gap: 10px; padding: 14px; align-items: end; margin: 14px 0;
+    }
+    label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    input, select, button {
+      width: 100%; padding: 10px 11px; border-radius: 12px;
+      border: 1px solid var(--line); background: #0e1629; color: var(--text); outline: none;
+    }
+    button {
+      cursor: pointer; background: linear-gradient(180deg, #2a63e8, #1f4dbd);
+      border-color: rgba(121,168,255,0.35); font-weight: 650; white-space: nowrap;
+    }
+    button.secondary { background: #18233c; }
+    button:hover { filter: brightness(1.08); }
+    #chart { height: 760px; padding: 8px 8px 0; }
+    .status { padding: 10px 14px; color: var(--muted); border-top: 1px solid var(--line); font-size: 13px; line-height: 1.45; }
+    .status strong { color: var(--text); }
+    .section-title { font-size: 18px; font-weight: 750; padding: 16px 16px 0; }
+    .table-wrap { overflow: auto; max-height: 520px; padding: 0 12px 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: left; vertical-align: top; }
+    th { position: sticky; top: 0; background: #121a2e; z-index: 1; color: #dbe6ff; }
+    tr:hover td { background: rgba(121,168,255,0.05); }
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 7px; border-radius: 999px; font-size: 12px; background: var(--chip); color: #dbe6ff; }
+    .impact { font-weight: 800; }
+    .up { color: var(--green); } .down { color: var(--red); }
+    .mixed { color: var(--amber); } .neutral { color: var(--blue); }
+    .method { padding: 16px; color: var(--muted); line-height: 1.65; }
+    .method h2, .method h3, .method h4 { color: var(--text); margin: 0 0 10px; }
+    code { color: #dce8ff; background: rgba(255,255,255,0.06); padding: 2px 5px; border-radius: 6px; word-break: break-all; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; color: var(--muted); font-size: 12px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+    .sections { display: grid; gap: 14px; margin-top: 14px; }
+    .sections h2 { font-size: 20px; margin: 4px 0 0; }
+    .sections h3 { font-size: 16px; margin: 2px 0 0; }
+    .evidence-item { border-bottom: 1px solid var(--line); padding: 12px 16px; }
+    .evidence-item:target { background: rgba(121,168,255,0.12); border-radius: 12px; }
+    .evidence-item .eid { font-weight: 700; color: #d7e5ff; }
+    .evidence-item .meta { color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.5; }
+    .evref { font-size: 11px; vertical-align: super; }
+    footer { color: var(--muted); font-size: 12px; padding: 18px 0 8px; line-height: 1.55; }
+    @media (max-width: 1000px) {
+      header { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .controls { grid-template-columns: 1fr 1fr; }
+      #chart { height: 680px; }
+    }
+    @media (max-width: 620px) {
+      .grid, .controls { grid-template-columns: 1fr; }
+      .wrap { padding: 12px; }
+      #chart { height: 620px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>__TITLE__</h1>
+        <div class="subtitle">__SUBTITLE__</div>
+        <div class="pillbar">__PILLS_HTML__</div>
+      </div>
+      <div class="panel card" style="min-width:260px;">
+        <div class="label">产物说明</div>
+        <div class="value" style="font-size:18px;">自包含 · 可溯源</div>
+        <div class="small">数据与图表库全部内嵌，断网可打开；事件与变化点均可回链到溯源明细。生成于 __GENERATED_AT__。</div>
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="panel card">
+        <div class="label">数据区间</div>
+        <div class="value" id="rangeCard">加载中</div>
+        <div class="small" id="rangeSub">—</div>
+      </div>
+      <div class="panel card">
+        <div class="label">最新收盘价</div>
+        <div class="value" id="lastClose">加载中</div>
+        <div class="small" id="lastSub">—</div>
+      </div>
+      <div class="panel card">
+        <div class="label">区间收益</div>
+        <div class="value" id="periodRet">加载中</div>
+        <div class="small">按日线收盘价计算</div>
+      </div>
+      <div class="panel card">
+        <div class="label">最大回撤</div>
+        <div class="value" id="maxDD">加载中</div>
+        <div class="small" id="maxDDSub">—</div>
+      </div>
+    </section>
+
+    <section class="panel controls">
+      <div>
+        <label for="searchBox">搜索事件 / 备注 / 来源</label>
+        <input id="searchBox" type="search" placeholder="例如：DeepSeek、B100、出口管制、财报" />
+      </div>
+      <div>
+        <label for="categoryFilter">事件类型</label>
+        <select id="categoryFilter"><option value="all">全部</option></select>
+      </div>
+      <div>
+        <label for="impactFilter">最低影响评级</label>
+        <select id="impactFilter">
+          <option value="1">≥ 1 全部</option>
+          <option value="3">≥ 3 中高</option>
+          <option value="4">≥ 4 高影响</option>
+          <option value="5">= 5 关键拐点</option>
+        </select>
+      </div>
+      <div>
+        <label for="directionFilter">方向</label>
+        <select id="directionFilter">
+          <option value="all">全部</option>
+          <option value="up">正向</option>
+          <option value="down">负向</option>
+          <option value="mixed">混合</option>
+        </select>
+      </div>
+      <button id="resetBtn" class="secondary">重置筛选</button>
+      <button id="csvBtn">导出事件CSV</button>
+    </section>
+
+    <section class="panel">
+      <div id="chart"></div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--green)"></span>正向事件</span>
+        <span><span class="dot" style="background:var(--red)"></span>负向事件</span>
+        <span><span class="dot" style="background:var(--amber)"></span>混合/争议</span>
+        <span>▲▼◆=事件（越大评级越高）；×=规则触发的变化点。</span>
+      </div>
+      <div class="status" id="statusLine">正在初始化……</div>
+    </section>
+
+    <section class="panel" style="margin-top:14px;">
+      <div class="section-title">事件明细与事件后收益</div>
+      <div class="table-wrap">
+        <table id="eventTable">
+          <thead>
+            <tr>
+              <th>事件日</th><th>交易日</th><th>事件 / 行情变化</th><th>类型</th>
+              <th>影响</th><th>5日</th><th>20日</th><th>来源 / 溯源</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="sections">
+__SECTIONS_HTML__
+    </div>
+
+    <section class="panel" style="margin-top:14px;" id="evidence-panel">
+      <div class="section-title">溯源明细（Evidence）</div>
+      <div class="method" style="padding-bottom:6px;">每条记录含来源 URL、抓取时间与查询参数；正文与事件表中的 ev-* 标记均回链至此。</div>
+__EVIDENCE_HTML__
+    </section>
+
+    <footer>
+      __SOURCE_NOTE__ ｜ 本页为研究复盘工具，不构成投资建议。图表库 Plotly（本地内嵌，无 CDN 依赖）。
+    </footer>
+  </div>
+
+<script>__PLOTLY_JS__</script>
+<script>window.__REPORT_PAYLOAD__ = __PAYLOAD_JSON__;</script>
+<script>__RENDER_JS__</script>
+<script>KlineReport.init(window.__REPORT_PAYLOAD__, window);</script>
+</body>
+</html>

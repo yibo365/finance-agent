@@ -200,7 +200,7 @@ class LocalCacheSource:
     label = "Local Cache"
 
     def __init__(self, path: Path) -> None:
-        self._path = Path(path)
+        self._path = Path(path).resolve()  # as_uri 与溯源记录都需要绝对路径
 
     def fetch(self, client: httpx.Client, ticker: str, start: str, end: str) -> SourceResult:
         import json
