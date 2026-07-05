@@ -65,6 +65,57 @@ def test_wellformed_sequences_pass_through_unchanged():
     assert sanitize_chat_messages(messages) == messages
 
 
+def test_max_tokens_rejection_retried_without_param():
+    import asyncio
+
+    import httpx
+    from openai import AsyncOpenAI, BadRequestError
+
+    from finance_agent.llm import _patch_compat
+
+    calls: list[dict] = []
+
+    async def fake_create(*args, **kwargs):
+        calls.append(dict(kwargs))
+        if kwargs.get("max_tokens"):
+            raise BadRequestError(
+                "Invalid max_tokens value, the valid range of max_tokens is [1, 8192]",
+                response=httpx.Response(400, request=httpx.Request("POST", "http://x")),
+                body=None,
+            )
+        return {"ok": True}
+
+    client = AsyncOpenAI(api_key="k", base_url="http://x/v1")
+    client.chat.completions.create = fake_create
+    _patch_compat(client, "object")
+    out = asyncio.run(client.chat.completions.create(
+        messages=[{"role": "user", "content": "u"}], max_tokens=200_000,
+    ))
+    assert out == {"ok": True}
+    assert calls[0].get("max_tokens") == 200_000    # 第一次带预算
+    assert "max_tokens" not in calls[1]             # 被拒后去参重试
+    # 与 max_tokens 无关的 400 不重试、原样上抛
+    calls.clear()
+
+    async def other_error(*args, **kwargs):
+        calls.append(dict(kwargs))
+        raise BadRequestError(
+            "Invalid Authentication",
+            response=httpx.Response(400, request=httpx.Request("POST", "http://x")),
+            body=None,
+        )
+
+    client2 = AsyncOpenAI(api_key="k", base_url="http://x/v1")
+    client2.chat.completions.create = other_error
+    _patch_compat(client2, "object")
+    import pytest as _pytest
+    with _pytest.raises(BadRequestError, match="Invalid Authentication"):
+        asyncio.run(client2.chat.completions.create(
+            messages=[{"role": "user", "content": "u"}], max_tokens=100,
+        ))
+    assert len(calls) == 1                          # 只调了一次
+
+
 def test_content_parts_list_merged_as_text():
     messages = [
         {"role": "assistant", "tool_calls": [_tc("c1")]},

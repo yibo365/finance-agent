@@ -43,5 +43,5 @@ def build_data_collector(settings: Settings) -> Agent[AppContext]:
         tools=[fetch_market_data, run_changepoint_detection],
         output_type=MarketData,
         model=get_model(settings),
-        model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
+        model_settings=ModelSettings(max_tokens=settings.max_output_tokens or None),
     )

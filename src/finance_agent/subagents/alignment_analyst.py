@@ -48,5 +48,5 @@ def build_alignment_analyst(settings: Settings) -> Agent[AppContext]:
         tools=[load_material],
         output_type=AlignmentMatrix,
         model=get_model(settings),
-        model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
+        model_settings=ModelSettings(max_tokens=settings.max_output_tokens or None),
     )

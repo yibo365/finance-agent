@@ -76,5 +76,5 @@ def build_event_researcher(settings: Settings) -> Agent[AppContext]:
         tools=tools,
         output_type=EventList,
         model=get_model(settings),
-        model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
+        model_settings=ModelSettings(max_tokens=settings.max_output_tokens or None),
     )

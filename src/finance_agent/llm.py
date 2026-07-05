@@ -21,6 +21,9 @@ OpenRouter/自建网关的模型名（如 deepseek/deepseek-v4-pro、openai/gpt-
    拆成独立 assistant 消息插在 tool_calls 与 tool 回执之间——OpenAI/OpenRouter
    宽容，DeepSeek 官方/Kimi 严格校验邻接并 400。发送前把插队文本并入
    tool_calls 消息、回执按声明顺序紧随、缺失回执补占位、无主回执丢弃。
+3. max_tokens 超限自动去参：输出预算默认放宽（200000，DeepSeek 实测接受），
+   供应方对超限值 400 拒绝时去掉 max_tokens 重试一次（用其自身默认/上限
+   兜底）——预算宽松不该换来换供应方就 400。
 """
 
 from __future__ import annotations
@@ -29,7 +32,7 @@ import json
 from typing import Any
 
 from agents import OpenAIChatCompletionsModel, set_tracing_disabled
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, BadRequestError
 from pydantic import BaseModel
 
 from finance_agent.config import Settings
@@ -111,13 +114,27 @@ def sanitize_chat_messages(messages: list[dict]) -> list[dict]:
     return result
 
 
+def _is_max_tokens_rejection(error: Exception) -> bool:
+    text = str(error).lower().replace("-", "_")
+    return "max_tokens" in text or "max tokens" in text or "max_completion_tokens" in text
+
+
 def _patch_compat(client: AsyncOpenAI, mode: str) -> AsyncOpenAI:
     original = client.chat.completions.create
 
     async def create(*args: Any, **kwargs: Any):
         if isinstance(kwargs.get("messages"), list):
             kwargs["messages"] = sanitize_chat_messages(kwargs["messages"])
-        return await original(*args, **rewrite_response_format(kwargs, mode))
+        kwargs = rewrite_response_format(kwargs, mode)
+        try:
+            return await original(*args, **kwargs)
+        except BadRequestError as exc:
+            # 3) max_tokens 超供应方上限被 400 拒绝 → 去参重试一次
+            #    （默认预算放得很宽，超限交给供应方自身上限兜底）
+            if kwargs.get("max_tokens") and _is_max_tokens_rejection(exc):
+                kwargs.pop("max_tokens", None)
+                return await original(*args, **kwargs)
+            raise
 
     client.chat.completions.create = create  # type: ignore[method-assign]
     return client

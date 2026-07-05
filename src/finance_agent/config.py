@@ -45,7 +45,10 @@ class Settings:
     # （Kimi/DeepSeek 等通吃）| schema=原样 json_schema（OpenRouter 等支持时更严格）
     # | off=不发。schema 说明始终随提示词下达。
     json_mode: str = "object"
-    max_output_tokens: int = 12000    # 单次调用输出上限：控成本，部分网关按此做预算检查
+    # 单次调用输出上限。默认 200000（宽松，DeepSeek 等实测接受）；0 = 不发送
+    # max_tokens（用供应方自身默认/上限）。需要控成本时经 FINANCE_AGENT_MAX_TOKENS 调小。
+    # 供应方对超限值 400 拒绝时，llm 兼容层会自动去参重试（见 llm.py）。
+    max_output_tokens: int = 200000
     mock_mode: bool = False
 
     @classmethod
@@ -73,7 +76,7 @@ class Settings:
                 if os.environ.get("FINANCE_AGENT_JSON_MODE", "").strip().lower()
                 in ("object", "schema", "off") else "object"
             ),
-            max_output_tokens=int(os.environ.get("FINANCE_AGENT_MAX_TOKENS", "12000")),
+            max_output_tokens=int(os.environ.get("FINANCE_AGENT_MAX_TOKENS", "200000")),
             mock_mode=os.environ.get("FINANCE_AGENT_MOCK", "") == "1",
         )
 

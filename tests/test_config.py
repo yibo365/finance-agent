@@ -14,7 +14,7 @@ def clean_env(monkeypatch):
     for var in ("OPENAI_API_KEY", "OPENROUTER_API_KEY", "OPENAI_BASE_URL",
                 "FINANCE_AGENT_MODEL", "FINANCE_AGENT_MOCK", "FINANCE_AGENT_BASE_URL",
                 "FINANCE_AGENT_WEB_MAX_RESULTS", "TAVILY_API_KEY",
-                "FINANCE_AGENT_JSON_MODE"):
+                "FINANCE_AGENT_JSON_MODE", "FINANCE_AGENT_MAX_TOKENS"):
         monkeypatch.delenv(var, raising=False)
 
 
@@ -145,6 +145,16 @@ def test_configure_llm_disables_tracing_for_gateway(monkeypatch):
     calls.clear()
     llm.configure_llm(Settings(api_key="sk-a"))
     assert calls == []
+
+
+def test_max_tokens_generous_default_and_zero_means_unset(monkeypatch):
+    from finance_agent.subagents.data_collector import build_data_collector
+
+    assert Settings.from_env().max_output_tokens == 200_000   # 宽松默认，不再抠输出
+    agent = build_data_collector(Settings(mock_mode=True, max_output_tokens=0))
+    assert agent.model_settings.max_tokens is None            # 0 = 不发送 max_tokens
+    monkeypatch.setenv("FINANCE_AGENT_MAX_TOKENS", "8000")
+    assert Settings.from_env().max_output_tokens == 8000      # 控成本时可调小
 
 
 def test_json_mode_default_and_override(monkeypatch):

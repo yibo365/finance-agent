@@ -79,5 +79,5 @@ def build_report_builder(settings: Settings) -> Agent[AppContext]:
                render_artifact, update_artifact],
         output_type=ArtifactRefs,
         model=get_model(settings),
-        model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
+        model_settings=ModelSettings(max_tokens=settings.max_output_tokens or None),
     )

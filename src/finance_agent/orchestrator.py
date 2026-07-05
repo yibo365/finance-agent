@@ -355,5 +355,5 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
             read_artifact,
         ],
         model=get_model(settings),
-        model_settings=ModelSettings(max_tokens=settings.max_output_tokens),
+        model_settings=ModelSettings(max_tokens=settings.max_output_tokens or None),
     )
