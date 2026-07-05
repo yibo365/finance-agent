@@ -26,6 +26,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("-p", "--prompt", default=None, help="一次性执行该任务后退出")
     parser.add_argument("--resume", metavar="SESSION_ID", default=None, help="恢复历史会话")
     parser.add_argument("--list-sessions", action="store_true", help="列出可恢复的会话")
+    parser.add_argument("--web", action="store_true", help="启动本地 Web 聊天界面（仅 127.0.0.1）")
+    parser.add_argument("--port", type=int, default=8765, help="Web 界面端口（默认 8765）")
     return parser
 
 
@@ -77,7 +79,11 @@ def main() -> None:
         if args.resume
         else SessionCore.start(settings)
     )
-    if args.prompt:
+    if args.web:
+        from finance_agent.web.app import serve
+
+        serve(core, port=args.port)
+    elif args.prompt:
         asyncio.run(_run_once(core, args.prompt))
         print(f"\n会话 {core.workspace.session_id} 已保存，"
               f"可用 finance-agent --resume {core.workspace.session_id} 继续修改。")

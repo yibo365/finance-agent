@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>finance-agent 投研工作台</title>
+<style>
+  :root {
+    --bg:#0b1020; --panel:#121a2e; --line:rgba(255,255,255,.12);
+    --text:#eef3ff; --muted:#9fb0d0; --accent:#79a8ff; --chip:#253654;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; height:100vh; display:grid; grid-template-columns: 1fr 380px;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--text); }
+  main { display:flex; flex-direction:column; border-right:1px solid var(--line); min-width:0; }
+  header { padding:14px 18px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:16px; margin:0; }
+  header .sub { color:var(--muted); font-size:12px; margin-top:4px; }
+  #log { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; }
+  .msg { max-width:82%; padding:10px 14px; border-radius:14px; line-height:1.6;
+    white-space:pre-wrap; word-break:break-word; font-size:14px; }
+  .user { align-self:flex-end; background:#1f4dbd; }
+  .bot  { align-self:flex-start; background:var(--panel); border:1px solid var(--line); }
+  .status { align-self:flex-start; color:var(--muted); font-size:12px; }
+  form { display:flex; gap:10px; padding:14px 18px; border-top:1px solid var(--line); }
+  input { flex:1; padding:12px; border-radius:12px; border:1px solid var(--line);
+    background:#0e1629; color:var(--text); outline:none; font-size:14px; }
+  button { padding:12px 22px; border-radius:12px; border:1px solid rgba(121,168,255,.35);
+    background:linear-gradient(180deg,#2a63e8,#1f4dbd); color:#fff; cursor:pointer; font-weight:600; }
+  button:disabled { opacity:.5; cursor:wait; }
+  aside { overflow-y:auto; padding:16px; }
+  aside h2 { font-size:14px; color:var(--muted); margin:4px 0 12px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:12px 14px; margin-bottom:10px; }
+  .card .id { font-weight:700; font-size:13px; }
+  .card .meta { color:var(--muted); font-size:12px; margin-top:4px; line-height:1.5; }
+  .card a { color:var(--accent); text-decoration:none; font-size:13px; }
+  .badge { display:inline-block; background:var(--chip); border-radius:999px;
+    padding:2px 8px; font-size:11px; margin-left:6px; }
+  .empty { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>finance-agent 投研工作台</h1>
+    <div class="sub" id="sessionInfo">连接中…</div>
+  </header>
+  <div id="log"></div>
+  <form id="form">
+    <input id="input" placeholder="例如：回顾英伟达近五年行情，梳理AI大事件，生成HTML" autocomplete="off" />
+    <button id="send" type="submit">发送</button>
+  </form>
+</main>
+<aside>
+  <h2>产物（点击打开 / 版本历史）</h2>
+  <div id="artifacts"><div class="empty">暂无产物</div></div>
+</aside>
+<script>
+const log = document.getElementById('log');
+const form = document.getElementById('form');
+const input = document.getElementById('input');
+const send = document.getElementById('send');
+
+function addMsg(cls, text) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + cls;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function refreshState() {
+  const state = await (await fetch('/api/state')).json();
+  document.getElementById('sessionInfo').textContent =
+    `会话 ${state.session_id} ｜ 工作区 ${state.workspace_dir}`;
+  const box = document.getElementById('artifacts');
+  if (!state.artifacts.length) { box.innerHTML = '<div class="empty">暂无产物</div>'; return; }
+  box.innerHTML = '';
+  for (const a of state.artifacts) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const history = a.history.map(h =>
+      `v${h.v} ${h.change_summary}`).join('<br>');
+    card.innerHTML =
+      `<div class="id">${a.artifact_id}<span class="badge">v${a.current_version}</span>` +
+      `<span class="badge">${a.kind}</span></div>` +
+      `<div class="meta">${a.title}</div>` +
+      `<div class="meta">${history}</div>` +
+      `<a href="/api/artifacts/${a.artifact_id}/file" target="_blank" rel="noopener">打开当前版本</a>`;
+    box.appendChild(card);
+  }
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  send.disabled = true;
+  addMsg('user', text);
+  const statusDiv = addMsg('status', '思考中…');
+  let botDiv = null;
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: text}),
+    });
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, {stream: true});
+      const frames = buffer.split('\n\n');
+      buffer = frames.pop();
+      for (const frame of frames) {
+        if (!frame.startsWith('data: ')) continue;
+        const event = JSON.parse(frame.slice(6));
+        if (event.type === 'status') { statusDiv.textContent = event.text; }
+        if (event.type === 'delta') {
+          if (!botDiv) botDiv = addMsg('bot', '');
+          botDiv.textContent += event.text;
+          log.scrollTop = log.scrollHeight;
+        }
+        if (event.type === 'done' && !botDiv) { botDiv = addMsg('bot', event.reply); }
+        if (event.type === 'error') { addMsg('bot', '出错了：' + event.text); }
+      }
+    }
+  } catch (err) {
+    addMsg('bot', '请求失败：' + err.message);
+  } finally {
+    statusDiv.remove();
+    send.disabled = false;
+    input.focus();
+    refreshState();
+  }
+});
+
+refreshState();
+</script>
+</body>
+</html>

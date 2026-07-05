@@ -49,6 +49,27 @@ class SessionCore:
         )
         return str(result.final_output)
 
+    async def stream_turn(self, user_input: str):
+        """流式执行一轮：产出 status（工具/子agent进度）、delta（文本增量）、done。"""
+        from openai.types.responses import ResponseTextDeltaEvent
+
+        result = Runner.run_streamed(
+            self.orchestrator,
+            user_input,
+            context=self.ctx,
+            session=self.chat,
+            max_turns=MAX_ORCHESTRATOR_TURNS,
+        )
+        async for event in result.stream_events():
+            if event.type == "raw_response_event" and isinstance(
+                event.data, ResponseTextDeltaEvent
+            ):
+                yield {"type": "delta", "text": event.data.delta}
+            elif event.type == "run_item_stream_event" and event.item.type == "tool_call_item":
+                name = getattr(event.item.raw_item, "name", "") or "工具"
+                yield {"type": "status", "text": f"正在调用 {name}…"}
+        yield {"type": "done", "reply": str(result.final_output)}
+
     def artifact_snapshot(self) -> dict[str, int]:
         """{artifact_id: current_version}，供入口层计算一轮对话产生的产物增量。"""
         return {
