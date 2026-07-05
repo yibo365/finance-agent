@@ -61,8 +61,10 @@ _PROMPT = """\
 ## 数据流细则（新建研究）
 
 1. run_data_collector：返回 dataset_id 与变化点列表；
-2. run_event_researcher：把 severity≥2 变化点的日期窗口放进 focus_windows，
-   关键词结合任务主题（如 AI、芯片、出口管制）——检索是带着问题去的；
+2. run_event_researcher：把 severity≥2 的变化点日期**聚合成不超过 10 个时间段**
+   放进 focus_windows（相邻的点合并成区间，覆盖全部年份，不要只传前几个）；
+   keywords 给出任务点名的具名事件（如 ChatGPT、B100、DeepSeek）+ 主题词
+   （AI、芯片、出口管制）——检索是带着问题去的；
 3. run_alignment_analyst：把变化点列表 + 事件列表原样打包进 context_data；
 4. run_report_builder：把 dataset_id、变化点、事件、对齐矩阵全部打包进
    context_data，并说明期望的产物类型与 artifact_id 建议。

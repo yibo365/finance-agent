@@ -144,6 +144,14 @@ def test_detect_changepoints_impl_caps_output(app):
     assert min(cp["severity"] for cp in out["changepoints"]) >= 1
 
 
+def test_search_hn_impl_rejects_boolean_and_long_queries(app):
+    # Algolia 不支持 OR 语法（真实事故：12 连败零命中），工具侧确定性拒绝并指导改法
+    with pytest.raises(ValueError, match="1-2 个词"):
+        search_hn_impl(app, "NVIDIA OR ChatGPT OR DeepSeek", "2022-01-01", "2022-12-31")
+    with pytest.raises(ValueError, match="1-2 个词"):
+        search_hn_impl(app, "nvidia gpu export control policy news", "2022-01-01", "2022-12-31")
+
+
 def test_search_hn_impl_mock_filters_by_window(app):
     out = search_hn_impl(app, "chatgpt", "2022-11-01", "2022-12-15")
     assert out["mock"] is True

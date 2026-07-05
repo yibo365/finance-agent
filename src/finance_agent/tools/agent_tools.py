@@ -144,6 +144,14 @@ def run_changepoint_detection(
 def search_hn_impl(
     app: AppContext, query: str, start: str, end: str, max_hits: int = 30
 ) -> dict[str, Any]:
+    # 确定性纠错：Algolia 不支持布尔语法，长串组合词必然零命中（真实事故：
+    # "NVIDIA OR NVDA OR ChatGPT OR…" 12 连败）。直接拒绝并告知正确用法。
+    if " OR " in query.upper() or len(query.split()) > 4:
+        raise ValueError(
+            f"HN 检索不支持 OR/长组合查询（收到：{query!r}）。"
+            "请改为 1-2 个词的单个关键词（如 chatgpt / nvidia export / deepseek），"
+            "多个关键词分多次调用。"
+        )
     if app.settings.mock_mode:
         items = [n for n in _MOCK_NEWS if start <= n["published_at"][:10] <= end]
         return {"query": query, "items": items, "evidence_id": "", "mock": True}
