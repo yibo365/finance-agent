@@ -163,17 +163,26 @@ async function refreshArtifacts() {
   for (const a of state.artifacts) {
     const card = el('div', 'card');
     const idLine = el('div', 'id', a.artifact_id);
-    idLine.appendChild(el('span', 'badge', 'v' + a.current_version));
-    idLine.appendChild(el('span', 'badge', a.kind));
+    idLine.appendChild(el('span', 'badge badge-version', 'v' + a.current_version));
+    idLine.appendChild(el('span', 'badge badge-kind', a.kind));
     card.appendChild(idLine);
     card.appendChild(el('div', 'meta', a.title));
     const history = el('div', 'meta');
     for (const h of a.history) history.appendChild(el('div', '', `v${h.v} ${h.change_summary}`));
     card.appendChild(history);
-    const link = el('a', '', '打开当前版本');
-    link.href = `/api/sessions/${forId}/artifacts/${a.artifact_id}/file`;
-    link.target = '_blank'; link.rel = 'noopener';
-    card.appendChild(link);
+    const actions = el('div', 'artifact-actions');
+    const fileUrl = `/api/sessions/${forId}/artifacts/${a.artifact_id}/file`;
+    if (a.kind === 'html') {
+      const preview = el('a', 'artifact-action primary', '在线预览');
+      preview.href = fileUrl;
+      preview.target = '_blank'; preview.rel = 'noopener';
+      actions.appendChild(preview);
+    }
+    const download = el('a', 'artifact-action', '下载');
+    download.href = `${fileUrl}?download=1`;
+    download.download = '';
+    actions.appendChild(download);
+    card.appendChild(actions);
     box.appendChild(card);
   }
   return state;

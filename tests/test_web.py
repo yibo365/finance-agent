@@ -137,6 +137,18 @@ def test_artifact_file_download_and_404(client):
     ).status_code == 404
 
 
+def test_html_artifact_file_supports_inline_preview_and_download(client):
+    preview = client.get(f"/api/sessions/{SEEDED}/artifacts/nvda-kline-report/file")
+    assert preview.status_code == 200
+    assert preview.headers["content-disposition"].startswith("inline;")
+
+    download = client.get(
+        f"/api/sessions/{SEEDED}/artifacts/nvda-kline-report/file?download=1"
+    )
+    assert download.status_code == 200
+    assert download.headers["content-disposition"].startswith("attachment;")
+
+
 # ---------- 聊天：会话创建与事件流 ----------
 
 def test_chat_without_session_creates_one_and_returns_id(client, outputs, monkeypatch):
