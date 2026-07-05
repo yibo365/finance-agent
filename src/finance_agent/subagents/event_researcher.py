@@ -16,6 +16,7 @@ from finance_agent.llm import get_model
 from finance_agent.tools.agent_tools import (
     search_hn_news,
     search_yahoo_finance_news,
+    submit_events,
     web_search,
 )
 
@@ -41,6 +42,11 @@ _INSTRUCTIONS = """\
    1 次；一旦收到"预算已用尽"，立即停止一切检索，基于已获材料输出最终结果
    ——半途成果好于轮次打满整体作废。
 6. 去重合并：同一事件多来源报道合并为一条，保留最权威来源在前。
+7. **增量提交（硬性纪律）**：每完成一个窗口/一批研究，立即用 submit_events
+   提交该批事件（单次 ≤5 条）——不要把几十条事件攒到最终输出一把交，
+   长 JSON 一处损坏会让全部成果作废。提交过的事件已落盘，
+   **最终输出的 events 必须留空数组 []**，只写 coverage_notes（回声）。
+   字符串字段内避免使用未转义的英文引号（用中文引号或改写）。
 7. 影响评级口径（impact）：
    5=直接改变标的盈利/估值中枢或触发大幅重定价；4=直接影响需求、产品周期、
    政策约束或市场情绪；3=影响生态与中期预期；1-2=观察级。
@@ -58,7 +64,7 @@ _INSTRUCTIONS = """\
 
 
 def build_event_researcher(settings: Settings) -> Agent[AppContext]:
-    tools: list = [search_hn_news, search_yahoo_finance_news]
+    tools: list = [submit_events, search_hn_news, search_yahoo_finance_news]
     if not settings.mock_mode:
         # 联网搜索唯一后端 Tavily（确定性 API，与 LLM 供应方解耦）；
         # 未配 key 时工具会返回引导错误，agent 按提示词退回 HN/Yahoo 并如实声明

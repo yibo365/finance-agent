@@ -53,11 +53,11 @@ def test_permission_matrix_event_researcher():
     # mock：仅离线两路；非 mock：一律挂 web_search（Tavily 唯一联网搜索后端，
     # 与 LLM 供应方解耦——无论 OpenAI 直连还是任意兼容网关都是同一路）
     assert tool_names(build_event_researcher(MOCK)) == {
-        "search_hn_news", "search_yahoo_finance_news",
+        "submit_events", "search_hn_news", "search_yahoo_finance_news",
     }
     for settings in (LIVE, GATEWAY):
         assert tool_names(build_event_researcher(settings)) == {
-            "search_hn_news", "search_yahoo_finance_news", "web_search",
+            "submit_events", "search_hn_news", "search_yahoo_finance_news", "web_search",
         }
 
 

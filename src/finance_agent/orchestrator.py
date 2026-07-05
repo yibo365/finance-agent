@@ -7,7 +7,9 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
+from collections.abc import Callable
 from datetime import UTC, date, datetime
 
 from agents import Agent, ModelSettings, RunContextWrapper, Runner, function_tool
@@ -23,6 +25,7 @@ from finance_agent.contracts import (
     TaskBrief,
 )
 from finance_agent.events import RunItemTranslator
+from finance_agent.json_repair import salvage_output
 from finance_agent.llm import get_model
 from finance_agent.subagents.alignment_analyst import build_alignment_analyst
 from finance_agent.subagents.data_collector import build_data_collector
@@ -189,6 +192,27 @@ def _digest(output: BaseModel) -> dict:
     return output.model_dump()
 
 
+def _finalize_events(app: AppContext, output: BaseModel | None) -> BaseModel | None:
+    """researcher 收尾：合并增量提交的事件与最终输出（后者可能已修复或为 None）。
+
+    即使最终输出完全损坏、甚至 Max turns 打满，已经 submit_events 落盘的
+    事件也能合并成 EventList 正常返回——研究成果不再因收尾失败整体作废。
+    """
+    collected: list = list(app.collected_events)
+    final_events = list(output.events) if isinstance(output, EventList) else []
+    seen = {(e.date, e.title.strip()) for e in collected}
+    merged = collected + [
+        e for e in final_events if (e.date, e.title.strip()) not in seen
+    ]
+    if not merged:
+        return output  # 没有任何事件可救：维持原结果（可能为 None → 照常报错）
+    if isinstance(output, EventList):
+        notes = output.coverage_notes
+    else:
+        notes = "（最终输出解析失败，事件来自运行中的增量提交，覆盖说明缺失——如需窗口级核对请复核检索日志）"
+    return EventList(events=merged, coverage_notes=notes)
+
+
 async def _run_subagent(
     agent: Agent[AppContext],
     brief: TaskBrief,
@@ -196,6 +220,7 @@ async def _run_subagent(
     output_type: type[BaseModel],
     max_turns: int,
     material_kind: str | None = None,
+    finalize: Callable[[AppContext, BaseModel | None], BaseModel | None] | None = None,
 ) -> str:
     """嵌套运行 subagent 并把内部动作经 ctx.emit 上报（FR-18）。
 
@@ -226,15 +251,34 @@ async def _run_subagent(
     result = Runner.run_streamed(
         agent, brief.model_dump_json(), context=app, max_turns=max_turns
     )
+    output: BaseModel | None = None
+    failure: BaseException | None = None
     try:
-        async for event in result.stream_events():
-            if event.type == "run_item_stream_event":
-                translated = translator.translate(event.item)
-                if translated is not None:
-                    _report(translated)
+        try:
+            async for event in result.stream_events():
+                if event.type == "run_item_stream_event":
+                    translated = translator.translate(event.item)
+                    if translated is not None:
+                        _report(translated)
+            output = result.final_output_as(output_type)
+        except asyncio.CancelledError:
+            raise  # 用户停止：不做任何打捞，保持取消语义
+        except Exception as exc:  # noqa: BLE001 —— 修复层兜底，救不回再抛
+            failure = exc
+            output = salvage_output(str(exc), output_type)
+            if output is not None:
+                _report({
+                    "type": "tool_result", "agent": agent.name, "tool": "最终输出修复",
+                    "ok": True,
+                    "detail": "原始输出含格式错误（围栏/坏引号/截断），已确定性修复解析。",
+                })
     finally:
         _report({"type": "agent_end", "agent": agent.name})
-    output = result.final_output_as(output_type)
+    if finalize is not None:
+        output = finalize(app, output)
+    if output is None:
+        assert failure is not None
+        raise failure
     if material_kind is None:
         return output.model_dump_json()
     material_id = app.workspace.store_material(material_kind, output.model_dump())
@@ -271,7 +315,8 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
             brief: TaskBrief。focus_windows 放入需要解释的变化点日期窗口。
         """
         return await _run_subagent(
-            researcher, brief, ctx, EventList, max_turns=20, material_kind="events"
+            researcher, brief, ctx, EventList, max_turns=20, material_kind="events",
+            finalize=_finalize_events,
         )
 
     @function_tool(failure_error_function=truncated_tool_error)

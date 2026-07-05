@@ -24,6 +24,9 @@ class AppContext:
     # 当次 subagent 运行内已消耗的检索次数（真实事故：event-researcher 无预算
     # 连搜 98 次、20 轮打满后整体作废）。检索工具据此执行确定性预算收敛。
     search_calls: int = field(default=0, repr=False)
+    # event-researcher 经 submit_events 增量提交的事件（真实事故：几十条事件
+    # 攒到最终输出一把序列化，JSON 一坏全部作废重跑）。每次 subagent 运行重置。
+    collected_events: list = field(default_factory=list, repr=False)
 
     def emit(self, event: dict) -> None:
         if self.on_event is not None:
@@ -31,3 +34,4 @@ class AppContext:
 
     def begin_subagent_run(self) -> None:
         self.search_calls = 0
+        self.collected_events = []

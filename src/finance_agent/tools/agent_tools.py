@@ -261,6 +261,51 @@ def search_yahoo_finance_news(
     return _json(search_yahoo_news_impl(ctx.context, query, max_items))
 
 
+def submit_events_impl(app: AppContext, events: list[Any]) -> dict[str, Any]:
+    """增量提交事件到运行内累积器（按 日期+标题 去重）。
+
+    大列表攒到最终输出一把序列化是最脆的路径（JSON 一坏全部作废）；
+    小批量经工具提交，坏一批只损失一批，且 Max turns/最终输出损坏时
+    已提交的事件仍可由包装层合并返回。
+    """
+    from finance_agent.contracts import EventItem
+
+    accepted = 0
+    duplicates = 0
+    seen = {(e.date, e.title.strip()) for e in app.collected_events}
+    for event in events:
+        item = event if isinstance(event, EventItem) else EventItem.model_validate(event)
+        key = (item.date, item.title.strip())
+        if key in seen:
+            duplicates += 1
+            continue
+        seen.add(key)
+        app.collected_events.append(item)
+        accepted += 1
+    return {
+        "accepted": accepted,
+        "duplicates_skipped": duplicates,
+        "total_collected": len(app.collected_events),
+        "note": "已落盘。最终输出时 events 留空数组，只写 coverage_notes——不要重复输出已提交的事件。",
+    }
+
+
+@function_tool(failure_error_function=truncated_tool_error)
+def submit_events(ctx: RunContextWrapper[AppContext], events: list[Any]) -> str:
+    """增量提交研究到的事件（每完成一个窗口/一批就提交，单次 ≤5 条）。
+
+    事件字段同 EventItem：date/title/category/direction/move/impact/notes/
+    sources/evidence_refs。提交过的事件**不要**再写进最终输出（events 留空）。
+
+    Args:
+        events: 本批事件对象列表（≤5 条；notes 精简、字符串内不要用未转义引号）。
+    """
+    from finance_agent.contracts import EventItem
+
+    items = [EventItem.model_validate(e) for e in events]
+    return _json(submit_events_impl(ctx.context, items))
+
+
 # ---------- 联网搜索（Tavily 确定性 API，唯一后端） ----------
 
 async def tavily_web_search_impl(
