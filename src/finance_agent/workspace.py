@@ -289,7 +289,36 @@ class Workspace:
         self.save_evidence()
         return version
 
+    def _validate_evidence_refs(self, spec: ArtifactSpec) -> None:
+        """溯源回链完整性：spec 引用的 evidence 必须真实存在。
+
+        真实事故：report-builder 自造语义化 id（ev-match-deepseek、
+        ev-cp-2022-03-17-rally），页面锚点全部悬空。确定性拒绝 + 报错指导，
+        让它在循环内自我修正。
+        """
+        known = {ev.id for ev in self.evidence.items()}
+        dangling: set[str] = set()
+
+        def _collect(refs: list[str]) -> None:
+            dangling.update(r for r in refs if r not in known)
+
+        for block in spec.blocks:
+            _collect(getattr(block, "evidence_refs", None) or [])
+            for event in getattr(block, "events", None) or []:
+                _collect(event.evidence_refs)
+            for cp in getattr(block, "changepoints", None) or []:
+                _collect(cp.evidence_refs)
+        if dangling:
+            sample = "、".join(sorted(dangling)[:6])
+            raise WorkspaceError(
+                f"evidence 引用不存在（共 {len(dangling)} 个悬空）：{sample}…。"
+                "evidence_refs 只能引用溯源记录中真实存在的 id"
+                f"（形如 ev-{self.session_id}-<序号>，见任务材料），禁止自造语义化 id；"
+                "数据集引用请用 data_ref 字段而非 evidence_refs。"
+            )
+
     def _write_version(self, spec: ArtifactSpec, v: int, change_summary: str) -> ArtifactVersion:
+        self._validate_evidence_refs(spec)
         content = self._render(spec)  # 先渲染后落盘：渲染失败不产生任何文件
         ext = _ARTIFACT_EXT[spec.kind]
         slug = spec.artifact_id.replace("-", "_")

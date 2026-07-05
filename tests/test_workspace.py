@@ -182,6 +182,19 @@ def test_list_artifacts_summary(ws, df):
     assert len(summary["history"]) == 2
 
 
+def test_dangling_evidence_refs_rejected(ws, df):
+    # 真实事故：report-builder 自造语义化 evidence id，页面锚点全部悬空
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    spec = html_spec()
+    spec.blocks[1].evidence_refs = ["ev-match-deepseek"]
+    with pytest.raises(WorkspaceError, match="悬空"):
+        ws.render_artifact(spec)
+    # 真实 id 通过
+    real = ws.evidence.record("market_data", source_url="https://x", excerpt="行情")
+    spec.blocks[1].evidence_refs = [real.id]
+    assert ws.render_artifact(spec).v == 1
+
+
 def test_unknown_skill_rejected(ws, df):
     ws.store_dataset("ds-nvda", df, ticker="NVDA")
     spec = html_spec(skill="no-such-skill")

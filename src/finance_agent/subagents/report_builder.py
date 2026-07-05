@@ -44,6 +44,8 @@ spec 纪律：
 - kline_chart 类 HTML 产物恰好一个 kline_chart block；事件标注（events）与
   变化点（changepoints）都挂在该 block 上；
 - 溯源：narrative 中含数字结论的段落、每个事件、每个表格都挂 evidence_refs；
+  **evidence_refs 只能填材料中真实存在的 evidence id（ev- 开头的完整 id）**，
+  禁止自造语义化 id（如 ev-match-xxx）——渲染会校验并拒绝悬空引用；
   材料里没有 evidence 支撑的话就不要写进产物；
 - 叙事用"时间吻合 + 影响逻辑"措辞，不做因果断言；材料缺口如实写"局限性"段落。
 
