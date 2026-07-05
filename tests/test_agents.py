@@ -175,6 +175,28 @@ def test_openrouter_web_search_impl_parses_citations_and_records_evidence(tmp_pa
     assert recorded.source_url == "https://reuters.com/x"
 
 
+# ---------- 结构化输出 schema 兼容性 ----------
+
+def test_llm_facing_schemas_have_no_prefix_items():
+    """OpenAI 结构化输出不支持 prefixItems（定长 tuple 的 schema 形态）。
+
+    所有面向 LLM 的 schema——subagent 的 output_type 与 ArtifactSpec/TaskBrief
+    工具参数——都不得含 prefixItems。真实事故：MarketData 里的 tuple[str,str]
+    曾导致 API 400 'array schema missing items'。
+    """
+    import json as json_mod
+
+    from finance_agent.artifacts.spec import ArtifactSpec
+    from finance_agent.contracts import (
+        AlignmentMatrix, ArtifactRefs, EventList, MarketData,
+    )
+
+    for model in (MarketData, EventList, AlignmentMatrix, ArtifactRefs,
+                  TaskBrief, ArtifactSpec):
+        schema = json_mod.dumps(model.model_json_schema())
+        assert "prefixItems" not in schema, f"{model.__name__} 的 schema 含 prefixItems"
+
+
 # ---------- 契约 ----------
 
 def test_taskbrief_requires_original_request():

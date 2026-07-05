@@ -48,7 +48,9 @@ class ChangepointMarker(BaseModel):
     ]
     rule: str
     severity: int = Field(ge=1, le=3)
-    window: tuple[str, str]
+    # list 而非 tuple[str, str]：定长元组的 prefixItems schema 会被
+    # OpenAI 结构化输出拒绝（ArtifactSpec 是 render_artifact 工具的参数 schema）
+    window: list[str] = Field(description="触发窗口 [起始日, 结束日]")
     evidence_refs: list[str] = Field(default_factory=list)
 
 

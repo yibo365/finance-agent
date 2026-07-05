@@ -37,7 +37,9 @@ class ChangepointOut(BaseModel):
     kind: str
     rule: str
     severity: int
-    window: tuple[str, str]
+    # 注意：不能用 tuple[str, str]——pydantic 会生成 prefixItems schema，
+    # OpenAI 结构化输出不支持（"array schema missing items"）
+    window: list[str] = Field(description="触发窗口 [起始日, 结束日]")
     evidence_refs: list[str] = Field(default_factory=list)
 
 
