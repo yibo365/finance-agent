@@ -1,0 +1,18 @@
+# 密钥与本地环境 —— 任何密钥不入库
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+dist/
+
+# Node
+node_modules/
+
+# macOS
+.DS_Store
