@@ -1,0 +1,33 @@
+[project]
+name = "finance-agent"
+version = "0.1.0"
+description = "投研 agent：行情与行业事件对齐分析，产出可交互、可溯源的 HTML / Excel / PPT / Word"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai-agents>=0.2",
+    "pandas>=2.2",
+    "httpx>=0.27",
+    "openpyxl>=3.1",
+    "python-pptx>=1.0",
+    "python-docx>=1.1",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+finance-agent = "finance_agent.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/finance_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
