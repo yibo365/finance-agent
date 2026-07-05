@@ -276,6 +276,16 @@ flowchart TB
 
 - **Runner 循环**：`Runner.run(orchestrator, input, session=…)` 驱动主循环——模型产出 → 若含 tool call 则执行工具/子 agent → 结果回填 → 再进模型，直至产出最终回复或触达 `max_turns` 护栏。
 - **as_tool 的嵌套语义**：`subagent.as_tool(name, description)` 把整个子 agent 包装成一个工具。orchestrator 调用它时，SDK 在内部为 subagent 起**独立的 Runner 循环**（自己的 system prompt、自己的工具、干净上下文），跑完把最终输出作为 tool result 返回。subagent 之间不能互相调用——调度权只在 orchestrator。
+- **嵌套循环的展开（以 report-builder 为例）**：subagent 在自己的循环里自主决定调几次工具、何时完成——循环终止条件是产出符合 `output_type` 的最终输出，`max_turns` 兜底。典型轨迹：
+
+  ```
+  turn 1   load_skill("kline-html-report") 读方法论
+  turn 2   组织 ArtifactSpec → render_artifact(spec) → 校验失败（结构化错误回填自身上下文）
+  turn 3   看错误自我修正 spec → render_artifact → 成功
+  turn 4   产出 ArtifactRef（匹配 output_type，循环结束，回填 orchestrator）
+  ```
+
+  **试错被隔离在子循环内**：render 失败→修正→重试的反复 orchestrator 全程不感知，只见"一次工具调用、一个结构化结果"。event-researcher（每个拐点窗口连调多次检索）、data-collector（降级重试）同理。质量把关因此是三层：工具的确定性校验（schema、dataset_id 存在性）→ subagent 循环内自我修正 → orchestrator 终检。超 `max_turns` 未完成则作为工具错误返回，重试或改道的决策权回到 orchestrator。
 - **会话记忆**：`SQLiteSession` 只挂在 orchestrator 的 Runner 上；subagent 每次调用无历史。跨轮信息（"上次那个报告"）由 orchestrator 从会话历史 + manifest 恢复，再显式传参给 subagent。
 - **结构化输出**：subagent 一律声明 `output_type`（pydantic：MarketDataset / EventList / AlignmentMatrix / ArtifactRef），SDK 强制 schema——环节间不传自由文本，漂移在源头拦截。
 - **mock 模式**：`FINANCE_AGENT_MOCK=1` 时工具层换为录制数据实现，agent 层不感知——集成测试跑全流水线不烧 API。
