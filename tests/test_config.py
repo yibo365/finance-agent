@@ -64,6 +64,19 @@ def test_missing_api_key_raises_with_guidance(monkeypatch):
     assert "设置" in str(exc_info.value)  # 指向 Web 设置弹窗
 
 
+def test_placeholder_api_key_is_rejected(monkeypatch):
+    settings = Settings(api_key="sk-...")
+    assert settings.has_api_key() is False
+    with pytest.raises(RuntimeError) as exc_info:
+        settings.require_api_key()
+    assert "占位符" in str(exc_info.value)
+
+
+def test_placeholder_tavily_key_is_not_configured(monkeypatch):
+    settings = Settings(tavily_api_key="tvly-...")
+    assert settings.has_tavily_api_key() is False
+
+
 def test_mock_mode_skips_api_key(monkeypatch):
     monkeypatch.setenv("FINANCE_AGENT_MOCK", "1")
     settings = Settings.from_env()
@@ -140,6 +153,19 @@ def test_json_mode_default_and_override(monkeypatch):
     assert Settings.from_env().json_mode == "schema"
     monkeypatch.setenv("FINANCE_AGENT_JSON_MODE", "不合法")
     assert Settings.from_env().json_mode == "object"          # 非法值回落默认
+
+
+def test_env_example_does_not_ship_active_placeholder_keys():
+    from finance_agent.config import PROJECT_ROOT
+
+    content = (PROJECT_ROOT / ".env.example").read_text(encoding="utf-8")
+    active_lines = [
+        line.strip()
+        for line in content.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    assert "OPENAI_API_KEY=sk-..." not in active_lines
+    assert "TAVILY_API_KEY=tvly-..." not in active_lines
 
 
 def test_rewrite_response_format_modes():

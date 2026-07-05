@@ -77,11 +77,20 @@ class TableBlock(BaseModel):
 
 
 class KlineChartBlock(BaseModel):
-    """K线主图：OHLCV + MA + 事件标注 + 变化点标记。data_ref 为 dataset_id。"""
+    """K线主图：OHLCV + MA + 事件标注 + 变化点标记。data_ref 为 dataset_id。
+
+    事件/变化点支持**按引用挂材料**（events_material / changepoints_material 填
+    工作区材料 id）：渲染前由 Workspace 从材料注入全量，LLM 不必逐条抄写——
+    真实事故：24 事件 + 40 变化点内联进 spec ≈33KB，超 12K token 输出上限
+    被截断，"Invalid JSON input" 确定性死循环。内联 events/changepoints 仍可用，
+    与材料合并时同键（日期+标题 / 日期+类型）以内联为准（定点覆盖）。
+    """
 
     type: Literal["kline_chart"] = "kline_chart"
     data_ref: str
     ticker: str
+    events_material: str = ""         # mat-events-N：从材料注入全量事件
+    changepoints_material: str = ""   # mat-market-N：注入变化点（取匹配 data_ref 的 dataset）
     events: list[EventAnnotation] = Field(default_factory=list)
     changepoints: list[ChangepointMarker] = Field(default_factory=list)
 

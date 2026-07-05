@@ -49,8 +49,13 @@ dataset_id 与成文材料的 material_id（市场/事件/对齐三份，形如 
 spec 纪律：
 - artifact_id 用小写连字符（如 nvda-kline-report），一经创建不可变更；
 - data_ref 必须用材料中给出的 dataset_id，没有文件路径这种东西；
-- kline_chart 类 HTML 产物恰好一个 kline_chart block；事件标注（events）与
-  变化点（changepoints）都挂在该 block 上；
+- kline_chart 类 HTML 产物恰好一个 kline_chart block；
+  **事件与变化点一律按引用挂载：events_material 填事件材料 id、
+  changepoints_material 填市场材料 id（均见 context_data），渲染器会从
+  工作区注入全量——禁止把材料里的事件/变化点逐条抄写进 events/changepoints**
+  （几十条内联会超出输出 token 上限，参数被截断必然失败）；
+  仅当需要修改/覆盖个别条目时才内联同日期同标题（事件）或
+  同日期同类型（变化点）的条目，内联优先于材料；
 - 溯源：narrative 中含数字结论的段落、每个事件、每个表格都挂 evidence_refs；
   **evidence_refs 只能填材料中真实存在的 evidence id（ev- 开头的完整 id）**，
   禁止自造语义化 id（如 ev-match-xxx）——渲染会校验并拒绝悬空引用；

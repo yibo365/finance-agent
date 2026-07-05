@@ -15,8 +15,10 @@ blocks: heading, narrative, table, kline_chart, changepoint_table
 ## 结构组织建议（按任务裁剪，不是固定模板）
 
 1. 开篇 narrative：研究问题、数据区间、核心结论（2–4 句，克制、可验证）；
-2. kline_chart：主图，必须且只能一个——事件标注（events）与变化点（changepoints）
-   都挂在这里；
+2. kline_chart：主图，必须且只能一个——事件与变化点**按引用挂载**：
+   `events_material` 填事件材料 id、`changepoints_material` 填市场材料 id，
+   渲染器从工作区材料注入全量（禁止逐条内联抄写，长参数会被输出上限截断）；
+   需覆盖个别条目时才内联 events/changepoints（同键覆盖材料条目）；
 3. 对齐分析章节（heading + narrative 若干）：按时间段或主题组织，
    每段声明引用的 evidence_refs；
 4. changepoint_table：变化点明细，让"拐点从哪来"可查；

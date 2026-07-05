@@ -53,6 +53,12 @@ def _mask(secret: str) -> str:
     return secret[:6] + "…" + secret[-4:] if len(secret) > 12 else "已设置"
 
 
+def _settings_required_text(settings: Settings) -> str:
+    if not settings.api_key.strip():
+        return "缺少 API 密钥。请先在左下角“设置”中填写 API Key，再开始新会话。"
+    return "API Key 仍是占位符。请先在左下角“设置”中填写真实 API Key，再开始新会话。"
+
+
 class SessionRegistry:
     """进程内会话池：chat 用的 SessionCore 懒加载 + 每会话一把执行锁。
 
@@ -198,6 +204,7 @@ def create_app(
         return {
             "model": current.model,
             "base_url": current.base_url or "",
+            "api_key_configured": current.mock_mode or current.has_api_key(),
             "initial_session_id": initial_session_id,
         }
 
@@ -207,8 +214,10 @@ def create_app(
         return {
             "base_url": current.base_url or "",
             "model": current.model,
-            "api_key_masked": _mask(current.api_key),
-            "tavily_api_key_masked": _mask(current.tavily_api_key),
+            "api_key_masked": _mask(current.api_key) if current.has_api_key() else "",
+            "tavily_api_key_masked": (
+                _mask(current.tavily_api_key) if current.has_tavily_api_key() else ""
+            ),
         }
 
     @app.put("/api/settings")
@@ -219,6 +228,20 @@ def create_app(
 
     @app.post("/api/chat")
     async def chat(request: ChatRequest) -> StreamingResponse:
+        current = store.current
+        if not (current.mock_mode or current.has_api_key()):
+            async def settings_required_stream():
+                yield _sse({
+                    "type": "error",
+                    "code": "settings_required",
+                    "text": _settings_required_text(current),
+                })
+
+            return StreamingResponse(
+                settings_required_stream(),
+                media_type="text/event-stream",
+            )
+
         core = registry.core(request.session_id) if request.session_id else registry.create()
         session_id = core.workspace.session_id
         lock = registry.lock(session_id)

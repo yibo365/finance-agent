@@ -98,7 +98,6 @@ def main() -> None:
         return
 
     settings = Settings.from_env()
-    settings.require_api_key()
     if args.web:
         from finance_agent.web.app import ensure_port_available, serve
 
@@ -108,6 +107,7 @@ def main() -> None:
         initial = SessionCore.resume(settings, args.resume) if args.resume else None
         serve(settings, port=args.port, initial_core=initial)
         return
+    settings.require_api_key()
     core = (
         SessionCore.resume(settings, args.resume)
         if args.resume

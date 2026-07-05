@@ -34,7 +34,7 @@ from typing import Any
 import pandas as pd
 from pydantic import BaseModel, Field
 
-from finance_agent.artifacts.spec import ArtifactSpec
+from finance_agent.artifacts.spec import ArtifactSpec, ChangepointMarker, EventAnnotation
 from finance_agent.provenance import EvidenceLog
 
 _SESSION_ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]{1,62}$")
@@ -419,10 +419,59 @@ class Workspace:
                 "不要把行情数据 evidence 整体挂到所有事件上。"
             )
 
+    def _resolve_material_refs(self, spec: ArtifactSpec) -> ArtifactSpec:
+        """kline_chart 的 events_material / changepoints_material → 注入全量。
+
+        真实事故：report-builder 把 24 事件 + 40 变化点逐条抄写进 spec 参数
+        （≈33KB ≈ 14-16K tokens），超 max_output_tokens 被截断，
+        "Invalid JSON input" 确定性死循环。按引用挂材料后 LLM 只写结构与叙事，
+        全量内容由本层从工作区材料确定性注入；内联条目按键覆盖材料条目。
+        """
+        resolved = spec.model_copy(deep=True)
+        for block in resolved.blocks:
+            if block.type != "kline_chart":
+                continue
+            if block.events_material:
+                payload = self.load_material(block.events_material)
+                if not isinstance(payload.get("events"), list):
+                    raise WorkspaceError(
+                        f"材料 {block.events_material} 不是事件列表材料（缺 events 数组）；"
+                        "events_material 应填 run_event_researcher 返回的 material_id。"
+                    )
+                material_events = [EventAnnotation.model_validate(e) for e in payload["events"]]
+                inline_keys = {(e.date, e.title.strip()) for e in block.events}
+                block.events = sorted(
+                    [e for e in material_events if (e.date, e.title.strip()) not in inline_keys]
+                    + list(block.events),
+                    key=lambda e: e.date,
+                )
+            if block.changepoints_material:
+                payload = self.load_material(block.changepoints_material)
+                datasets = payload.get("datasets")
+                if not isinstance(datasets, list) or not datasets:
+                    raise WorkspaceError(
+                        f"材料 {block.changepoints_material} 不是市场数据材料（缺 datasets）；"
+                        "changepoints_material 应填 run_data_collector 返回的 material_id。"
+                    )
+                entry = next(
+                    (d for d in datasets if d.get("dataset_id") == block.data_ref), datasets[0]
+                )
+                material_cps = [
+                    ChangepointMarker.model_validate(c) for c in entry.get("changepoints", [])
+                ]
+                inline_keys = {(c.date, c.kind) for c in block.changepoints}
+                block.changepoints = sorted(
+                    [c for c in material_cps if (c.date, c.kind) not in inline_keys]
+                    + list(block.changepoints),
+                    key=lambda c: c.date,
+                )
+        return resolved
+
     def _write_version(self, spec: ArtifactSpec, v: int, change_summary: str) -> ArtifactVersion:
-        self._validate_evidence_refs(spec)
-        self._validate_event_sources(spec)
-        content = self._render(spec)  # 先渲染后落盘：渲染失败不产生任何文件
+        resolved = self._resolve_material_refs(spec)  # 校验与渲染都吃注入后的全量
+        self._validate_evidence_refs(resolved)
+        self._validate_event_sources(resolved)
+        content = self._render(resolved)  # 先渲染后落盘：渲染失败不产生任何文件
         ext = _ARTIFACT_EXT[spec.kind]
         slug = spec.artifact_id.replace("-", "_")
         file_rel = f"artifacts/{slug}_v{v}.{ext}"

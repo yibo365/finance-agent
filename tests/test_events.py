@@ -23,7 +23,20 @@ def test_tool_call_translated_with_agent_and_detail():
     assert event == {
         "type": "tool_call", "agent": "data-collector",
         "tool": "fetch_market_data", "detail": '{"ticker": "NVDA"}',
+        "detail_len": len('{"ticker": "NVDA"}'),
     }
+
+
+def test_tool_call_records_full_arg_length_for_truncation_diagnosis():
+    # 真实事故：33KB 参数被输出上限截断，日志只有 160 字符前缀无从判断
+    t = RunItemTranslator("report-builder")
+    huge = '{"spec": ' + "x" * 40_000
+    event = t.translate(SimpleNamespace(
+        type="tool_call_item",
+        raw_item=SimpleNamespace(name="render_artifact", call_id="c1", arguments=huge),
+    ))
+    assert event["detail_len"] == len(huge)
+    assert len(event["detail"]) <= DETAIL_LIMIT
 
 
 def test_tool_result_backfills_name_and_flags_errors():

@@ -255,6 +255,79 @@ def test_event_refs_must_include_news_or_search(ws, df):
     assert ws.render_artifact(spec).v == 1
 
 
+def _events_material(ws, *, with_evidence=True):
+    refs, urls = [], []
+    if with_evidence:
+        ev = ws.evidence.record("search", source_url="https://reuters.example/a",
+                                urls=["https://reuters.example/a"])
+        refs, urls = [ev.id], ["https://reuters.example/a"]
+    return ws.store_material("events", {
+        "events": [
+            {"date": "2024-01-03", "title": "材料事件A", "impact": 4, "direction": "up",
+             "category": "事件", "move": "", "notes": "",
+             "sources": [{"name": "Reuters", "url": u} for u in urls],
+             "evidence_refs": refs},
+            {"date": "2024-01-04", "title": "材料事件B", "impact": 3, "direction": "down",
+             "category": "事件", "move": "", "notes": "",
+             "sources": [{"name": "Reuters", "url": u} for u in urls],
+             "evidence_refs": refs},
+        ],
+        "coverage_notes": "x",
+    })
+
+
+def test_kline_material_refs_resolved_at_render(ws, df):
+    # 真实事故：24 事件+40 变化点内联进 spec 超输出上限被截断——改为按引用注入
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    mid = _events_material(ws)
+    cp_mid = ws.store_material("market", {
+        "datasets": [{"dataset_id": "ds-nvda", "changepoints": [
+            {"date": "2024-01-03", "kind": "drawdown", "rule": "r", "severity": 2,
+             "window": ["2024-01-02", "2024-01-04"], "evidence_refs": []},
+        ]}],
+        "echo": "",
+    })
+    spec = html_spec()
+    spec.blocks[2].events_material = mid
+    spec.blocks[2].changepoints_material = cp_mid
+    version = ws.render_artifact(spec)
+    html = (ws.dir / version.file).read_text(encoding="utf-8")
+    assert "材料事件A" in html and "材料事件B" in html    # 材料事件注入渲染
+    # spec 快照保留紧凑引用形态（不落全量），update 流程读回仍是引用
+    snapshot = ws.read_artifact_spec("nvda-kline-report")
+    assert snapshot.blocks[2].events_material == mid
+    assert snapshot.blocks[2].events == []
+
+
+def test_kline_inline_overrides_material_entry(ws, df):
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    ev = ws.evidence.record("search", source_url="https://cnbc.example/b",
+                            urls=["https://cnbc.example/b"])
+    mid = _events_material(ws)
+    spec = html_spec()
+    spec.blocks[2].events_material = mid
+    spec.blocks[2].events = [  # 与材料事件A 同日期同标题 → 内联覆盖
+        {"date": "2024-01-03", "title": "材料事件A", "impact": 5, "direction": "down",
+         "sources": [{"name": "CNBC", "url": "https://cnbc.example/b"}],
+         "evidence_refs": [ev.id]},
+    ]
+    spec = ArtifactSpec.model_validate(spec.model_dump())
+    spec.blocks[2].events_material = mid
+    version = ws.render_artifact(spec)
+    html = (ws.dir / version.file).read_text(encoding="utf-8")
+    assert "cnbc.example" in html                       # 覆盖后的来源生效
+    assert html.count("材料事件A") >= 1 and "材料事件B" in html
+
+
+def test_kline_material_wrong_shape_rejected(ws, df):
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    bad = ws.store_material("alignment", {"entries": []})   # 不是事件材料
+    spec = html_spec()
+    spec.blocks[2].events_material = bad
+    with pytest.raises(WorkspaceError, match="不是事件列表材料"):
+        ws.render_artifact(spec)
+
+
 def test_unknown_skill_rejected(ws, df):
     ws.store_dataset("ds-nvda", df, ticker="NVDA")
     spec = html_spec(skill="no-such-skill")

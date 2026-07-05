@@ -26,6 +26,13 @@ WEBAPP_DIST_DIR = PROJECT_ROOT / "webapp" / "dist"
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 
 
+def _looks_like_placeholder_secret(secret: str) -> bool:
+    value = secret.strip().lower()
+    if not value:
+        return False
+    return value in {"sk-...", "tvly-..."} or value.endswith("...")
+
+
 @dataclass(frozen=True)
 class Settings:
     api_key: str = ""
@@ -71,7 +78,9 @@ class Settings:
         )
 
     def require_api_key(self) -> None:
-        if not self.mock_mode and not self.api_key:
+        if self.mock_mode:
+            return
+        if not self.api_key.strip():
             raise RuntimeError(
                 "缺少 API 密钥。任何 OpenAI 兼容供应方均可：\n"
                 "  .env 配置 → OPENAI_API_KEY=...（配合 OPENAI_BASE_URL 指定网关，"
@@ -79,6 +88,18 @@ class Settings:
                 "  或启动 Web 界面后在左下角\"设置\"中填写。\n"
                 "（设 FINANCE_AGENT_MOCK=1 可离线 mock 模式运行。）"
             )
+        if _looks_like_placeholder_secret(self.api_key):
+            raise RuntimeError(
+                "API 密钥仍是占位符。请在 .env 或 Web 界面左下角\"设置\"中填写真实 API Key。"
+            )
+
+    def has_api_key(self) -> bool:
+        return bool(self.api_key.strip()) and not _looks_like_placeholder_secret(self.api_key)
+
+    def has_tavily_api_key(self) -> bool:
+        return bool(self.tavily_api_key.strip()) and not _looks_like_placeholder_secret(
+            self.tavily_api_key
+        )
 
 
 class SettingsStore:

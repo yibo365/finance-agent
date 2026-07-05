@@ -56,6 +56,15 @@ def truncated_tool_error(ctx: RunContextWrapper[Any], error: Exception) -> str:
     message = str(error)
     if len(message) > _TOOL_ERROR_LIMIT:
         message = message[:_TOOL_ERROR_LIMIT] + f"…（错误消息已截断，原长 {len(message)} 字符）"
+    if "Invalid JSON input for tool" in message:
+        # 该错误的最常见原因是参数超出输出 token 上限被截断——盲目原样重试
+        # 只会确定性复现（真实事故：3 次各烧 2 分钟）。给模型可行动的出路。
+        message += (
+            "\n参数 JSON 非法通常是因为参数太长、超出输出 token 上限被截断——"
+            "不要原样重试。改用引用而非内联：kline_chart 的事件/变化点请填 "
+            "events_material / changepoints_material（材料 id 见任务材料），"
+            "渲染器会从工作区注入全量；仅需覆盖个别条目时才内联。"
+        )
     return f"{TOOL_ERROR_PREFIX}. Please try again. Error: {message}"
 
 
@@ -320,7 +329,7 @@ async def tavily_web_search_impl(
     exhausted = _consume_search_budget(app)
     if exhausted is not None:
         return exhausted
-    if not app.settings.tavily_api_key:
+    if not app.settings.has_tavily_api_key():
         raise ValueError(
             "联网搜索未配置：缺少 TAVILY_API_KEY（Web 界面左下角\"设置\"或 .env 中填写）。"
             "在配置好之前请改用 search_hn_news / search_yahoo_finance_news，"

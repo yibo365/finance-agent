@@ -79,14 +79,47 @@ def test_index_serves_built_frontend(client, outputs, tmp_path):
 def test_state_reports_server_info_without_session_list(client):
     state = client.get("/api/state").json()
     assert state["model"] and "base_url" in state
+    assert state["api_key_configured"] is True
     assert state["initial_session_id"] is None
     assert "sessions" not in state  # 会话列表归前端 localStorage（FR-19 非目标）
+
+
+def test_state_reports_missing_or_placeholder_api_key(outputs, dist):
+    for settings in (Settings(), Settings(api_key="sk-...")):
+        client = TestClient(create_app(settings, outputs_dir=outputs, frontend_dist=dist))
+        assert client.get("/api/state").json()["api_key_configured"] is False
 
 
 def test_state_carries_resumed_session(outputs):
     core = SessionCore(MOCK, Workspace.open(outputs, SEEDED))
     client = TestClient(create_app(MOCK, outputs_dir=outputs, initial_core=core))
     assert client.get("/api/state").json()["initial_session_id"] == SEEDED
+
+
+def test_web_entrypoint_defers_api_key_validation(monkeypatch):
+    import sys
+
+    import finance_agent.cli as cli
+    import finance_agent.web.app as web_app
+
+    calls = []
+    monkeypatch.setattr(sys, "argv", ["finance-agent", "--web", "--port", "9876"])
+    monkeypatch.setattr(cli.Settings, "from_env", classmethod(lambda cls: Settings()))
+    monkeypatch.setattr(web_app, "ensure_port_available", lambda port: calls.append(("port", port)))
+    monkeypatch.setattr(
+        web_app,
+        "serve",
+        lambda settings, port, initial_core=None: calls.append(
+            ("serve", settings, port, initial_core)
+        ),
+    )
+
+    cli.main()
+
+    assert calls[0] == ("port", 9876)
+    assert calls[1][0] == "serve"
+    assert calls[1][1].api_key == ""
+    assert calls[1][2:] == (9876, None)
 
 
 # ---------- 运行时设置（GET/PUT /api/settings） ----------
@@ -115,6 +148,21 @@ def test_settings_roundtrip_masks_secrets_and_persists(outputs, dist, tmp_path):
     assert "TAVILY_API_KEY=tvly-new" in env             # 已持久化
     # /api/state 立即反映新配置（新会话将用它）
     assert client.get("/api/state").json()["model"] == "anthropic/claude-haiku-4.5"
+
+
+def test_settings_treats_placeholder_keys_as_unconfigured(outputs, dist):
+    from finance_agent.config import Settings, SettingsStore
+
+    store = SettingsStore(
+        Settings(api_key="sk-...", tavily_api_key="tvly-..."),
+    )
+    client = TestClient(create_app(store.current, outputs_dir=outputs,
+                                   frontend_dist=dist, settings_store=store))
+    settings = client.get("/api/settings").json()
+    assert settings["api_key_masked"] == ""
+    assert settings["tavily_api_key_masked"] == ""
+    state = client.get("/api/state").json()
+    assert state["api_key_configured"] is False
 
 
 # ---------- 按会话的状态 / 产物文件 ----------
@@ -161,6 +209,33 @@ def test_chat_without_session_creates_one_and_returns_id(client, outputs, monkey
     assert new_id.startswith("s-") and new_id != SEEDED
     assert (outputs / new_id).is_dir()  # 工作区确实建了
     assert {e["type"] for e in events} >= {"agent_start", "tool_call", "delta", "done"}
+
+
+def test_chat_without_api_key_returns_settings_error_before_creating_session(outputs, dist, monkeypatch):
+    def fail_start(*_args, **_kwargs):  # pragma: no cover - only called on regression
+        raise AssertionError("SessionCore.start should not run without a usable API key")
+
+    monkeypatch.setattr(SessionCore, "start", fail_start)
+    client = TestClient(create_app(Settings(), outputs_dir=outputs, frontend_dist=dist))
+    before = {p.name for p in outputs.iterdir()}
+    with client.stream("POST", "/api/chat", json={"message": "任务"}) as resp:
+        events = _sse_events("".join(resp.iter_text()))
+    assert events == [{
+        "type": "error",
+        "code": "settings_required",
+        "text": "缺少 API 密钥。请先在左下角“设置”中填写 API Key，再开始新会话。",
+    }]
+    assert {p.name for p in outputs.iterdir()} == before
+
+
+def test_chat_with_placeholder_api_key_returns_settings_error(outputs, dist):
+    client = TestClient(create_app(Settings(api_key="sk-..."), outputs_dir=outputs,
+                                   frontend_dist=dist))
+    with client.stream("POST", "/api/chat", json={"message": "任务"}) as resp:
+        events = _sse_events("".join(resp.iter_text()))
+    assert events[0]["type"] == "error"
+    assert events[0]["code"] == "settings_required"
+    assert "占位符" in events[0]["text"]
 
 
 def test_chat_routes_to_existing_session(client, monkeypatch):

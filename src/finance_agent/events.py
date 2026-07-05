@@ -51,11 +51,16 @@ class RunItemTranslator:
             call_id = str(_field(raw, "call_id") or "")
             if call_id:
                 self._tool_names[call_id] = name
+            arguments = str(_field(raw, "arguments") or "")
             return {
                 "type": "tool_call",
                 "agent": self.agent,
                 "tool": name,
-                "detail": clip(_field(raw, "arguments") or ""),
+                "detail": clip(arguments),
+                # 参数全长进审计日志：截断类失败（Invalid JSON input）一眼可辨
+                # （真实事故：3 次 render_artifact 各烧 112s 生成 12K token 参数
+                # 被上限掐断，日志里只有 160 字符前缀，只能靠间隔时间反推）
+                "detail_len": len(arguments),
             }
         if item.type == "tool_call_output_item":
             call_id = str(_field(item.raw_item, "call_id") or "")

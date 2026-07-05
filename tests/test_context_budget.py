@@ -132,6 +132,12 @@ def test_search_budget_forces_convergence(tmp_path):
 
 # ---------- 错误截断 ----------
 
+def test_invalid_json_tool_error_carries_material_ref_guidance():
+    # 真实事故：参数超输出上限被截断 → "Invalid JSON input"，模型盲目原样重试
+    message = truncated_tool_error(None, ValueError("Invalid JSON input for tool render_artifact"))
+    assert "events_material" in message and "不要原样重试" in message
+
+
 def test_truncated_tool_error_bounds_message():
     huge = ValueError("Invalid JSON input: " + "x" * 100_000)
     message = truncated_tool_error(None, huge)

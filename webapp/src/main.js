@@ -1,6 +1,7 @@
 import './style.css';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { shouldOpenSettingsOnStartup } from './startup.js';
 
 const $ = id => document.getElementById(id);
 const log = $('log'), form = $('form'), input = $('input'), send = $('send');
@@ -479,9 +480,11 @@ form.addEventListener('submit', async e => {
 
 /* ---------- 启动 ---------- */
 (async function init() {
+  let needsSettings = false;
   try {
     const state = await (await fetch('/api/state')).json();
     serverInfo = state;
+    needsSettings = shouldOpenSettingsOnStartup(state);
     if (state.initial_session_id) {           // --web --resume <id> 并入左栏
       upsertSession(state.initial_session_id, '');
       if (!activeId) activeId = state.initial_session_id;
@@ -491,4 +494,5 @@ form.addEventListener('submit', async e => {
   store.active = activeId;
   renderSessionList();
   if (activeId) await selectSession(activeId); else newChat();
+  if (needsSettings) await openSettings();
 })();
