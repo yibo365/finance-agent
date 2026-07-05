@@ -13,7 +13,8 @@ def clean_env(monkeypatch):
     monkeypatch.setattr(config, "load_dotenv", lambda *args, **kwargs: None)
     for var in ("OPENAI_API_KEY", "OPENROUTER_API_KEY", "FINANCE_AGENT_PROVIDER",
                 "FINANCE_AGENT_MODEL", "FINANCE_AGENT_MOCK", "FINANCE_AGENT_BASE_URL",
-                "FINANCE_AGENT_SEARCH_MODEL", "FINANCE_AGENT_WEB_MAX_RESULTS"):
+                "FINANCE_AGENT_SEARCH_MODEL", "FINANCE_AGENT_WEB_MAX_RESULTS",
+                "TAVILY_API_KEY", "FINANCE_AGENT_SEARCH_BACKEND"):
         monkeypatch.delenv(var, raising=False)
 
 
@@ -52,6 +53,30 @@ def test_web_search_settings(monkeypatch):
     settings = Settings.from_env()
     assert settings.search_model == "openai/gpt-5-mini"
     assert settings.web_max_results == 3
+
+
+def test_search_backend_defaults_follow_provider(monkeypatch):
+    assert Settings.from_env().search_backend == "hosted"          # openai 直连默认托管搜索
+    monkeypatch.setenv("OPENROUTER_API_KEY", "sk-or-xxx")
+    assert Settings.from_env().search_backend == "openrouter-plugin"
+
+
+def test_tavily_key_switches_backend_regardless_of_provider(monkeypatch):
+    monkeypatch.setenv("TAVILY_API_KEY", "tvly-x")
+    settings = Settings.from_env()
+    assert settings.search_backend == "tavily"
+    assert settings.tavily_api_key == "tvly-x"
+    monkeypatch.setenv("OPENROUTER_API_KEY", "sk-or-xxx")
+    assert Settings.from_env().search_backend == "tavily"          # 与 LLM 供应方解耦
+    # 显式覆盖优先
+    monkeypatch.setenv("FINANCE_AGENT_SEARCH_BACKEND", "openrouter-plugin")
+    assert Settings.from_env().search_backend == "openrouter-plugin"
+
+
+def test_effective_search_backend_for_directly_constructed_settings():
+    assert Settings(provider="openrouter").effective_search_backend == "openrouter-plugin"
+    assert Settings(provider="openai").effective_search_backend == "hosted"
+    assert Settings(search_backend="tavily").effective_search_backend == "tavily"
 
 
 def test_missing_api_key_raises_with_both_options(monkeypatch):

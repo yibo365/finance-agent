@@ -43,11 +43,30 @@ def _print_artifacts(delta: list[dict]) -> None:
               f"{item['change_summary']} → {item['file']}")
 
 
+def _print_progress(event: dict) -> None:
+    """执行过程逐行打印（FR-18）。走 stderr：stdout 只留最终回复，管道友好。"""
+    kind = event["type"]
+    if kind == "agent_start":
+        line = f"▸ {event['agent']} 启动"
+    elif kind == "tool_call":
+        line = f"  ⚙ [{event['agent']}] {event['tool']}  {event.get('detail', '')}"
+    elif kind == "tool_result":
+        mark = "✔" if event.get("ok") else "✘"
+        tool = f"{event['tool']}  " if event.get("tool") else ""
+        line = f"  {mark} [{event['agent']}] {tool}{event.get('detail', '')}"
+    elif kind == "agent_end":
+        line = f"◂ {event['agent']} 结束"
+    else:
+        return  # delta/done 由最终回复呈现，session 对 CLI 无增量信息
+    print(line, file=sys.stderr, flush=True)
+
+
 async def _run_once(core: SessionCore, text: str) -> None:
-    before = core.artifact_snapshot()
-    reply = await core.run_turn(text)
-    print(reply)
-    _print_artifacts(core.artifact_delta(before))
+    async for event in core.stream_turn(text):
+        _print_progress(event)
+        if event["type"] == "done":
+            print(event["reply"])
+            _print_artifacts(event["artifacts"])
 
 
 async def _repl(core: SessionCore) -> None:
@@ -81,19 +100,20 @@ def main() -> None:
     settings = Settings.from_env()
     settings.require_api_key()
     if args.web:
-        from finance_agent.web.app import ensure_port_available
+        from finance_agent.web.app import ensure_port_available, serve
 
         ensure_port_available(args.port)  # 先于建会话，避免绑定失败留下空工作区
+        # Web 模式不预建会话（FR-19：会话在首条消息时创建）；
+        # --resume 时载入指定会话并入前端左栏
+        initial = SessionCore.resume(settings, args.resume) if args.resume else None
+        serve(settings, port=args.port, initial_core=initial)
+        return
     core = (
         SessionCore.resume(settings, args.resume)
         if args.resume
         else SessionCore.start(settings)
     )
-    if args.web:
-        from finance_agent.web.app import serve
-
-        serve(core, port=args.port)
-    elif args.prompt:
+    if args.prompt:
         asyncio.run(_run_once(core, args.prompt + ONESHOT_NOTE))
         print(f"\n会话 {core.workspace.session_id} 已保存，"
               f"可用 finance-agent --resume {core.workspace.session_id} 继续修改。")

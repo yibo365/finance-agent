@@ -27,7 +27,8 @@ uv run finance-agent -p "回顾英伟达（NVDA）近五年行情数据（开盘
 uv run finance-agent -p "请构建黄金与比特币作为避险/抗通胀资产的可交互比较分析体系，产物包括Excel回测底稿、PPT决策框架、Word策略报告。"
 
 # 方式三：本地 Web 聊天界面（仅 127.0.0.1）
-uv run finance-agent --web        # 打开 http://127.0.0.1:8765
+uv run finance-agent --web              # 打开 http://127.0.0.1:8765
+uv run finance-agent --web --port 8899  # 默认端口被占用时可指定其他端口
 
 # 多轮修改：关掉终端后仍可恢复会话，接着改上次的产物
 uv run finance-agent --list-sessions
@@ -45,7 +46,7 @@ node --test tests/*.test.cjs   # 前端渲染骨架纯函数 + 模板无外链�
 FINANCE_AGENT_MOCK=1 uv run pytest tests/test_agents.py
 ```
 
-环境变量：`OPENAI_API_KEY` / `OPENROUTER_API_KEY`（二选一必需，双设时可用 `FINANCE_AGENT_PROVIDER` 指定）；`FINANCE_AGENT_MODEL`（OpenAI 默认 `gpt-5.5`，OpenRouter 默认 `openai/gpt-5.5`，可换任意其托管模型）；`FINANCE_AGENT_SEARCH_MODEL` / `FINANCE_AGENT_WEB_MAX_RESULTS`（OpenRouter 联网搜索的模型与条数）；`FINANCE_AGENT_MOCK=1`（行情用内置 NVDA 种子、资讯用离线夹具）；`FINANCE_AGENT_SKILLS_DIR`（追加外部 skill 目录）；`FINANCE_AGENT_BASE_URL`（自建 OpenAI 兼容网关）。
+环境变量：`OPENAI_API_KEY` / `OPENROUTER_API_KEY`（二选一必需，双设时可用 `FINANCE_AGENT_PROVIDER` 指定）；`FINANCE_AGENT_MODEL`（OpenAI 默认 `gpt-5.5`，OpenRouter 默认 `openai/gpt-5.5`，可换任意其托管模型）；`TAVILY_API_KEY`（推荐：确定性联网搜索，结构化结果不经 LLM 转述，与 LLM 供应方解耦；`FINANCE_AGENT_SEARCH_BACKEND` 可显式指定 tavily / openrouter-plugin / hosted）；`FINANCE_AGENT_SEARCH_MODEL` / `FINANCE_AGENT_WEB_MAX_RESULTS`（联网搜索的模型与条数；模型仅 OpenRouter 插件回落路径使用）；`FINANCE_AGENT_MOCK=1`（行情用内置 NVDA 种子、资讯用离线夹具）；`FINANCE_AGENT_SKILLS_DIR`（追加外部 skill 目录）；`FINANCE_AGENT_BASE_URL`（自建 OpenAI 兼容网关）。
 
 OpenRouter 模式的差异：走 Chat Completions API（自动切换）；联网搜索从 OpenAI 托管 WebSearchTool 换成 OpenRouter web 插件——后者返回 URL citations 并登记 evidence，**溯源链路反而更完整**。
 

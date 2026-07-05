@@ -51,7 +51,7 @@
 |---|---|---|---|
 | FR-1 | 自然语言任务入口 | 交互式会话（REPL）为默认形态，`-p "<任务>"` 一次性模式便于快速验收；agent 自行解析标的、时间范围、产物类型，不设写死的子命令 | P0 |
 | FR-2 | 行情采集 | OHLCV 日线，多源降级链（Yahoo Chart API query1→query2 → 本地缓存；Stooq 因反爬移出默认链，实现保留），覆盖股票/期货/加密（NVDA、GC=F、BTC-USD） | P0 |
-| FR-3 | 资讯采集 | 三路：HN Algolia（按时间范围+关键词查历史）、Yahoo 资讯、联网搜索（OpenAI 直连用 hosted WebSearchTool；OpenRouter 用其 web 插件，citations 登记 evidence） | P0 |
+| FR-3 | 资讯采集 | 三路：HN Algolia（按时间范围+关键词查历史）、Yahoo 资讯、联网搜索。联网搜索首选 Tavily 确定性 API（TAVILY_API_KEY，结构化结果不经 LLM 转述，与 LLM 供应方解耦）；未配置时回落：OpenAI 直连用 hosted WebSearchTool，OpenRouter 用其 web 插件（citations 登记 evidence） | P0 |
 | FR-4 | 变化点检测 | 确定性算法识别拐点/加速/回撤/量能异常，每个变化点能说明触发规则与触发数据窗口 | P0 |
 | FR-5 | 事件研究与评级 | 去重、筛选大事件、影响评级（如 高/中/低 + 方向），每条事件带原始来源 URL | P0 |
 | FR-6 | 拐点↔事件对齐 | 时间窗口吻合 + 影响逻辑论证；无法解释的拐点须如实标注"未找到对应事件"，不得强行归因 | P0 |
@@ -66,6 +66,9 @@
 | FR-15 | 会话持久化 | 会话经 SQLite 落盘，`--resume <session>` 关掉终端后可跨进程恢复，接着修改上次的产物 | P0 |
 | FR-16 | 本地 Web 聊天界面 | 复用同一会话核心的薄层：本地服务提供聊天 + 产物列表面板；不引入前端构建链，资产本地化 | P1 |
 | FR-17 | 工作区文件安全边界 | 每会话独立文件夹承载全部产物/spec/数据缓存；agent 侧**不提供通用文件读写工具**，文件操作全部由领域工具经 WorkspaceFS 路径守卫中介，限定工作区内白名单子目录与扩展名 | P0 |
+| FR-18 | agent 事件流 | orchestrator 与每个 subagent 的启动/工具调用/结果/结束以结构化事件实时外发，Web（SSE）与 CLI 同源消费；详见 prd-web-ui-v2.md | P0 |
+| FR-19 | 多会话 Web API | 聊天接口按可选 session_id 路由，缺省新建并以首个 SSE 事件返回 id；按会话读取历史消息/产物；详见 prd-web-ui-v2.md | P0 |
+| FR-20 | 类 ChatGPT 前端 | 左栏会话列表（localStorage，不设服务端列表接口）+ 中栏消息流（含执行过程时间线）+ 右栏产物面板，底部输入框固定；详见 prd-web-ui-v2.md | P0 |
 
 ## 5. 产物质量要求
 

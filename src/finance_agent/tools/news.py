@@ -110,6 +110,7 @@ def search_hn_news(
         evidence = evidence_log.record(
             "news",
             source_url=url,
+            urls=[item.url for item in items],
             query={"query": query, "start": start, "end": end, "source": "hn-algolia"},
             excerpt="；".join(item.title for item in items[:5]) or "（无结果）",
         )
@@ -132,6 +133,7 @@ def fetch_yahoo_news(
         evidence = evidence_log.record(
             "news",
             source_url=url,
+            urls=[item.url for item in items],
             query={"query": query, "source": "yahoo-finance"},
             excerpt="；".join(item.title for item in items[:5]) or "（无结果）",
         )

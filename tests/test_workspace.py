@@ -207,6 +207,54 @@ def test_event_without_source_url_rejected(ws, df):
         ws.render_artifact(spec)
 
 
+def test_event_fabricated_source_url_rejected(ws, df):
+    # 真实事故：事件材料传递中丢了 sources，builder 编造 reuters 链接（404）
+    # 通过了存在性校验——URL 必须对照溯源记录做成员校验
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    news = ws.evidence.record(
+        "news",
+        source_url="https://hn.example/api?q=chatgpt",
+        urls=["https://openai.example/index/chatgpt/"],
+        excerpt="ChatGPT",
+    )
+    spec = html_spec()
+    spec.blocks[2].events = [
+        {
+            "date": "2024-01-03", "title": "编造链接事件", "impact": 3,
+            "sources": [{"name": "Reuters", "url": "https://reuters.example/made-up-slug/"}],
+            "evidence_refs": [news.id],
+        }
+    ]
+    spec = ArtifactSpec.model_validate(spec.model_dump())
+    with pytest.raises(WorkspaceError, match="不在溯源记录"):
+        ws.render_artifact(spec)
+    # 出自 evidence.urls 的真实 URL 通过
+    spec.blocks[2].events[0].sources[0].url = "https://openai.example/index/chatgpt/"
+    assert ws.render_artifact(spec).v == 1
+
+
+def test_event_refs_must_include_news_or_search(ws, df):
+    # 真实事故：25 个事件的 evidence_refs 全部挂到行情数据 evidence，回链失真
+    ws.store_dataset("ds-nvda", df, ticker="NVDA")
+    market = ws.evidence.record("market_data", source_url="https://query1.example/chart")
+    news = ws.evidence.record(
+        "news", source_url="mock://hn-offline", urls=["https://openai.example/index/chatgpt/"]
+    )
+    spec = html_spec()
+    spec.blocks[2].events = [
+        {
+            "date": "2024-01-03", "title": "回链挂错事件", "impact": 3,
+            "sources": [{"name": "OpenAI", "url": "https://openai.example/index/chatgpt/"}],
+            "evidence_refs": [market.id],
+        }
+    ]
+    spec = ArtifactSpec.model_validate(spec.model_dump())
+    with pytest.raises(WorkspaceError, match="资讯/检索类"):
+        ws.render_artifact(spec)
+    spec.blocks[2].events[0].evidence_refs = [news.id]
+    assert ws.render_artifact(spec).v == 1
+
+
 def test_unknown_skill_rejected(ws, df):
     ws.store_dataset("ds-nvda", df, ticker="NVDA")
     spec = html_spec(skill="no-such-skill")

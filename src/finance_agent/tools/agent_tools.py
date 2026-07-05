@@ -154,7 +154,17 @@ def search_hn_impl(
         )
     if app.settings.mock_mode:
         items = [n for n in _MOCK_NEWS if start <= n["published_at"][:10] <= end]
-        return {"query": query, "items": items, "evidence_id": "", "mock": True}
+        # mock 也登记 evidence：产物事件的 sources.url 要过溯源校验（对照集
+        # 来自 evidence.urls），离线路径不登记就会把场景 A 的渲染整体拒掉
+        evidence = app.workspace.evidence.record(
+            "news",
+            source_url="mock://hn-offline",
+            urls=[n["url"] for n in items],
+            query={"query": query, "start": start, "end": end, "source": "hn-mock"},
+            excerpt="；".join(n["title"] for n in items[:5]) or "（无结果）",
+        )
+        app.workspace.save_evidence()
+        return {"query": query, "items": items, "evidence_id": evidence.id, "mock": True}
     result = news_mod.search_hn_news(
         query, start, end, evidence_log=app.workspace.evidence, max_hits=max_hits
     )
@@ -209,7 +219,32 @@ def search_yahoo_finance_news(
     return _json(search_yahoo_news_impl(ctx.context, query, max_items))
 
 
-# ---------- OpenRouter 联网搜索（web 插件） ----------
+# ---------- 联网搜索（多后端：Tavily 确定性 API / OpenRouter web 插件） ----------
+
+async def tavily_web_search_impl(
+    app: AppContext, query: str, max_results: int | None = None, client: Any = None
+) -> dict[str, Any]:
+    """确定性检索：直连 Tavily API，返回结构化结果列表，不经 LLM 转述。
+
+    换 LLM 供应方不改变检索数据（用户明确要求：web search 不能依赖 LLM）。
+    """
+    from finance_agent.tools.websearch import tavily_search
+
+    result = await tavily_search(
+        query,
+        api_key=app.settings.tavily_api_key,
+        max_results=max_results or app.settings.web_max_results,
+        client=client,
+        evidence_log=app.workspace.evidence,
+    )
+    app.workspace.save_evidence()
+    return {
+        "query": query,
+        "results": [item.model_dump() for item in result.items],
+        "evidence_id": result.evidence.id if result.evidence else "",
+        "note": "" if result.items else "无结果：请换更短/更通用的关键词重试",
+    }
+
 
 async def openrouter_web_search_impl(
     app: AppContext, query: str, max_results: int | None = None, client: Any = None
@@ -245,6 +280,7 @@ async def openrouter_web_search_impl(
     evidence = app.workspace.evidence.record(
         "search",
         source_url=citations[0]["url"] if citations else "openrouter:web-plugin",
+        urls=[c["url"] for c in citations],
         query={"query": query, "model": app.settings.search_model,
                "max_results": max_results or app.settings.web_max_results},
         excerpt="；".join(c["title"] or c["url"] for c in citations[:5])
@@ -258,13 +294,20 @@ async def openrouter_web_search_impl(
 async def web_search(
     ctx: RunContextWrapper[AppContext], query: str, max_results: int | None = None
 ) -> str:
-    """联网检索（OpenRouter web 插件），返回摘要、来源 citations 与 evidence_id。
+    """联网检索，返回结果与 evidence_id。
+
+    Tavily 后端（默认，设有 TAVILY_API_KEY 时）返回结构化结果列表
+    results:[{title,url,snippet,published}]；OpenRouter 插件后端返回
+    summary + citations。事件的日期/标题/URL 只能取自这些结果。
 
     Args:
-        query: 检索问题（自然语言即可，含日期上下文更准）。
+        query: 检索问题（关键词或自然语言，含日期上下文更准）。
         max_results: 检索结果条数；缺省用全局配置。
     """
-    return _json(await openrouter_web_search_impl(ctx.context, query, max_results))
+    app = ctx.context
+    if app.settings.effective_search_backend == "tavily":
+        return _json(await tavily_web_search_impl(app, query, max_results))
+    return _json(await openrouter_web_search_impl(app, query, max_results))
 
 
 # ---------- skill 工具（orchestrator / report-builder） ----------

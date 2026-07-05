@@ -318,21 +318,58 @@ class Workspace:
             )
 
     def _validate_event_sources(self, spec: ArtifactSpec) -> None:
-        """PRD 硬要求：产物中每个事件标注必须带至少一条可点击原文 URL。
+        """PRD 硬要求：产物中每个事件标注必须带至少一条可点击原文 URL，
+        且 URL 必须真实出自溯源记录（evidence 的 source_url/urls 集合）。
 
         确定性校验而非 prompt 自律（评审指出的口径落差）：schema 允许空列表
         是为了不破坏结构化输出兼容性，落盘前在此拦截。
+
+        真实事故（s-20260704-20c3）：事件材料在传递中丢了 sources，
+        report-builder 为通过"必须带 URL"校验凭记忆编造了 reuters/bloomberg
+        链接，打开全是 404——存在性校验挡不住"编得像"的 URL，必须做成员校验。
+        同时事件的 evidence_refs 被整体挂到行情数据 evidence 上，回链失真，
+        故一并要求事件引用中至少一条 news/search 类 evidence。
         """
+        known_urls = self.evidence.known_urls()
+        evidence_kinds = {ev.id: ev.kind for ev in self.evidence.items()}
         missing: list[str] = []
+        fabricated: list[str] = []
+        misattributed: list[str] = []
         for block in spec.blocks:
             for event in getattr(block, "events", None) or []:
-                if not any(s.url.startswith(("http://", "https://")) for s in event.sources):
+                http_urls = [
+                    s.url for s in event.sources
+                    if s.url.startswith(("http://", "https://"))
+                ]
+                if not http_urls:
                     missing.append(f"{event.date} {event.title}")
+                else:
+                    unknown = [u for u in http_urls if u not in known_urls]
+                    if unknown:
+                        fabricated.append(f"{event.date} {event.title} → {unknown[0]}")
+                if event.evidence_refs and not any(
+                    evidence_kinds.get(r) in ("news", "search") for r in event.evidence_refs
+                ):
+                    misattributed.append(f"{event.date} {event.title}")
         if missing:
             sample = "；".join(missing[:5])
             raise WorkspaceError(
                 f"以下事件缺少可点击的原始来源 URL（共 {len(missing)} 个）：{sample}…。"
                 "每个事件的 sources 至少一条 http(s) 链接——没有来源支撑的事件不得进产物。"
+            )
+        if fabricated:
+            sample = "；".join(fabricated[:5])
+            raise WorkspaceError(
+                f"以下事件的来源 URL 不在溯源记录中（共 {len(fabricated)} 个，疑似编造）：{sample}…。"
+                "sources.url 只能逐字复制材料中事件研究给出的真实 URL，"
+                "禁止凭记忆构造或\"修正\"链接；材料里没有 URL 就要求上游补齐，而不是编一个。"
+            )
+        if misattributed:
+            sample = "；".join(misattributed[:5])
+            raise WorkspaceError(
+                f"以下事件的 evidence_refs 未包含任何资讯/检索类 evidence（共 {len(misattributed)} 个）：{sample}…。"
+                "事件回链必须指向事件研究产生的 news/search evidence（材料中逐事件给出），"
+                "不要把行情数据 evidence 整体挂到所有事件上。"
             )
 
     def _write_version(self, spec: ArtifactSpec, v: int, change_summary: str) -> ArtifactVersion:

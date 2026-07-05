@@ -65,6 +65,14 @@ def test_event_researcher_openrouter_uses_web_plugin_tool():
     assert not any(isinstance(t, WebSearchTool) for t in agent.tools)
 
 
+def test_event_researcher_tavily_backend_replaces_hosted_search():
+    # 设了 Tavily 后端时，即便是 OpenAI 直连也不再用托管搜索（检索与 LLM 解耦）
+    settings = Settings(api_key="k", search_backend="tavily", tavily_api_key="tvly-x")
+    agent = build_event_researcher(settings)
+    assert "web_search" in tool_names(agent)
+    assert not any(isinstance(t, WebSearchTool) for t in agent.tools)
+
+
 def test_permission_matrix_alignment_analyst_has_no_tools():
     assert build_alignment_analyst(MOCK).tools == []
 

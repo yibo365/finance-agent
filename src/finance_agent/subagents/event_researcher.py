@@ -55,8 +55,10 @@ _INSTRUCTIONS = """\
 def build_event_researcher(settings: Settings) -> Agent[AppContext]:
     tools: list = [search_hn_news, search_yahoo_finance_news]
     if not settings.mock_mode:
-        if settings.provider == "openrouter":
-            # OpenRouter 无 Responses API 托管搜索 → 用其 web 插件（带 citations 与 evidence）
+        if settings.effective_search_backend in ("tavily", "openrouter-plugin"):
+            # tavily：确定性搜索 API（结构化结果，与 LLM 供应方解耦，推荐）；
+            # openrouter-plugin：其 web 插件（LLM 摘要 + citations），
+            # OpenRouter 无 Responses API 托管搜索时的回落
             tools.append(web_search)
         else:
             tools.append(WebSearchTool(search_context_size="medium"))

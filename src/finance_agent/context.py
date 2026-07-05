@@ -6,7 +6,8 @@ agent/LLM 看不到它（不进 prompt）；只有工具代码能经 RunContextW
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from collections.abc import Callable
+from dataclasses import dataclass, field
 
 from finance_agent.config import Settings
 from finance_agent.workspace import Workspace
@@ -16,3 +17,11 @@ from finance_agent.workspace import Workspace
 class AppContext:
     settings: Settings
     workspace: Workspace
+    # 进度事件回调（FR-18）：orchestrator 的 subagent 包装工具把嵌套运行的
+    # tool_call/tool_result 等事件经此上报，由 stream_turn 合流后推给前端/CLI。
+    # None 表示无人订阅（如单测直接调工具 impl），emit 静默丢弃。
+    on_event: Callable[[dict], None] | None = field(default=None, repr=False)
+
+    def emit(self, event: dict) -> None:
+        if self.on_event is not None:
+            self.on_event(event)

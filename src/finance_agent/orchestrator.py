@@ -10,6 +10,7 @@ from __future__ import annotations
 from datetime import date
 
 from agents import Agent, ModelSettings, RunContextWrapper, Runner, function_tool
+from pydantic import BaseModel
 
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
@@ -20,6 +21,7 @@ from finance_agent.contracts import (
     MarketData,
     TaskBrief,
 )
+from finance_agent.events import RunItemTranslator
 from finance_agent.llm import get_model
 from finance_agent.subagents.alignment_analyst import build_alignment_analyst
 from finance_agent.subagents.data_collector import build_data_collector
@@ -71,12 +73,18 @@ _PROMPT = """\
 3. run_alignment_analyst：把变化点列表 + 事件列表原样打包进 context_data；
 4. run_report_builder：把 dataset_id、变化点、事件、对齐矩阵全部打包进
    context_data，并说明期望的产物类型与 artifact_id 建议。
+   **事件列表必须逐字段完整透传（尤其 sources 的 URL 与 evidence_refs），
+   禁止摘要压缩**——你省掉的字段下游拿不到，只能编造，渲染校验会整体拒绝
+   （真实事故：事件只传了日期标题，报告里的链接全是编的 404）。
 
 ## 终检清单（report-builder 返回后逐条核对）
 
 - 产物文件已生成（ArtifactRefs 里有路径）；
 - subagent 的 echo 与用户原话对得上（标的、区间、产物类型）；
 - 事件与变化点时间窗吻合性有对齐结论支撑；无对应事件的变化点被如实标注；
+- **修改产物场景：用 list_artifacts 核对 current_version 已递增**——
+  版本没 +1 就是修改从未落盘，无论 subagent 怎么声称成功，都必须如实
+  报告失败与原因，禁止向用户宣称已修改；
 - 有不符 → 让 report-builder 修正，而不是自己糊弄过去。
 
 ## 回复规范
@@ -123,6 +131,36 @@ def _instructions(ctx: RunContextWrapper[AppContext], _agent: Agent[AppContext])
     )
 
 
+async def _run_subagent(
+    agent: Agent[AppContext],
+    brief: TaskBrief,
+    ctx: RunContextWrapper[AppContext],
+    output_type: type[BaseModel],
+    max_turns: int,
+) -> str:
+    """嵌套运行 subagent 并把内部动作经 ctx.emit 上报（FR-18）。
+
+    嵌套 run 的流事件不会出现在外层 orchestrator 的流里——不转发，
+    前端/CLI 就只能看到"正在调用 run_xxx…"的黑盒（真实事故：界面停在
+    run event 十分钟，用户只能翻文件 mtime 判断是否卡死）。
+    """
+    app = ctx.context
+    app.emit({"type": "agent_start", "agent": agent.name})
+    translator = RunItemTranslator(agent.name)
+    result = Runner.run_streamed(
+        agent, brief.model_dump_json(), context=app, max_turns=max_turns
+    )
+    try:
+        async for event in result.stream_events():
+            if event.type == "run_item_stream_event":
+                translated = translator.translate(event.item)
+                if translated is not None:
+                    app.emit(translated)
+    finally:
+        app.emit({"type": "agent_end", "agent": agent.name})
+    return result.final_output_as(output_type).model_dump_json()
+
+
 def build_orchestrator(settings: Settings) -> Agent[AppContext]:
     collector = build_data_collector(settings)
     researcher = build_event_researcher(settings)
@@ -136,10 +174,7 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
         Args:
             brief: TaskBrief。original_request 必须逐字引用用户原话。
         """
-        result = await Runner.run(
-            collector, brief.model_dump_json(), context=ctx.context, max_turns=12
-        )
-        return result.final_output_as(MarketData).model_dump_json()
+        return await _run_subagent(collector, brief, ctx, MarketData, max_turns=12)
 
     @function_tool
     async def run_event_researcher(ctx: RunContextWrapper[AppContext], brief: TaskBrief) -> str:
@@ -148,10 +183,7 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
         Args:
             brief: TaskBrief。focus_windows 放入需要解释的变化点日期窗口。
         """
-        result = await Runner.run(
-            researcher, brief.model_dump_json(), context=ctx.context, max_turns=20
-        )
-        return result.final_output_as(EventList).model_dump_json()
+        return await _run_subagent(researcher, brief, ctx, EventList, max_turns=20)
 
     @function_tool
     async def run_alignment_analyst(ctx: RunContextWrapper[AppContext], brief: TaskBrief) -> str:
@@ -160,10 +192,7 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
         Args:
             brief: TaskBrief。context_data 必须包含变化点列表与事件列表 JSON。
         """
-        result = await Runner.run(
-            analyst, brief.model_dump_json(), context=ctx.context, max_turns=4
-        )
-        return result.final_output_as(AlignmentMatrix).model_dump_json()
+        return await _run_subagent(analyst, brief, ctx, AlignmentMatrix, max_turns=4)
 
     @function_tool
     async def run_report_builder(ctx: RunContextWrapper[AppContext], brief: TaskBrief) -> str:
@@ -173,10 +202,9 @@ def build_orchestrator(settings: Settings) -> Agent[AppContext]:
             brief: TaskBrief。context_data 必须包含成文所需全部材料
                 （dataset_id、变化点、事件、对齐结论；修改场景给出修改指令与目标 artifact_id）。
         """
-        result = await Runner.run(
-            builder, brief.model_dump_json(), context=ctx.context, max_turns=16
-        )
-        return result.final_output_as(ArtifactRefs).model_dump_json()
+        # 24 轮：spec 是最大的工具参数 schema，弱工具调用模型（如 deepseek）常需
+        # 多次格式重试 + 校验修正循环；16 轮曾被重试烧光（Max turns exceeded）
+        return await _run_subagent(builder, brief, ctx, ArtifactRefs, max_turns=24)
 
     return Agent[AppContext](
         name="orchestrator",
