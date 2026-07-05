@@ -308,7 +308,10 @@ def create_app(
         matches = [item for item in record.versions if item.v == v]
         if not matches:
             raise HTTPException(404, f"版本不存在：{artifact_id} v{v}")
-        path = workspace.dir / matches[0].file
+        try:
+            path = workspace.artifact_file_path(matches[0].file)
+        except WorkspaceError as exc:
+            raise HTTPException(400, str(exc)) from exc
         disposition = "attachment" if download or record.kind != "html" else "inline"
         return FileResponse(path, filename=path.name, content_disposition_type=disposition)
 

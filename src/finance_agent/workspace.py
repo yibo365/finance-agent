@@ -256,6 +256,13 @@ class Workspace:
         payload = json.loads(path.read_text(encoding="utf-8"))
         return pd.DataFrame(payload["rows"])
 
+    def artifact_file_path(self, relative_path: str) -> Path:
+        """manifest 中登记的产物相对路径 → 禁闭后的真实文件路径。"""
+        path = self._guarded(self.dir / relative_path)
+        if not path.is_file():
+            raise WorkspaceError(f"产物文件不存在：{relative_path}")
+        return path
+
     # ---------- manifest ----------
 
     def manifest(self) -> Manifest:

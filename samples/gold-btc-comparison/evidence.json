@@ -18,7 +18,7 @@
     {
       "id": "ev-s-20260705-745a-2",
       "kind": "computation",
-      "source_url": "evidence:ev-s-20260705-745a-1",
+      "source_url": "evidence:ev-s-20260705-745a-39",
       "urls": [],
       "query": {
         "params": {
@@ -1345,6 +1345,20 @@
       },
       "fetched_at": "2026-07-05T08:22:01+00:00",
       "excerpt": "China Declares All Cryptocurrency Transactions Illegal - The New York Times；What's behind China’s cryptocurrency ban? | World Economic Forum；Why China’s Bitcoin mining activity is surging again after a 4-year crackdown  — TradingView News；CryptoPotato - 📜 TODAY IN CRYPTO (2021): China enforced a...；China declares all crypto-currency transactions illegal"
+    },
+    {
+      "id": "ev-s-20260705-745a-39",
+      "kind": "market_data",
+      "source_url": "https://query2.finance.yahoo.com/v8/finance/chart/BTC-USD?period1=1625443200&period2=1783296000&interval=1d&events=history",
+      "urls": [],
+      "query": {
+        "ticker": "BTC-USD",
+        "start": "2021-07-05",
+        "end": "2026-07-05",
+        "source": "Yahoo Finance (query2)"
+      },
+      "fetched_at": "2026-07-05T08:16:06+00:00",
+      "excerpt": "1826 行日线，2021-07-05 至 2026-07-05，来源 Yahoo Finance (query2)"
     }
   ]
 }

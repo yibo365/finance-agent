@@ -20,6 +20,10 @@ Agent 产品工程：有多会话 Web 工作台、有分层 Agent 编排、有�
 </div>
 
 ---
+## 功能演示
+
+![finance-agent 功能演示](docs/assets/功能演示.gif)
+
 
 ## 目录
 
@@ -77,9 +81,6 @@ finance-agent 面向真实投研工作流，而不是一次性问答。用户描
 - 设置弹窗可配置 OpenAI 兼容供应方三元组与 Tavily Key，并写回本机 `.env`；
 - 支持多轮定点修改，例如「把 DeepSeek 事件评级改成高」会更新 spec 并重渲染，不重抓全量数据。
 
-## 功能演示
-
-![finance-agent 功能演示](docs/功能演示.gif)
 
 ## 系统架构
 

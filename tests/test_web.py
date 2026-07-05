@@ -197,6 +197,22 @@ def test_html_artifact_file_supports_inline_preview_and_download(client):
     assert download.headers["content-disposition"].startswith("attachment;")
 
 
+def test_artifact_file_route_guards_manifest_path(outputs, dist):
+    # 即使 manifest 被外部篡改，下载路由也不能把工作区外文件当产物返回。
+    workspace = Workspace.open(outputs, SEEDED)
+    leak = outputs / "leak.txt"
+    leak.write_text("secret outside workspace", encoding="utf-8")
+    manifest_path = workspace.dir / "manifest.json"
+    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    payload["artifacts"][0]["versions"][0]["file"] = "../leak.txt"
+    manifest_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    guarded = TestClient(create_app(MOCK, outputs_dir=outputs, frontend_dist=dist))
+    resp = guarded.get(f"/api/sessions/{SEEDED}/artifacts/nvda-kline-report/file")
+    assert resp.status_code == 400
+    assert "路径越界" in resp.text
+
+
 # ---------- 聊天：会话创建与事件流 ----------
 
 def test_chat_without_session_creates_one_and_returns_id(client, outputs, monkeypatch):
