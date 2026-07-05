@@ -78,11 +78,24 @@ class EvidenceLog:
         raise KeyError(f"evidence 不存在：{evidence_id}")
 
     def save(self, path: Path) -> None:
+        """原子写（tmp + os.replace）：检索工具每次调用都会重写本文件，
+        进程中断不得留下半截 JSON——否则下次 Workspace.open 直接失败。"""
+        import os
+        import tempfile
+
         payload = {
             "run_id": self.run_id,
             "items": [item.model_dump() for item in self._items],
         }
-        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        content = json.dumps(payload, ensure_ascii=False, indent=2)
+        fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.", suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                fh.write(content)
+            os.replace(tmp, path)
+        except BaseException:
+            Path(tmp).unlink(missing_ok=True)
+            raise
 
     @classmethod
     def load(cls, path: Path) -> EvidenceLog:

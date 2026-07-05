@@ -399,6 +399,7 @@ form.addEventListener('submit', async e => {
   } catch (err) {
     if (!turn.done) recordEvent(turn, { type: 'error', text: '请求失败：' + err.message });
   } finally {
+    if (pendingTurn === turn) pendingTurn = null;  // 失败于 session 事件前：不留悬挂引用
     updateSendState();
     if (turn.id === activeId || (!turn.id && epoch === viewEpoch)) input.focus();
   }

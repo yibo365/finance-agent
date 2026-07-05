@@ -110,7 +110,9 @@ session.db       # SQLiteSession 对话历史
 artifacts/       # 渲染产物，全版本保留：nvda_kline_report_v1.html, _v2.html…
 specs/           # 每版 spec 快照（JSON，很小，全留）
 data/            # 行情/资讯抓取缓存（parquet/json）——改产物不重抓
+materials/       # subagent 全量输出（引用传递载体，mat-<kind>-<n>.json）
 evidence.json    # 溯源记录
+run_events.jsonl # 嵌套 subagent 运行审计日志（工具调用/结果摘要，事后复盘用）
 ```
 
 **manifest.json**（产物的身份与版本档案）：

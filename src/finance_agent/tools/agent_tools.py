@@ -18,6 +18,7 @@ from finance_agent.artifacts.spec import ArtifactSpec
 from finance_agent.config import PACKAGE_ROOT
 from finance_agent.context import AppContext
 from finance_agent.contracts import ChangepointOut
+from finance_agent.events import TOOL_ERROR_PREFIX
 from finance_agent.tools import changepoints as cp_mod
 from finance_agent.tools import market as market_mod
 from finance_agent.tools import news as news_mod
@@ -55,7 +56,7 @@ def truncated_tool_error(ctx: RunContextWrapper[Any], error: Exception) -> str:
     message = str(error)
     if len(message) > _TOOL_ERROR_LIMIT:
         message = message[:_TOOL_ERROR_LIMIT] + f"…（错误消息已截断，原长 {len(message)} 字符）"
-    return f"An error occurred while running the tool. Please try again. Error: {message}"
+    return f"{TOOL_ERROR_PREFIX}. Please try again. Error: {message}"
 
 
 def _json(payload: Any) -> str:

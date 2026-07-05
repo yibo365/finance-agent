@@ -219,6 +219,62 @@ def test_messages_endpoint_serves_history(client, outputs):
     assert client.get("/api/sessions/s-20990101-dead/messages").status_code == 404
 
 
+# ---------- 锁生命周期与会话池淘汰 ----------
+
+def test_start_locked_turn_survives_consumer_absence():
+    # 真实事故隐患：SSE 断连释放锁，但 SDK 运行任务仍在跑——新消息与幽灵旧轮
+    # 并发写同一 session.db。锁必须随"运行完成"释放，而非随连接。
+    import asyncio
+    from types import SimpleNamespace
+
+    from finance_agent.web.app import start_locked_turn
+
+    async def scenario():
+        lock = asyncio.Lock()
+
+        async def fake_stream(_message):
+            yield {"type": "session", "session_id": "s-x"}
+            await asyncio.sleep(0)
+            yield {"type": "done", "reply": "ok", "artifacts": []}
+
+        core = SimpleNamespace(stream_turn=fake_stream)
+        await lock.acquire()
+        queue = start_locked_turn(core, lock, "任务")
+        # 消费者完全不读（模拟浏览器刷新断连）
+        for _ in range(100):
+            if not lock.locked():
+                break
+            await asyncio.sleep(0.01)
+        assert not lock.locked()            # 锁由运行任务释放
+        events = []
+        while not queue.empty():
+            events.append(queue.get_nowait())
+        assert events[-1] is None           # 结束哨兵
+        assert events[0]["type"] == "session" and events[-2]["type"] == "done"
+
+    asyncio.run(scenario())
+
+
+def test_registry_lru_eviction_skips_locked_sessions(outputs):
+    import asyncio
+
+    from finance_agent.config import SettingsStore
+    from finance_agent.web.app import SessionRegistry
+
+    registry = SessionRegistry(SettingsStore(MOCK), outputs, max_loaded=1)
+    a = registry.create()
+    aid = a.workspace.session_id
+    asyncio.run(registry.lock(aid).acquire())        # a 运行中
+    b = registry.create()
+    bid = b.workspace.session_id
+    assert aid in registry._cores                    # 持锁不淘汰（宁可暂时超容量）
+    registry.lock(aid).release()
+    cid = registry.create().workspace.session_id
+    assert set(registry._cores) == {cid}             # 回落到容量内，LRU 先出
+    # 被淘汰的会话可经 resume 无损重建
+    assert registry.core(bid).workspace.session_id == bid
+
+
 # ---------- 端口预检与工作区守卫（行为不变） ----------
 
 def test_ensure_port_available_rejects_occupied_port():

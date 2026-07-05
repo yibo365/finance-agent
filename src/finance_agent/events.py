@@ -18,8 +18,11 @@ DETAIL_LIMIT = 160
 # render_artifact_args spe…"，看不到到底哪个字段错）
 ERROR_DETAIL_LIMIT = 600
 
-# SDK 工具层报错的固定前缀（agents 库 failure_error_function 的措辞）
-_TOOL_ERROR_PREFIX = "An error occurred while running the tool"
+# SDK 工具层报错的固定前缀（agents 库 failure_error_function 的措辞）。
+# ok 判定、历史重建、错误截断三处都依赖它——集中在此一处，SDK 升级换措辞
+# 只需改这里（truncated_tool_error 生成的消息也以它开头保持一致）。
+TOOL_ERROR_PREFIX = "An error occurred while running the tool"
+_TOOL_ERROR_PREFIX = TOOL_ERROR_PREFIX
 
 
 def clip(text: str, limit: int = DETAIL_LIMIT) -> str:

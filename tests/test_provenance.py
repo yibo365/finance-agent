@@ -31,6 +31,8 @@ def test_save_and_load_roundtrip(tmp_path):
     item = restored.get("ev-s1-1")
     assert item.kind == "computation"
     assert item.query == {"rows": 5}
+    # 原子写不留临时文件（检索工具每次调用都重写本文件，中断不得损坏）
+    assert [p.name for p in tmp_path.iterdir()] == ["evidence.json"]
 
 
 def test_known_urls_unions_source_url_and_candidate_urls():

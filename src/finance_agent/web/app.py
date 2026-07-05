@@ -58,28 +58,47 @@ class SessionRegistry:
 
     配置从 store 现取——设置弹窗保存后，新建/新恢复的会话用新配置，
     已在内存中的会话沿用其创建时的配置。
+
+    容量淘汰（LRU）：core 持有 orchestrator + 四个 subagent + SQLite 句柄，
+    "打开过的会话永驻内存"是慢性泄漏。超容量时淘汰最久未用且未持锁的会话
+    ——状态全在盘上（session.db/工作区），再次访问经 resume 无损重建。
     """
 
-    def __init__(self, store: SettingsStore, outputs_dir: Path) -> None:
+    def __init__(self, store: SettingsStore, outputs_dir: Path, max_loaded: int = 8) -> None:
         self.store = store
         self.outputs_dir = outputs_dir
-        self._cores: dict[str, SessionCore] = {}
+        self.max_loaded = max_loaded
+        self._cores: dict[str, SessionCore] = {}   # 插入序即 LRU 序
         self._locks: dict[str, asyncio.Lock] = {}
 
     def add(self, core: SessionCore) -> SessionCore:
         self._cores[core.workspace.session_id] = core
+        self._evict()
         return core
 
     def create(self) -> SessionCore:
         return self.add(SessionCore.start(self.store.current, self.outputs_dir))
 
     def core(self, session_id: str) -> SessionCore:
-        if session_id not in self._cores:
+        if session_id in self._cores:
+            self._cores[session_id] = self._cores.pop(session_id)  # touch → 队尾
+        else:
             try:
                 self.add(SessionCore.resume(self.store.current, session_id, self.outputs_dir))
             except WorkspaceError as exc:
                 raise HTTPException(404, str(exc)) from exc
         return self._cores[session_id]
+
+    def _evict(self) -> None:
+        while len(self._cores) > self.max_loaded:
+            victim = next(
+                (sid for sid in self._cores
+                 if not (sid in self._locks and self._locks[sid].locked())),
+                None,
+            )
+            if victim is None:
+                return  # 全部在跑：宁可暂时超容量，不淘汰运行中的会话
+            del self._cores[victim]
 
     def workspace(self, session_id: str) -> Workspace:
         """只读路由用：不为回放历史/下载产物付出建 orchestrator 的成本。"""
@@ -96,6 +115,30 @@ class SessionRegistry:
 
 def _sse(event: dict) -> str:
     return f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+
+
+def start_locked_turn(core: SessionCore, lock: asyncio.Lock, message: str) -> asyncio.Queue:
+    """在独立任务中执行一轮，事件经队列外发；锁随任务完成释放。
+
+    锁的生命周期必须绑定"运行"而非"SSE 连接"：浏览器刷新会取消响应生成器，
+    但 SDK 的运行任务并不随之停止——若锁跟着连接释放，用户再发消息就会与
+    幽灵旧轮并发写同一 session.db 与工作区（历史交错、事件回调被改挂）。
+    调用前必须已持有 lock（await lock.acquire()）。
+    """
+    queue: asyncio.Queue[dict | None] = asyncio.Queue()
+
+    async def _run() -> None:
+        try:
+            async for event in core.stream_turn(message):
+                queue.put_nowait(event)
+        except Exception as exc:  # noqa: BLE001 —— 错误也以事件形式送达前端
+            queue.put_nowait({"type": "error", "text": str(exc)})
+        finally:
+            queue.put_nowait(None)  # 结束哨兵
+            lock.release()
+
+    asyncio.get_running_loop().create_task(_run())
+    return queue
 
 
 def create_app(
@@ -152,19 +195,25 @@ def create_app(
         session_id = core.workspace.session_id
         lock = registry.lock(session_id)
 
-        async def event_stream():
-            if lock.locked():
-                # 一次一轮：并发消息直接拒绝，不排队（排队会让用户对着
-                # 空屏等上一轮跑完，还以为是自己这条卡了）
+        if lock.locked():
+            # 一次一轮：并发消息直接拒绝，不排队（排队会让用户对着
+            # 空屏等上一轮跑完，还以为是自己这条卡了）
+            async def busy_stream():
                 yield _sse({"type": "session", "session_id": session_id})
                 yield _sse({"type": "error", "text": "该会话正在处理上一条消息，请等它完成后再发。"})
-                return
-            async with lock:
-                try:
-                    async for event in core.stream_turn(request.message):
-                        yield _sse(event)
-                except Exception as exc:  # noqa: BLE001 —— 错误也以事件形式送达前端
-                    yield _sse({"type": "error", "text": str(exc)})
+
+            return StreamingResponse(busy_stream(), media_type="text/event-stream")
+
+        await lock.acquire()
+        queue = start_locked_turn(core, lock, request.message)  # 锁由运行任务释放
+
+        async def event_stream():
+            # 客户端断连只会取消本生成器；运行任务继续消化到完成并释放锁
+            while True:
+                event = await queue.get()
+                if event is None:
+                    return
+                yield _sse(event)
 
         return StreamingResponse(event_stream(), media_type="text/event-stream")
 

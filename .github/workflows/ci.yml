@@ -21,3 +21,7 @@ jobs:
           node-version: "22"
       - name: 前端资产单测
         run: node --test tests/*.test.cjs
+      - name: 前端构建（webapp）
+        run: |
+          npm --prefix webapp ci
+          npm --prefix webapp run build

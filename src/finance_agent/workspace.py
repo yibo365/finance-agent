@@ -10,12 +10,14 @@
 
 目录布局：
     outputs/<session_id>/
-    ├── manifest.json     产物注册表（artifact_id → 版本历史）
-    ├── artifacts/        渲染产物，全版本保留
-    ├── specs/            每版 ArtifactSpec 快照
-    ├── data/             数据缓存 + index.json（dataset_id → 文件/来源）
-    ├── evidence.json     溯源记录
-    └── session.db        对话历史（SQLiteSession，M4 接线）
+    ├── manifest.json       产物注册表（artifact_id → 版本历史）
+    ├── artifacts/          渲染产物，全版本保留
+    ├── specs/              每版 ArtifactSpec 快照
+    ├── data/               数据缓存 + index.json（dataset_id → 文件/来源）
+    ├── materials/          subagent 全量输出（引用传递载体，mat-<kind>-<n>.json）
+    ├── evidence.json       溯源记录
+    ├── run_events.jsonl    嵌套 subagent 运行的审计日志（工具调用/结果摘要）
+    └── session.db          对话历史（SQLiteSession，M4 接线）
 """
 
 from __future__ import annotations
@@ -216,6 +218,24 @@ class Workspace:
         material_id = f"mat-{kind}-{seq}"
         self._write_json_atomic(self.dir / "materials" / f"{material_id}.json", payload)
         return material_id
+
+    def material_index(self) -> list[str]:
+        """已落盘材料的 id 清单（注入 orchestrator 工作区状态——历史修剪后
+        旧轮的 material_id 会从对话里消失，清单是跨轮/恢复会话的找回通道）。"""
+        mat_dir = self.dir / "materials"
+        if not mat_dir.is_dir():
+            return []
+        return sorted(p.stem for p in mat_dir.glob("mat-*.json"))
+
+    def append_run_log(self, record: dict[str, Any]) -> None:
+        """嵌套 subagent 运行的审计日志（jsonl 追加，非关键路径）。
+
+        真实事故：子代理运行内上下文滚到 7.8M tokens，但嵌套运行不落库，
+        爆炸现场只能靠推理还原。此日志记录每次工具调用/结果摘要供事后复盘。
+        """
+        path = self._guarded(self.dir / "run_events.jsonl")
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(record, ensure_ascii=False) + "\n")
 
     def load_material(self, material_id: str) -> dict[str, Any]:
         if not re.fullmatch(r"mat-[a-z][a-z0-9-]{0,30}-\d+", material_id):

@@ -19,7 +19,7 @@ from agents import Runner, SQLiteSession
 
 from finance_agent.config import OUTPUTS_DIR, Settings
 from finance_agent.context import AppContext
-from finance_agent.events import RunItemTranslator, clip
+from finance_agent.events import TOOL_ERROR_PREFIX, RunItemTranslator, clip
 from finance_agent.orchestrator import build_orchestrator
 from finance_agent.workspace import Workspace
 
@@ -270,7 +270,7 @@ def read_history(db_path: Path, session_id: str) -> list[dict]:
             action = pending_calls.pop(str(item.get("call_id") or ""), None)
             if action is not None:
                 output = str(item.get("output") or "")
-                action["ok"] = not output.startswith("An error occurred while running the tool")
+                action["ok"] = not output.startswith(TOOL_ERROR_PREFIX)
                 action["result"] = clip(output)
         # reasoning 及其他内部条目：不外发
     return messages

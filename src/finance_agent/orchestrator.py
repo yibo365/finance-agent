@@ -8,7 +8,7 @@
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import UTC, date, datetime
 
 from agents import Agent, ModelSettings, RunContextWrapper, Runner, function_tool
 from pydantic import BaseModel
@@ -112,6 +112,8 @@ _PROMPT = """\
 {artifacts}
 已缓存数据：
 {datasets}
+已落盘材料（给下游 subagent 传其 material_id，用 load_material 可读全量）：
+{materials}
 """
 
 
@@ -131,12 +133,14 @@ def _instructions(ctx: RunContextWrapper[AppContext], _agent: Agent[AppContext])
         f"（{meta.get('rows', '?')} 行，{meta.get('source', '')}）"
         for ds_id, meta in datasets.items()
     ] or ["（暂无）"]
+    materials = app.workspace.material_index()
     return _PROMPT.format(
         today=date.today().isoformat(),
         session_id=app.workspace.session_id,
         skills="\n".join(index_lines(scan_skills())),
         artifacts="\n".join(artifact_lines),
         datasets="\n".join(dataset_lines),
+        materials="、".join(materials) if materials else "（暂无）",
     )
 
 
@@ -205,7 +209,19 @@ async def _run_subagent(
     """
     app = ctx.context
     app.begin_subagent_run()
-    app.emit({"type": "agent_start", "agent": agent.name})
+
+    def _report(event: dict) -> None:
+        # 同一份事件：推给前端/CLI（emit）+ 落审计日志（嵌套运行不进
+        # session.db，出事时这是唯一的现场记录）
+        try:
+            app.workspace.append_run_log(
+                {"ts": datetime.now(UTC).isoformat(timespec="seconds"), **event}
+            )
+        except OSError:
+            pass  # 审计日志是旁路，不阻断主流程
+        app.emit(event)
+
+    _report({"type": "agent_start", "agent": agent.name})
     translator = RunItemTranslator(agent.name)
     result = Runner.run_streamed(
         agent, brief.model_dump_json(), context=app, max_turns=max_turns
@@ -215,9 +231,9 @@ async def _run_subagent(
             if event.type == "run_item_stream_event":
                 translated = translator.translate(event.item)
                 if translated is not None:
-                    app.emit(translated)
+                    _report(translated)
     finally:
-        app.emit({"type": "agent_end", "agent": agent.name})
+        _report({"type": "agent_end", "agent": agent.name})
     output = result.final_output_as(output_type)
     if material_kind is None:
         return output.model_dump_json()

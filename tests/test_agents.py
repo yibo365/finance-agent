@@ -137,6 +137,14 @@ def test_orchestrator_instructions_inject_workspace_state(app):
     assert "（暂无）" in text                    # 空工作区提示
 
 
+def test_orchestrator_instructions_list_materials(app):
+    # 历史修剪会让旧轮的 material_id 从对话里消失——工作区状态清单是找回通道
+    app.workspace.store_material("events", {"events": []})
+    app.workspace.store_material("alignment", {"entries": []})
+    text = _instructions(RunContextWrapper(context=app), build_orchestrator(MOCK))
+    assert "mat-events-1" in text and "mat-alignment-1" in text
+
+
 # ---------- 工具 impl（mock 模式，不碰网络） ----------
 
 def test_fetch_market_data_impl_mock_uses_seed_and_registers_dataset(app):
