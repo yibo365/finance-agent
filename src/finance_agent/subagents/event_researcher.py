@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from agents import Agent, ModelSettings, WebSearchTool
+from agents import Agent, ModelSettings
 
 from finance_agent.config import Settings
 from finance_agent.context import AppContext
@@ -42,10 +42,11 @@ _INSTRUCTIONS = """\
    政策约束或市场情绪；3=影响生态与中期预期；1-2=观察级。
    direction 指事件对标的的方向性含义（up/down/mixed/neutral），不是当日涨跌。
 8. 溯源纪律（硬性要求）：
-   - 每个事件 sources 至少一条可点击 URL；日期、标题必须来自检索结果，禁止凭记忆编造；
-   - evidence_refs 填入检索工具返回的 evidence_id；若联网搜索工具的返回不含
-     evidence_id（托管搜索模式），其发现必须至少再经一路带 evidence 的检索确认，
-     或在 notes 里注明"仅联网搜索来源"。
+   - 每个事件 sources 至少一条可点击 URL，且 URL 必须**逐字复制**检索结果中的链接；
+     日期、标题必须来自检索结果，禁止凭记忆编造或"修正"；
+   - evidence_refs 填入检索工具返回的 evidence_id；
+   - web_search 未配置（返回配置错误）时退回 HN/Yahoo 两路，并在
+     coverage_notes 中如实声明联网搜索不可用。
 9. 诚实原则：穷尽上述战术后仍无果就是无果，写进 coverage_notes；宁可返回
    "无对应事件"也不得强行凑一条。coverage_notes 同时复述你实际检索了哪些
    窗口与关键词（回声）。
@@ -55,13 +56,9 @@ _INSTRUCTIONS = """\
 def build_event_researcher(settings: Settings) -> Agent[AppContext]:
     tools: list = [search_hn_news, search_yahoo_finance_news]
     if not settings.mock_mode:
-        if settings.effective_search_backend in ("tavily", "openrouter-plugin"):
-            # tavily：确定性搜索 API（结构化结果，与 LLM 供应方解耦，推荐）；
-            # openrouter-plugin：其 web 插件（LLM 摘要 + citations），
-            # OpenRouter 无 Responses API 托管搜索时的回落
-            tools.append(web_search)
-        else:
-            tools.append(WebSearchTool(search_context_size="medium"))
+        # 联网搜索唯一后端 Tavily（确定性 API，与 LLM 供应方解耦）；
+        # 未配 key 时工具会返回引导错误，agent 按提示词退回 HN/Yahoo 并如实声明
+        tools.append(web_search)
     return Agent[AppContext](
         name="event-researcher",
         instructions=_INSTRUCTIONS.format(today=date.today().isoformat()),

@@ -12,10 +12,9 @@
 # 依赖 uv（https://docs.astral.sh/uv/）
 uv sync
 
-# 配置密钥（唯一的密钥；.env 已 gitignore，不入库、不出现在产物中）
-# 支持两种供应方式，二选一填入即可自动识别：
-#   OpenAI 直连  → OPENAI_API_KEY=sk-...
-#   OpenRouter  → OPENROUTER_API_KEY=sk-or-...（联网搜索自动切换为其 web 插件）
+# 配置密钥（.env 已 gitignore，不入库、不出现在产物中）
+# LLM 为任何 OpenAI 兼容供应方：OPENAI_API_KEY + OPENAI_BASE_URL（留空=OpenAI 官方）
+# 联网搜索：TAVILY_API_KEY（也可之后在 Web 界面"设置"里填，自动写回 .env）
 cp .env.example .env
 
 # 方式一：交互会话（默认）
@@ -26,9 +25,11 @@ uv run finance-agent -p "回顾英伟达（NVDA）近五年行情数据（开盘
 
 uv run finance-agent -p "请构建黄金与比特币作为避险/抗通胀资产的可交互比较分析体系，产物包括Excel回测底稿、PPT决策框架、Word策略报告。"
 
-# 方式三：本地 Web 聊天界面（仅 127.0.0.1）
+# 方式三：本地 Web 界面（前后端分离：后端 FastAPI + 前端 Vite，均仅 127.0.0.1）
+./scripts/dev.sh                        # 开发模式一键起前后端，打开 http://127.0.0.1:5173
+# 生产模式：构建一次前端后，仅起后端即可（后端直接服务 webapp/dist）
+npm --prefix webapp install && npm --prefix webapp run build
 uv run finance-agent --web              # 打开 http://127.0.0.1:8765
-uv run finance-agent --web --port 8899  # 默认端口被占用时可指定其他端口
 
 # 多轮修改：关掉终端后仍可恢复会话，接着改上次的产物
 uv run finance-agent --list-sessions
@@ -46,7 +47,7 @@ node --test tests/*.test.cjs   # 前端渲染骨架纯函数 + 模板无外链�
 FINANCE_AGENT_MOCK=1 uv run pytest tests/test_agents.py
 ```
 
-环境变量：`OPENAI_API_KEY` / `OPENROUTER_API_KEY`（二选一必需，双设时可用 `FINANCE_AGENT_PROVIDER` 指定）；`FINANCE_AGENT_MODEL`（OpenAI 默认 `gpt-5.5`，OpenRouter 默认 `openai/gpt-5.5`，可换任意其托管模型）；`TAVILY_API_KEY`（推荐：确定性联网搜索，结构化结果不经 LLM 转述，与 LLM 供应方解耦；`FINANCE_AGENT_SEARCH_BACKEND` 可显式指定 tavily / openrouter-plugin / hosted）；`FINANCE_AGENT_SEARCH_MODEL` / `FINANCE_AGENT_WEB_MAX_RESULTS`（联网搜索的模型与条数；模型仅 OpenRouter 插件回落路径使用）；`FINANCE_AGENT_MOCK=1`（行情用内置 NVDA 种子、资讯用离线夹具）；`FINANCE_AGENT_SKILLS_DIR`（追加外部 skill 目录）；`FINANCE_AGENT_BASE_URL`（自建 OpenAI 兼容网关）。
+环境变量：`OPENAI_API_KEY` + `OPENAI_BASE_URL`（任何 OpenAI 兼容供应方；Base URL 留空为 OpenAI 官方，兼容旧配置 `OPENROUTER_API_KEY`）；`FINANCE_AGENT_MODEL`（模型 id，走 OpenRouter 等网关时带厂商前缀，如 `anthropic/claude-haiku-4.5`）；`TAVILY_API_KEY`（联网搜索唯一后端：确定性搜索 API，结构化结果不经 LLM 转述，与 LLM 供应方解耦；未配置时事件研究退回 HN/Yahoo 两路）；`FINANCE_AGENT_WEB_MAX_RESULTS`（检索条数）；`FINANCE_AGENT_MOCK=1`（行情用内置 NVDA 种子、资讯用离线夹具）；`FINANCE_AGENT_SKILLS_DIR`（追加外部 skill 目录）。以上均可在 Web 界面左下角"设置"中修改（写回 .env，对新会话生效）。
 
 OpenRouter 模式的差异：走 Chat Completions API（自动切换）；联网搜索从 OpenAI 托管 WebSearchTool 换成 OpenRouter web 插件——后者返回 URL citations 并登记 evidence，**溯源链路反而更完整**。
 

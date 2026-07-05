@@ -219,7 +219,7 @@ def search_yahoo_finance_news(
     return _json(search_yahoo_news_impl(ctx.context, query, max_items))
 
 
-# ---------- 联网搜索（多后端：Tavily 确定性 API / OpenRouter web 插件） ----------
+# ---------- 联网搜索（Tavily 确定性 API，唯一后端） ----------
 
 async def tavily_web_search_impl(
     app: AppContext, query: str, max_results: int | None = None, client: Any = None
@@ -230,6 +230,12 @@ async def tavily_web_search_impl(
     """
     from finance_agent.tools.websearch import tavily_search
 
+    if not app.settings.tavily_api_key:
+        raise ValueError(
+            "联网搜索未配置：缺少 TAVILY_API_KEY（Web 界面左下角\"设置\"或 .env 中填写）。"
+            "在配置好之前请改用 search_hn_news / search_yahoo_finance_news，"
+            "并在 coverage_notes 中如实说明联网搜索不可用。"
+        )
     result = await tavily_search(
         query,
         api_key=app.settings.tavily_api_key,
@@ -246,68 +252,20 @@ async def tavily_web_search_impl(
     }
 
 
-async def openrouter_web_search_impl(
-    app: AppContext, query: str, max_results: int | None = None, client: Any = None
-) -> dict[str, Any]:
-    """经 OpenRouter web 插件联网检索。返回摘要 + citations，并登记 evidence
-    ——相比 OpenAI 托管 WebSearchTool 的优势：来源 URL 可进溯源链。"""
-    from openai import AsyncOpenAI
-
-    own_client = client is None
-    http = client or AsyncOpenAI(base_url=app.settings.base_url, api_key=app.settings.api_key)
-    try:
-        completion = await http.chat.completions.create(
-            model=app.settings.search_model,
-            messages=[{
-                "role": "user",
-                "content": f"请联网检索：{query}\n总结关键事实（含具体日期），并附来源。",
-            }],
-            extra_body={"plugins": [{
-                "id": "web",
-                "max_results": max_results or app.settings.web_max_results,
-            }]},
-        )
-    finally:
-        if own_client:
-            await http.close()
-    message = completion.choices[0].message
-    citations: list[dict[str, str]] = []
-    for ann in getattr(message, "annotations", None) or []:
-        data = ann.model_dump() if hasattr(ann, "model_dump") else dict(ann)
-        cite = data.get("url_citation") or {}
-        if data.get("type") == "url_citation" and cite.get("url"):
-            citations.append({"title": cite.get("title", ""), "url": cite["url"]})
-    evidence = app.workspace.evidence.record(
-        "search",
-        source_url=citations[0]["url"] if citations else "openrouter:web-plugin",
-        urls=[c["url"] for c in citations],
-        query={"query": query, "model": app.settings.search_model,
-               "max_results": max_results or app.settings.web_max_results},
-        excerpt="；".join(c["title"] or c["url"] for c in citations[:5])
-                or (message.content or "")[:200],
-    )
-    app.workspace.save_evidence()
-    return {"summary": message.content, "citations": citations, "evidence_id": evidence.id}
-
-
 @function_tool
 async def web_search(
     ctx: RunContextWrapper[AppContext], query: str, max_results: int | None = None
 ) -> str:
-    """联网检索，返回结果与 evidence_id。
+    """联网检索（Tavily），返回结构化结果列表与 evidence_id。
 
-    Tavily 后端（默认，设有 TAVILY_API_KEY 时）返回结构化结果列表
-    results:[{title,url,snippet,published}]；OpenRouter 插件后端返回
-    summary + citations。事件的日期/标题/URL 只能取自这些结果。
+    results:[{title,url,snippet,published}]——事件的日期/标题/URL 只能
+    逐字取自这些结果。
 
     Args:
         query: 检索问题（关键词或自然语言，含日期上下文更准）。
         max_results: 检索结果条数；缺省用全局配置。
     """
-    app = ctx.context
-    if app.settings.effective_search_backend == "tavily":
-        return _json(await tavily_web_search_impl(app, query, max_results))
-    return _json(await openrouter_web_search_impl(app, query, max_results))
+    return _json(await tavily_web_search_impl(ctx.context, query, max_results))
 
 
 # ---------- skill 工具（orchestrator / report-builder） ----------

@@ -1,23 +1,18 @@
-"""运行配置。全部经环境变量注入，密钥只存在于进程环境，不落盘、不入库。
+"""运行配置。经环境变量注入（.env 自动加载），密钥不落库；
+Web 设置弹窗可在运行时修改并写回 .env（save_to_env），对新会话生效。
 
-支持两种 LLM 供应方式：
-- OpenAI 直连（默认）：OPENAI_API_KEY
-- OpenRouter：OPENROUTER_API_KEY（OpenAI 兼容 API）
-只设其中一个 key 时自动选择对应 provider；两个都设时默认 OpenAI，
-可用 FINANCE_AGENT_PROVIDER=openrouter 显式指定。
+LLM 供应：任何 OpenAI 兼容 API——只有三元组 base_url + api_key + model。
+base_url 为空即 OpenAI 官方；OpenRouter/自建网关填对应地址即可。
+（兼容旧配置：只设 OPENROUTER_API_KEY 时自动采用其 key 与 base_url。）
 
-联网搜索后端（与 LLM 供应方解耦——检索结果不应随换模型而漂移）：
-- tavily（推荐）：TAVILY_API_KEY，确定性搜索 API，结构化结果不经 LLM 转述；
-- openrouter-plugin：OpenRouter web 插件（LLM 生成摘要 + citations）；
-- hosted：OpenAI Responses API 托管 WebSearchTool（仅 OpenAI 直连可用）。
-设了 TAVILY_API_KEY 即默认 tavily；否则按 provider 回落到后两者。
-可用 FINANCE_AGENT_SEARCH_BACKEND 显式指定。
+联网搜索：Tavily（TAVILY_API_KEY）——确定性搜索 API，结构化结果不经
+LLM 转述，检索数据与 LLM 供应方解耦。
 """
 
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -26,73 +21,99 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PACKAGE_ROOT = Path(__file__).resolve().parent
 BUILTIN_SKILLS_DIR = PACKAGE_ROOT / "skills" / "builtin"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+WEBAPP_DIST_DIR = PROJECT_ROOT / "webapp" / "dist"
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-_DEFAULT_MODELS = {"openai": "gpt-5.5", "openrouter": "openai/gpt-5.5"}
 
 
 @dataclass(frozen=True)
 class Settings:
-    provider: str = "openai"          # "openai" | "openrouter"
     api_key: str = ""
+    base_url: str | None = None       # None = OpenAI 官方；其余填 OpenAI 兼容网关地址
     model: str = "gpt-5.5"
-    base_url: str | None = None       # openrouter / 自建网关时使用
-    search_model: str = "gpt-5.5"     # openrouter web 插件所用模型（默认同主模型）
-    web_max_results: int = 5          # 联网搜索每次返回的结果条数
-    max_output_tokens: int = 12000    # 单次调用输出上限：控成本，且 OpenRouter 按此做预算检查
-    mock_mode: bool = False
-    # "tavily" | "openrouter-plugin" | "hosted"；空串 = 按 provider 自动
-    # （openrouter → openrouter-plugin，openai → hosted）。from_env 会解析成显式值。
-    search_backend: str = ""
     tavily_api_key: str = ""
-
-    @property
-    def effective_search_backend(self) -> str:
-        if self.search_backend:
-            return self.search_backend
-        return "openrouter-plugin" if self.provider == "openrouter" else "hosted"
+    web_max_results: int = 5          # 联网搜索每次返回的结果条数
+    max_output_tokens: int = 12000    # 单次调用输出上限：控成本，部分网关按此做预算检查
+    mock_mode: bool = False
 
     @classmethod
     def from_env(cls) -> Settings:
         load_dotenv(PROJECT_ROOT / ".env")
         openai_key = os.environ.get("OPENAI_API_KEY", "")
         openrouter_key = os.environ.get("OPENROUTER_API_KEY", "")
-        provider = os.environ.get("FINANCE_AGENT_PROVIDER", "").strip().lower()
-        if provider not in ("openai", "openrouter"):
-            provider = "openrouter" if openrouter_key and not openai_key else "openai"
-        if provider == "openrouter":
-            api_key = openrouter_key or openai_key
-            base_url = os.environ.get("FINANCE_AGENT_BASE_URL", OPENROUTER_BASE_URL)
-        else:
-            api_key = openai_key
-            base_url = os.environ.get("FINANCE_AGENT_BASE_URL") or None
-        model = os.environ.get("FINANCE_AGENT_MODEL", _DEFAULT_MODELS[provider])
-        tavily_key = os.environ.get("TAVILY_API_KEY", "")
-        backend = os.environ.get("FINANCE_AGENT_SEARCH_BACKEND", "").strip().lower()
-        if backend not in ("tavily", "openrouter-plugin", "hosted"):
-            if tavily_key:
-                backend = "tavily"
-            else:
-                backend = "openrouter-plugin" if provider == "openrouter" else "hosted"
+        api_key = openai_key or openrouter_key
+        base_url = (
+            os.environ.get("FINANCE_AGENT_BASE_URL")
+            or os.environ.get("OPENAI_BASE_URL")
+            or (OPENROUTER_BASE_URL if (openrouter_key and not openai_key) else None)
+        ) or None
+        # 兼容：走 OpenRouter 时模型名需带厂商前缀
+        default_model = "openai/gpt-5.5" if base_url == OPENROUTER_BASE_URL else "gpt-5.5"
         return cls(
-            provider=provider,
             api_key=api_key,
-            model=model,
             base_url=base_url,
-            search_model=os.environ.get("FINANCE_AGENT_SEARCH_MODEL", model),
+            model=os.environ.get("FINANCE_AGENT_MODEL", default_model),
+            tavily_api_key=os.environ.get("TAVILY_API_KEY", ""),
             web_max_results=int(os.environ.get("FINANCE_AGENT_WEB_MAX_RESULTS", "5")),
             max_output_tokens=int(os.environ.get("FINANCE_AGENT_MAX_TOKENS", "12000")),
             mock_mode=os.environ.get("FINANCE_AGENT_MOCK", "") == "1",
-            search_backend=backend,
-            tavily_api_key=tavily_key,
         )
 
     def require_api_key(self) -> None:
         if not self.mock_mode and not self.api_key:
             raise RuntimeError(
-                "缺少 API 密钥。请复制 .env.example 为 .env 后配置：\n"
-                "  OpenAI 直连  → OPENAI_API_KEY=sk-...\n"
-                "  OpenRouter  → OPENROUTER_API_KEY=sk-or-...\n"
-                "（两者都设时默认 OpenAI，可用 FINANCE_AGENT_PROVIDER=openrouter 指定；"
-                "或设 FINANCE_AGENT_MOCK=1 以离线 mock 模式运行。）"
+                "缺少 API 密钥。任何 OpenAI 兼容供应方均可：\n"
+                "  .env 配置 → OPENAI_API_KEY=...（配合 OPENAI_BASE_URL 指定网关，"
+                "留空为 OpenAI 官方）\n"
+                "  或启动 Web 界面后在左下角\"设置\"中填写。\n"
+                "（设 FINANCE_AGENT_MOCK=1 可离线 mock 模式运行。）"
             )
+
+
+class SettingsStore:
+    """运行时可变的配置持有者（Web 设置弹窗的落点）。
+
+    Settings 本身保持 frozen——更新即整体替换；已建会话沿用其创建时的
+    配置，新会话取 current。持久化写回 .env，重启不丢。
+    """
+
+    _ENV_KEYS = {
+        "api_key": "OPENAI_API_KEY",
+        "base_url": "OPENAI_BASE_URL",
+        "model": "FINANCE_AGENT_MODEL",
+        "tavily_api_key": "TAVILY_API_KEY",
+    }
+
+    def __init__(self, settings: Settings, env_path: Path | None = None) -> None:
+        self.current = settings
+        self.env_path = env_path or (PROJECT_ROOT / ".env")
+
+    def update(self, **fields: str | None) -> Settings:
+        cleaned = {
+            name: (value.strip() if isinstance(value, str) else value)
+            for name, value in fields.items()
+            if name in self._ENV_KEYS
+        }
+        if "base_url" in cleaned and not cleaned["base_url"]:
+            cleaned["base_url"] = None
+        self.current = replace(self.current, **cleaned)
+        self._write_env(cleaned)
+        return self.current
+
+    def _write_env(self, cleaned: dict) -> None:
+        """更新 .env 中对应键（保留其余行与注释）。密钥仍只落在本机 .env。"""
+        lines = (
+            self.env_path.read_text(encoding="utf-8").splitlines()
+            if self.env_path.is_file()
+            else []
+        )
+        for name, value in cleaned.items():
+            env_key = self._ENV_KEYS[name]
+            rendered = f"{env_key}={value or ''}"
+            for i, line in enumerate(lines):
+                if line.split("=", 1)[0].strip().lstrip("# ") == env_key and "=" in line:
+                    lines[i] = rendered
+                    break
+            else:
+                lines.append(rendered)
+        self.env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")

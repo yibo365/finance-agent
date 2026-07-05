@@ -1,0 +1,119 @@
+:root {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --panel2: #eef2f8;
+  --line: rgba(20, 40, 80, 0.13);
+  --text: #1d2634;
+  --muted: #62708a;
+  --accent: #2a63e8;
+  --chip: #e4ebf7;
+  --ok: #16824a;
+  --err: #c53030;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; height: 100vh; overflow: hidden;
+  display: grid; grid-template-columns: 240px 1fr 320px;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text);
+}
+
+/* ---- 左栏：会话列表（localStorage） ---- */
+nav { display: flex; flex-direction: column; border-right: 1px solid var(--line); min-height: 0; background: var(--panel); }
+nav .top { padding: 14px; border-bottom: 1px solid var(--line); }
+#newChat {
+  width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(42, 99, 232, 0.35);
+  background: linear-gradient(180deg, #3b74f2, #2a63e8); color: #fff; cursor: pointer;
+  font-weight: 600; font-size: 13px;
+}
+#sessionList { flex: 1; overflow-y: auto; padding: 8px; }
+.sess { position: relative; padding: 10px 26px 10px 12px; border-radius: 10px; cursor: pointer; margin-bottom: 4px; border: 1px solid transparent; }
+.sess:hover { background: var(--panel2); }
+.sess.active { background: var(--panel2); border-color: var(--line); }
+.sess .t { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sess .s { color: var(--muted); font-size: 11px; margin-top: 3px; }
+.sess .s .running { color: var(--ok); }
+.sess .del { position: absolute; right: 6px; top: 8px; color: var(--muted); border: none; background: none; cursor: pointer; font-size: 14px; padding: 2px 5px; display: none; }
+.sess:hover .del { display: block; }
+.sess .del:hover { color: var(--err); }
+nav .bottom { padding: 10px 14px; border-top: 1px solid var(--line); }
+#openSettings {
+  width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--panel2); color: var(--text); cursor: pointer; font-size: 13px;
+}
+#openSettings:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---- 中栏：对话 ---- */
+main { display: flex; flex-direction: column; border-right: 1px solid var(--line); min-width: 0; min-height: 0; }
+header { padding: 12px 18px; border-bottom: 1px solid var(--line); flex: none; background: var(--panel); }
+header h1 { font-size: 15px; margin: 0; }
+header .sub { color: var(--muted); font-size: 12px; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#log { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.msg { max-width: 82%; padding: 10px 14px; border-radius: 14px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; font-size: 14px; }
+.user { align-self: flex-end; background: var(--accent); color: #fff; }
+.bot { align-self: flex-start; background: var(--panel); border: 1px solid var(--line); }
+
+/* 助手回复的 Markdown 渲染（.md 覆盖 .msg 的 pre-wrap，块级排版交给标签） */
+.msg.md { white-space: normal; }
+.msg.md > :first-child { margin-top: 0; }
+.msg.md > :last-child { margin-bottom: 0; }
+.msg.md p, .msg.md ul, .msg.md ol, .msg.md table, .msg.md blockquote, .msg.md pre { margin: 8px 0; }
+.msg.md h1, .msg.md h2, .msg.md h3, .msg.md h4 { margin: 14px 0 6px; line-height: 1.4; }
+.msg.md h1 { font-size: 18px; } .msg.md h2 { font-size: 16px; }
+.msg.md h3 { font-size: 15px; } .msg.md h4 { font-size: 14px; }
+.msg.md ul, .msg.md ol { padding-left: 22px; }
+.msg.md li { margin: 3px 0; }
+.msg.md a { color: var(--accent); text-decoration: none; }
+.msg.md a:hover { text-decoration: underline; }
+.msg.md code { background: rgba(42, 99, 232, 0.08); color: #24509d; padding: 1px 5px; border-radius: 5px; font-size: 0.92em; word-break: break-all; }
+.msg.md pre { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; overflow-x: auto; }
+.msg.md pre code { background: none; color: var(--text); padding: 0; word-break: normal; }
+.msg.md blockquote { border-left: 3px solid var(--chip); color: var(--muted); padding: 2px 12px; margin-left: 0; }
+.msg.md table { border-collapse: collapse; font-size: 13px; display: block; overflow-x: auto; max-width: 100%; }
+.msg.md th, .msg.md td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+.msg.md th { background: var(--panel2); }
+.msg.md hr { border: none; border-top: 1px solid var(--line); margin: 12px 0; }
+.msg.md img { max-width: 100%; border-radius: 8px; }
+.error { align-self: flex-start; background: #fdecec; border: 1px solid #f3b6b6; color: #8f1f1f; }
+.empty-chat { margin: auto; color: var(--muted); font-size: 14px; text-align: center; line-height: 2; }
+
+/* 执行过程时间线 */
+details.trace { align-self: stretch; max-width: 82%; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; font-size: 12px; }
+details.trace summary { cursor: pointer; color: var(--muted); user-select: none; }
+details.trace summary .spin { display: inline-block; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.trace .line { padding: 3px 0 3px 8px; color: var(--muted); border-left: 2px solid var(--chip); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trace .line .agent { color: var(--accent); }
+.trace .line .okmark { color: var(--ok); }
+.trace .line .errmark { color: var(--err); }
+
+form#form { display: flex; gap: 10px; padding: 14px 18px; border-top: 1px solid var(--line); flex: none; background: var(--panel); }
+input#input { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); outline: none; font-size: 14px; }
+input#input:focus { border-color: var(--accent); background: #fff; }
+button#send { padding: 12px 22px; border-radius: 12px; border: 1px solid rgba(42, 99, 232, 0.35); background: linear-gradient(180deg, #3b74f2, #2a63e8); color: #fff; cursor: pointer; font-weight: 600; }
+button#send:disabled { opacity: 0.5; cursor: wait; }
+
+/* ---- 右栏：产物 ---- */
+aside { overflow-y: auto; padding: 16px; min-height: 0; }
+aside h2 { font-size: 14px; color: var(--muted); margin: 4px 0 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
+.card .id { font-weight: 700; font-size: 13px; }
+.card .meta { color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.5; }
+.card a { color: var(--accent); text-decoration: none; font-size: 13px; }
+.badge { display: inline-block; background: var(--chip); border-radius: 999px; padding: 2px 8px; font-size: 11px; margin-left: 6px; }
+.empty { color: var(--muted); font-size: 13px; }
+
+/* ---- 设置弹窗 ---- */
+dialog#settingsDialog { border: 1px solid var(--line); border-radius: 14px; padding: 0; width: min(480px, 92vw); color: var(--text); }
+dialog#settingsDialog::backdrop { background: rgba(20, 30, 50, 0.35); }
+#settingsForm { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+#settingsForm h3 { margin: 0 0 2px; font-size: 16px; }
+#settingsForm label { display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 600; }
+#settingsForm input { padding: 9px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel2); font-size: 13px; outline: none; }
+#settingsForm input:focus { border-color: var(--accent); background: #fff; }
+#settingsForm small { color: var(--muted); font-weight: 400; }
+#settingsForm .note { color: var(--muted); font-size: 12px; }
+#settingsForm .hint { color: var(--muted); font-size: 11px; border-top: 1px solid var(--line); padding-top: 10px; }
+#settingsForm .actions { display: flex; justify-content: flex-end; gap: 10px; }
+#settingsForm .actions button { padding: 8px 18px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); cursor: pointer; font-size: 13px; }
+#settingsForm .actions button.primary { background: linear-gradient(180deg, #3b74f2, #2a63e8); border-color: rgba(42, 99, 232, 0.35); color: #fff; font-weight: 600; }

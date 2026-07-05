@@ -36,8 +36,19 @@ def outputs(tmp_path):
 
 
 @pytest.fixture()
-def client(outputs):
-    return TestClient(create_app(MOCK, outputs_dir=outputs))
+def dist(tmp_path):
+    d = tmp_path / "dist"
+    d.mkdir()
+    (d / "index.html").write_text(
+        "<!doctype html><title>finance-agent 投研工作台</title><div id=app></div>",
+        encoding="utf-8",
+    )
+    return d
+
+
+@pytest.fixture()
+def client(outputs, dist):
+    return TestClient(create_app(MOCK, outputs_dir=outputs, frontend_dist=dist))
 
 
 async def _fake_stream(self, _text):
@@ -55,16 +66,19 @@ def _sse_events(body: str) -> list[dict]:
 
 # ---------- 静态页与启动信息 ----------
 
-def test_index_served_inline(client):
+def test_index_serves_built_frontend(client, outputs, tmp_path):
     resp = client.get("/")
     assert resp.status_code == 200
     assert "finance-agent 投研工作台" in resp.text
-    assert "<script src=" not in resp.text  # 前端无外部资源
+    # 未构建时给可操作提示，而不是 404
+    bare = TestClient(create_app(MOCK, outputs_dir=outputs, frontend_dist=tmp_path / "nope"))
+    hint = bare.get("/")
+    assert hint.status_code == 200 and "前端尚未构建" in hint.text
 
 
 def test_state_reports_server_info_without_session_list(client):
     state = client.get("/api/state").json()
-    assert state["provider"] == "openai" and state["model"]
+    assert state["model"] and "base_url" in state
     assert state["initial_session_id"] is None
     assert "sessions" not in state  # 会话列表归前端 localStorage（FR-19 非目标）
 
@@ -73,6 +87,34 @@ def test_state_carries_resumed_session(outputs):
     core = SessionCore(MOCK, Workspace.open(outputs, SEEDED))
     client = TestClient(create_app(MOCK, outputs_dir=outputs, initial_core=core))
     assert client.get("/api/state").json()["initial_session_id"] == SEEDED
+
+
+# ---------- 运行时设置（GET/PUT /api/settings） ----------
+
+def test_settings_roundtrip_masks_secrets_and_persists(outputs, dist, tmp_path):
+    from finance_agent.config import Settings, SettingsStore
+
+    store = SettingsStore(Settings(api_key="sk-old-key-123456", mock_mode=True),
+                          env_path=tmp_path / ".env")
+    client = TestClient(create_app(store.current, outputs_dir=outputs,
+                                   frontend_dist=dist, settings_store=store))
+    before = client.get("/api/settings").json()
+    assert "sk-old-key-123456" not in str(before)      # 密钥绝不明文外发
+    assert before["api_key_masked"].startswith("sk-old")
+
+    resp = client.put("/api/settings", json={
+        "base_url": "https://openrouter.ai/api/v1",
+        "model": "anthropic/claude-haiku-4.5",
+        "tavily_api_key": "tvly-new",
+    })
+    assert resp.status_code == 200
+    assert store.current.model == "anthropic/claude-haiku-4.5"
+    assert store.current.base_url == "https://openrouter.ai/api/v1"
+    assert store.current.api_key == "sk-old-key-123456"  # 未提交的字段不动
+    env = (tmp_path / ".env").read_text(encoding="utf-8")
+    assert "TAVILY_API_KEY=tvly-new" in env             # 已持久化
+    # /api/state 立即反映新配置（新会话将用它）
+    assert client.get("/api/state").json()["model"] == "anthropic/claude-haiku-4.5"
 
 
 # ---------- 按会话的状态 / 产物文件 ----------

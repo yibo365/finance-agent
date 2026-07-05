@@ -1,117 +1,12 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>finance-agent 投研工作台</title>
-<style>
-  :root {
-    --bg:#0b1020; --panel:#121a2e; --panel2:#0e1629; --line:rgba(255,255,255,.12);
-    --text:#eef3ff; --muted:#9fb0d0; --accent:#79a8ff; --chip:#253654;
-    --ok:#7ee2a8; --err:#ff9b9b;
-  }
-  * { box-sizing:border-box; }
-  body { margin:0; height:100vh; overflow:hidden;
-    display:grid; grid-template-columns: 240px 1fr 320px;
-    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--bg); color:var(--text); }
+import './style.css';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
-  /* ---- 左栏：会话列表（localStorage） ---- */
-  nav { display:flex; flex-direction:column; border-right:1px solid var(--line); min-height:0; }
-  nav .top { padding:14px; border-bottom:1px solid var(--line); }
-  #newChat { width:100%; padding:10px; border-radius:10px; border:1px solid rgba(121,168,255,.35);
-    background:linear-gradient(180deg,#2a63e8,#1f4dbd); color:#fff; cursor:pointer; font-weight:600; font-size:13px; }
-  #sessionList { flex:1; overflow-y:auto; padding:8px; }
-  .sess { position:relative; padding:10px 26px 10px 12px; border-radius:10px; cursor:pointer;
-    margin-bottom:4px; border:1px solid transparent; }
-  .sess:hover { background:var(--panel); }
-  .sess.active { background:var(--panel); border-color:var(--line); }
-  .sess .t { font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .sess .s { color:var(--muted); font-size:11px; margin-top:3px; }
-  .sess .s .running { color:var(--ok); }
-  .sess .del { position:absolute; right:6px; top:8px; color:var(--muted); border:none;
-    background:none; cursor:pointer; font-size:14px; padding:2px 5px; display:none; }
-  .sess:hover .del { display:block; }
-  .sess .del:hover { color:var(--err); }
-  nav .hint { padding:10px 14px; color:var(--muted); font-size:11px; border-top:1px solid var(--line); }
-
-  /* ---- 中栏：对话 ---- */
-  main { display:flex; flex-direction:column; border-right:1px solid var(--line); min-width:0; min-height:0; }
-  header { padding:12px 18px; border-bottom:1px solid var(--line); flex:none; }
-  header h1 { font-size:15px; margin:0; }
-  header .sub { color:var(--muted); font-size:12px; margin-top:4px; overflow:hidden;
-    text-overflow:ellipsis; white-space:nowrap; }
-  #log { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; min-height:0; }
-  .msg { max-width:82%; padding:10px 14px; border-radius:14px; line-height:1.6;
-    white-space:pre-wrap; word-break:break-word; font-size:14px; }
-  .user { align-self:flex-end; background:#1f4dbd; }
-  .bot  { align-self:flex-start; background:var(--panel); border:1px solid var(--line); }
-  .error { align-self:flex-start; background:rgba(255,90,90,.12); border:1px solid rgba(255,120,120,.4); }
-  .empty-chat { margin:auto; color:var(--muted); font-size:14px; text-align:center; line-height:2; }
-
-  /* 执行过程时间线 */
-  details.trace { align-self:stretch; max-width:82%; background:var(--panel2);
-    border:1px solid var(--line); border-radius:12px; padding:8px 12px; font-size:12px; }
-  details.trace summary { cursor:pointer; color:var(--muted); user-select:none; }
-  details.trace summary .spin { display:inline-block; animation:spin 1s linear infinite; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  .trace .line { padding:3px 0 3px 8px; color:var(--muted); border-left:2px solid var(--chip);
-    margin-top:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .trace .line .agent { color:var(--accent); }
-  .trace .line .okmark { color:var(--ok); }
-  .trace .line .errmark { color:var(--err); }
-
-  form { display:flex; gap:10px; padding:14px 18px; border-top:1px solid var(--line); flex:none; }
-  input#input { flex:1; padding:12px; border-radius:12px; border:1px solid var(--line);
-    background:var(--panel2); color:var(--text); outline:none; font-size:14px; }
-  button#send { padding:12px 22px; border-radius:12px; border:1px solid rgba(121,168,255,.35);
-    background:linear-gradient(180deg,#2a63e8,#1f4dbd); color:#fff; cursor:pointer; font-weight:600; }
-  button#send:disabled { opacity:.5; cursor:wait; }
-
-  /* ---- 右栏：产物 ---- */
-  aside { overflow-y:auto; padding:16px; min-height:0; }
-  aside h2 { font-size:14px; color:var(--muted); margin:4px 0 12px; }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px;
-    padding:12px 14px; margin-bottom:10px; }
-  .card .id { font-weight:700; font-size:13px; }
-  .card .meta { color:var(--muted); font-size:12px; margin-top:4px; line-height:1.5; }
-  .card a { color:var(--accent); text-decoration:none; font-size:13px; }
-  .badge { display:inline-block; background:var(--chip); border-radius:999px;
-    padding:2px 8px; font-size:11px; margin-left:6px; }
-  .empty { color:var(--muted); font-size:13px; }
-</style>
-</head>
-<body>
-
-<nav>
-  <div class="top"><button id="newChat">＋ 新建会话</button></div>
-  <div id="sessionList"></div>
-  <div class="hint">会话列表仅存于本浏览器（localStorage）；移除不会删除服务端工作区。</div>
-</nav>
-
-<main>
-  <header>
-    <h1>finance-agent 投研工作台</h1>
-    <div class="sub" id="sessionInfo">连接中…</div>
-  </header>
-  <div id="log"></div>
-  <form id="form">
-    <input id="input" placeholder="例如：回顾英伟达近五年行情，梳理AI大事件，生成HTML" autocomplete="off" />
-    <button id="send" type="submit">发送</button>
-  </form>
-</main>
-
-<aside>
-  <h2>产物（点击打开 / 版本历史）</h2>
-  <div id="artifacts"><div class="empty">暂无产物</div></div>
-</aside>
-
-<script>
-'use strict';
 const $ = id => document.getElementById(id);
 const log = $('log'), form = $('form'), input = $('input'), send = $('send');
 
-/* ---------- 小工具：一律 textContent，动态内容不进 innerHTML ---------- */
+/* ---------- 小工具：动态内容一律 textContent；唯一例外是助手回复的
+ * Markdown 渲染，且必须先经 DOMPurify 净化（LLM 输出不可信）。 ---------- */
 function el(tag, cls, text) {
   const node = document.createElement(tag);
   if (cls) node.className = cls;
@@ -119,6 +14,17 @@ function el(tag, cls, text) {
   return node;
 }
 function scrollBottom() { log.scrollTop = log.scrollHeight; }
+
+marked.setOptions({ gfm: true, breaks: true });
+
+function renderMarkdown(node, raw) {
+  node.innerHTML = DOMPurify.sanitize(marked.parse(raw));
+  for (const a of node.querySelectorAll('a')) {
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  }
+  node._raw = raw;   // 流式增量在此基础上追加后整体重渲
+}
 
 /* ---------- 会话列表（localStorage 持久化，FR-20） ---------- */
 const store = {
@@ -129,7 +35,7 @@ const store = {
 };
 let sessions = store.load();
 let activeId = store.active;
-let serverInfo = { provider: '', model: '' };
+let serverInfo = { model: '', base_url: '' };
 let viewEpoch = 0;  // 每次切换视图 +1；流式回调据此判断"用户是否已离开发起时的视图"
 
 /* ---------- 运行中轮次的内存缓冲 ----------
@@ -182,8 +88,12 @@ function updateSendState() {
 }
 
 /* ---------- 头部与产物面板（按会话） ---------- */
+function providerLabel() {
+  if (!serverInfo.base_url) return 'OpenAI';
+  try { return new URL(serverInfo.base_url).host; } catch { return serverInfo.base_url; }
+}
 function renderHeader(workspaceDir) {
-  const base = `${serverInfo.provider} · ${serverInfo.model}`;
+  const base = `${providerLabel()} · ${serverInfo.model}`;
   $('sessionInfo').textContent = activeId
     ? `会话 ${activeId} ｜ ${base}${workspaceDir ? ' ｜ ' + workspaceDir : ''}`
     : `新会话（发送首条消息后创建） ｜ ${base}`;
@@ -220,6 +130,14 @@ async function refreshArtifacts() {
 /* ---------- 消息渲染 ---------- */
 function addMsg(cls, text) {
   const div = el('div', 'msg ' + cls, text);
+  log.appendChild(div);
+  scrollBottom();
+  return div;
+}
+
+function addMdMsg(raw) {
+  const div = el('div', 'msg bot md');
+  renderMarkdown(div, raw);
   log.appendChild(div);
   scrollBottom();
   return div;
@@ -282,13 +200,13 @@ function applyEventToUi(turn, ev) {
       traceLine(ui.trace, [{ text: '◂ ' }, { text: ev.agent, cls: 'agent' }, { text: ' 结束' }]);
       break;
     case 'delta':
-      if (!ui.botDiv) ui.botDiv = addMsg('bot', '');
-      ui.botDiv.textContent += ev.text;
+      if (!ui.botDiv) ui.botDiv = addMdMsg('');
+      renderMarkdown(ui.botDiv, (ui.botDiv._raw || '') + ev.text);
       scrollBottom();
       break;
     case 'done':
       finishTrace(ui.trace, false); ui.trace = null;
-      if (!ui.botDiv && ev.reply) ui.botDiv = addMsg('bot', ev.reply);
+      if (!ui.botDiv && ev.reply) ui.botDiv = addMdMsg(ev.reply);
       break;
     case 'error':
       finishTrace(ui.trace, true); ui.trace = null;
@@ -344,7 +262,7 @@ async function loadHistory(id) {
       const sess = sessions.find(s => s.id === id);
       if (sess && (!sess.title || sess.title === id)) { sess.title = m.text.slice(0, 30); store.save(sessions); renderSessionList(); }
     }
-    if (m.role === 'assistant') addMsg('bot', m.text);
+    if (m.role === 'assistant') addMdMsg(m.text);
   }
   if (trace) finishTrace(trace, false);
   scrollBottom();
@@ -377,7 +295,48 @@ function newChat() {
 }
 $('newChat').addEventListener('click', newChat);
 
-/* ---------- 发送 + SSE 事件流（FR-18 协议见 docs/prd-web-ui-v2.md） ---------- */
+/* ---------- 设置弹窗（写回后端 .env，对新会话生效） ---------- */
+const settingsDialog = $('settingsDialog');
+
+async function openSettings() {
+  const resp = await fetch('/api/settings');
+  if (resp.ok) {
+    const s = await resp.json();
+    $('setBaseUrl').value = s.base_url;
+    $('setModel').value = s.model;
+    $('setApiKey').value = '';
+    $('setTavilyKey').value = '';
+    $('apiKeyHint').textContent = s.api_key_masked ? `当前：${s.api_key_masked}（留空不修改）` : '未设置';
+    $('tavilyKeyHint').textContent = s.tavily_api_key_masked
+      ? `当前：${s.tavily_api_key_masked}（留空不修改）` : '未设置（联网搜索将不可用）';
+  }
+  $('settingsNote').textContent = '保存后写回 .env，对新建/新恢复的会话生效。';
+  settingsDialog.showModal();
+}
+$('openSettings').addEventListener('click', openSettings);
+$('settingsCancel').addEventListener('click', () => settingsDialog.close());
+
+$('settingsForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const payload = {
+    base_url: $('setBaseUrl').value.trim(),   // 非密钥：总是提交（可清空回 OpenAI 官方）
+    model: $('setModel').value.trim(),
+  };
+  if ($('setApiKey').value.trim()) payload.api_key = $('setApiKey').value.trim();
+  if ($('setTavilyKey').value.trim()) payload.tavily_api_key = $('setTavilyKey').value.trim();
+  const resp = await fetch('/api/settings', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!resp.ok) { $('settingsNote').textContent = '保存失败：HTTP ' + resp.status; return; }
+  const state = await (await fetch('/api/state')).json();
+  serverInfo = state;
+  renderHeader();
+  settingsDialog.close();
+});
+
+/* ---------- 发送 + SSE 事件流（协议见 docs/prd-web-ui-v2.md） ---------- */
 form.addEventListener('submit', async e => {
   e.preventDefault();
   const text = input.value.trim();
@@ -460,6 +419,3 @@ form.addEventListener('submit', async e => {
   renderSessionList();
   if (activeId) await selectSession(activeId); else newChat();
 })();
-</script>
-</body>
-</html>

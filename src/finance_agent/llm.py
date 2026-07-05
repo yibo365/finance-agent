@@ -28,8 +28,9 @@ def _client_for(settings: Settings) -> AsyncOpenAI:
 
 
 def get_model(settings: Settings) -> str | OpenAIChatCompletionsModel:
-    """OpenAI 直连返回模型名字符串（SDK 默认行为）；否则返回绑定客户端的 Model。"""
-    if settings.provider == "openai" and not settings.base_url:
+    """OpenAI 官方（base_url 为空）返回模型名字符串（SDK 默认行为）；
+    其余 OpenAI 兼容网关返回绑定自定义客户端的 Model。"""
+    if not settings.base_url:
         return settings.model
     # tracing 上传目标是 OpenAI 平台，非直连时关闭（否则无 OpenAI key 只会刷警告）
     set_tracing_disabled(True)
@@ -38,5 +39,5 @@ def get_model(settings: Settings) -> str | OpenAIChatCompletionsModel:
 
 def configure_llm(settings: Settings) -> None:
     """进程级准备（幂等）。模型绑定由 get_model 完成，这里只处理全局开关。"""
-    if settings.provider != "openai" or settings.base_url:
+    if settings.base_url:
         set_tracing_disabled(True)

@@ -1,0 +1,18 @@
+{
+  "name": "finance-agent-webapp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.11",
+    "marked": "^18.0.5"
+  }
+}

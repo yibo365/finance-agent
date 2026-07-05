@@ -13,7 +13,7 @@
     root.KlineReport = api;
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function createKlineReport() {
-  const COLORS = { up: '#16c784', down: '#ff5c72', mixed: '#f8b84e', neutral: '#5aa8ff' };
+  const COLORS = { up: '#0f9d63', down: '#d93a52', mixed: '#b97d10', neutral: '#2b7de0' };
   const SYMBOLS = { up: 'triangle-up', down: 'triangle-down', mixed: 'diamond', neutral: 'circle' };
   const CP_LABELS = {
     trend_up: '趋势拐头向上', trend_down: '趋势拐头向下',
@@ -21,9 +21,9 @@
     drawdown: '回撤确认', rally: '反弹确认', volume_spike: '量能异常',
   };
   const CP_COLORS = {
-    trend_up: '#16c784', rally: '#16c784', accel_up: '#16c784',
-    trend_down: '#ff5c72', drawdown: '#ff5c72', accel_down: '#ff5c72',
-    volume_spike: '#5aa8ff',
+    trend_up: '#0f9d63', rally: '#0f9d63', accel_up: '#0f9d63',
+    trend_down: '#d93a52', drawdown: '#d93a52', accel_down: '#d93a52',
+    volume_spike: '#2b7de0',
   };
 
   const fmtPct = v => (v === null || v === undefined || Number.isNaN(v) || !Number.isFinite(v))
@@ -237,7 +237,7 @@
       low: rows.map(r => r.low), close: closes,
       increasing: { line: { color: COLORS.up }, fillcolor: COLORS.up },
       decreasing: { line: { color: COLORS.down }, fillcolor: COLORS.down },
-      hoverlabel: { bgcolor: '#101828' },
+      hoverlabel: { bgcolor: '#ffffff', bordercolor: '#c9d4e8', font: { color: '#1d2634' } },
       hovertemplate: `<b>%{x}</b><br>开盘：%{open:.2f}<br>最高：%{high:.2f}<br>最低：%{low:.2f}<br>收盘：%{close:.2f}<extra>${escapeHtml(payload.meta.ticker)}</extra>`,
     };
     const vol = {
@@ -245,18 +245,18 @@
       marker: { color: closes.map((c, i) => i === 0 || c >= closes[i - 1] ? COLORS.up : COLORS.down) },
       hovertemplate: '<b>%{x}</b><br>成交量：%{y:,}<extra></extra>',
     };
-    const ma50 = { type: 'scatter', mode: 'lines', name: 'MA50', x: dates, y: movingAverage(closes, 50), line: { width: 1.4, color: '#ffd166' }, hovertemplate: '%{x}<br>MA50：%{y:.2f}<extra></extra>' };
-    const ma200 = { type: 'scatter', mode: 'lines', name: 'MA200', x: dates, y: movingAverage(closes, 200), line: { width: 1.4, color: '#8ecae6' }, hovertemplate: '%{x}<br>MA200：%{y:.2f}<extra></extra>' };
+    const ma50 = { type: 'scatter', mode: 'lines', name: 'MA50', x: dates, y: movingAverage(closes, 50), line: { width: 1.4, color: '#d97706' }, hovertemplate: '%{x}<br>MA50：%{y:.2f}<extra></extra>' };
+    const ma200 = { type: 'scatter', mode: 'lines', name: 'MA200', x: dates, y: movingAverage(closes, 200), line: { width: 1.4, color: '#2563ab' }, hovertemplate: '%{x}<br>MA200：%{y:.2f}<extra></extra>' };
 
     const layout = {
       paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
       margin: { l: 64, r: 38, t: 32, b: 42 },
-      font: { color: '#e9f0ff', family: '-apple-system,BlinkMacSystemFont,Segoe UI,Arial' },
+      font: { color: '#2a3448', family: '-apple-system,BlinkMacSystemFont,Segoe UI,Arial' },
       legend: { orientation: 'h', y: 1.06, x: 0, bgcolor: 'rgba(0,0,0,0)' },
       xaxis: {
-        rangeslider: { visible: false }, type: 'date', showgrid: true, gridcolor: 'rgba(255,255,255,0.08)',
+        rangeslider: { visible: false }, type: 'date', showgrid: true, gridcolor: 'rgba(30,50,90,0.10)',
         rangeselector: {
-          x: 0, y: 1.14, bgcolor: '#17223a', activecolor: '#2a63e8', font: { color: '#e9f0ff' },
+          x: 0, y: 1.14, bgcolor: '#e4ebf7', activecolor: '#2a63e8', font: { color: '#2a3448' },
           buttons: [
             { count: 6, label: '6M', step: 'month', stepmode: 'backward' },
             { count: 1, label: '1Y', step: 'year', stepmode: 'backward' },
@@ -265,8 +265,8 @@
           ],
         },
       },
-      yaxis: { domain: [0.27, 1], title: '价格（USD）', showgrid: true, gridcolor: 'rgba(255,255,255,0.08)', zeroline: false },
-      yaxis2: { domain: [0, 0.19], title: '成交量', showgrid: true, gridcolor: 'rgba(255,255,255,0.06)', zeroline: false },
+      yaxis: { domain: [0.27, 1], title: '价格（USD）', showgrid: true, gridcolor: 'rgba(30,50,90,0.10)', zeroline: false },
+      yaxis2: { domain: [0, 0.19], title: '成交量', showgrid: true, gridcolor: 'rgba(30,50,90,0.08)', zeroline: false },
       hovermode: 'x unified',
       shapes: makeEventShapes(allEvents),
     };

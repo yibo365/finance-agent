@@ -1,12 +1,15 @@
-"""FastAPI 薄层：多会话聊天（SSE 事件流）+ 按会话的历史/产物接口。
+"""FastAPI 薄层：多会话聊天（SSE 事件流）+ 按会话的历史/产物接口 + 运行时设置。
+
+前后端分离：本层只提供 API；页面由 webapp/（Vite 应用）构建产物承担，
+生产模式服务 webapp/dist，开发模式由 Vite dev server 代理 /api 过来。
 
 会话归属（FR-19）：服务端不提供会话列表——单用户场景，列表由前端
 localStorage 维护；新会话在首条消息时创建，session_id 作为首个 SSE 事件
-返回。服务端职责只剩三件：执行（chat）、回放（messages）、产物（state/file）。
+返回。
 
 安全边界：仅绑定 127.0.0.1；session_id / artifact_id 走 Workspace 与
-manifest 的既有校验（无任意路径参数）；前端为单文件原生 JS，无构建链、
-无外部资源。
+manifest 的既有校验（无任意路径参数）；设置接口返回的密钥打码，
+明文只写本机 .env。
 """
 
 from __future__ import annotations
@@ -17,13 +20,19 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from finance_agent.config import OUTPUTS_DIR, Settings
+from finance_agent.config import OUTPUTS_DIR, WEBAPP_DIST_DIR, Settings, SettingsStore
 from finance_agent.session import SessionCore, read_history
 from finance_agent.workspace import Workspace, WorkspaceError
 
-_STATIC = Path(__file__).parent / "static"
+_NO_DIST_HINT = """<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<title>finance-agent</title><body style="font-family:sans-serif;padding:40px;line-height:1.8">
+<h2>前端尚未构建</h2>
+<p>开发模式：项目根目录运行 <code>./scripts/dev.sh</code>（同时启动前后端，前端在 Vite 端口）。</p>
+<p>生产模式：<code>npm --prefix webapp install && npm --prefix webapp run build</code> 后刷新本页。</p>
+</body></html>"""
 
 
 class ChatRequest(BaseModel):
@@ -31,11 +40,28 @@ class ChatRequest(BaseModel):
     session_id: str | None = None
 
 
-class SessionRegistry:
-    """进程内会话池：chat 用的 SessionCore 懒加载 + 每会话一把执行锁。"""
+class SettingsRequest(BaseModel):
+    api_key: str | None = None        # None = 不修改；空串 = 清除
+    base_url: str | None = None
+    model: str | None = None
+    tavily_api_key: str | None = None
 
-    def __init__(self, settings: Settings, outputs_dir: Path) -> None:
-        self.settings = settings
+
+def _mask(secret: str) -> str:
+    if not secret:
+        return ""
+    return secret[:6] + "…" + secret[-4:] if len(secret) > 12 else "已设置"
+
+
+class SessionRegistry:
+    """进程内会话池：chat 用的 SessionCore 懒加载 + 每会话一把执行锁。
+
+    配置从 store 现取——设置弹窗保存后，新建/新恢复的会话用新配置，
+    已在内存中的会话沿用其创建时的配置。
+    """
+
+    def __init__(self, store: SettingsStore, outputs_dir: Path) -> None:
+        self.store = store
         self.outputs_dir = outputs_dir
         self._cores: dict[str, SessionCore] = {}
         self._locks: dict[str, asyncio.Lock] = {}
@@ -45,12 +71,12 @@ class SessionRegistry:
         return core
 
     def create(self) -> SessionCore:
-        return self.add(SessionCore.start(self.settings, self.outputs_dir))
+        return self.add(SessionCore.start(self.store.current, self.outputs_dir))
 
     def core(self, session_id: str) -> SessionCore:
         if session_id not in self._cores:
             try:
-                self.add(SessionCore.resume(self.settings, session_id, self.outputs_dir))
+                self.add(SessionCore.resume(self.store.current, session_id, self.outputs_dir))
             except WorkspaceError as exc:
                 raise HTTPException(404, str(exc)) from exc
         return self._cores[session_id]
@@ -77,8 +103,12 @@ def create_app(
     *,
     outputs_dir: Path | None = None,
     initial_core: SessionCore | None = None,
+    frontend_dist: Path | None = None,
+    settings_store: SettingsStore | None = None,
 ) -> FastAPI:
-    registry = SessionRegistry(settings, outputs_dir or OUTPUTS_DIR)
+    store = settings_store or SettingsStore(settings)
+    registry = SessionRegistry(store, outputs_dir or OUTPUTS_DIR)
+    dist = frontend_dist or WEBAPP_DIST_DIR
     initial_session_id = None
     if initial_core is not None:  # --web --resume <id>：并入前端左栏
         registry.add(initial_core)
@@ -88,15 +118,33 @@ def create_app(
 
     @app.get("/", response_class=HTMLResponse)
     def index() -> str:
-        return (_STATIC / "index.html").read_text(encoding="utf-8")
+        page = dist / "index.html"
+        return page.read_text(encoding="utf-8") if page.is_file() else _NO_DIST_HINT
 
     @app.get("/api/state")
     def state() -> dict:
+        current = store.current
         return {
-            "provider": settings.provider,
-            "model": settings.model,
+            "model": current.model,
+            "base_url": current.base_url or "",
             "initial_session_id": initial_session_id,
         }
+
+    @app.get("/api/settings")
+    def get_settings() -> dict:
+        current = store.current
+        return {
+            "base_url": current.base_url or "",
+            "model": current.model,
+            "api_key_masked": _mask(current.api_key),
+            "tavily_api_key_masked": _mask(current.tavily_api_key),
+        }
+
+    @app.put("/api/settings")
+    def put_settings(request: SettingsRequest) -> dict:
+        store.update(**request.model_dump(exclude_none=True))
+        return {"ok": True, "note": "已保存并写回 .env；对新建/新恢复的会话生效。",
+                **get_settings()}
 
     @app.post("/api/chat")
     async def chat(request: ChatRequest) -> StreamingResponse:
@@ -150,6 +198,9 @@ def create_app(
             raise HTTPException(404, f"版本不存在：{artifact_id} v{v}")
         path = workspace.dir / matches[0].file
         return FileResponse(path, filename=path.name)
+
+    if (dist / "assets").is_dir():  # Vite 构建产物的静态资源
+        app.mount("/assets", StaticFiles(directory=dist / "assets"), name="assets")
 
     return app
 

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>finance-agent 投研工作台</title>
+</head>
+<body>
+
+<nav>
+  <div class="top"><button id="newChat">＋ 新建会话</button></div>
+  <div id="sessionList"></div>
+  <div class="bottom"><button id="openSettings" type="button">⚙ 设置</button></div>
+</nav>
+
+<main>
+  <header>
+    <h1>finance-agent 投研工作台</h1>
+    <div class="sub" id="sessionInfo">连接中…</div>
+  </header>
+  <div id="log"></div>
+  <form id="form">
+    <input id="input" placeholder="例如：回顾英伟达近五年行情，梳理AI大事件，生成HTML" autocomplete="off" />
+    <button id="send" type="submit">发送</button>
+  </form>
+</main>
+
+<aside>
+  <h2>产物（点击打开 / 版本历史）</h2>
+  <div id="artifacts"><div class="empty">暂无产物</div></div>
+</aside>
+
+<dialog id="settingsDialog">
+  <form id="settingsForm" method="dialog">
+    <h3>设置</h3>
+    <label>API Base URL
+      <input id="setBaseUrl" name="base_url" placeholder="留空 = OpenAI 官方；OpenRouter 填 https://openrouter.ai/api/v1" />
+      <small>任何 OpenAI 兼容供应方均可（OpenRouter、自建网关等）。</small>
+    </label>
+    <label>API Key
+      <input id="setApiKey" name="api_key" type="password" autocomplete="off" />
+      <small id="apiKeyHint">未设置</small>
+    </label>
+    <label>模型
+      <input id="setModel" name="model" placeholder="如 gpt-5.5 / anthropic/claude-haiku-4.5" />
+    </label>
+    <label>Tavily API Key（联网搜索）
+      <input id="setTavilyKey" name="tavily_api_key" type="password" autocomplete="off" />
+      <small id="tavilyKeyHint">未设置</small>
+    </label>
+    <div class="note" id="settingsNote">保存后写回 .env，对新建/新恢复的会话生效。</div>
+    <div class="hint">会话列表仅存于本浏览器（localStorage）；移除不会删除服务端工作区。</div>
+    <div class="actions">
+      <button type="button" id="settingsCancel">取消</button>
+      <button type="submit" id="settingsSave" class="primary">保存</button>
+    </div>
+  </form>
+</dialog>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

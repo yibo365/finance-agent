@@ -81,8 +81,7 @@ def test_tavily_search_http_error_propagates():
 def test_tavily_impl_returns_structured_results_and_note(tmp_path):
     from finance_agent.tools.agent_tools import tavily_web_search_impl
 
-    settings = Settings(api_key="k", search_backend="tavily",
-                        tavily_api_key="tvly-x", web_max_results=4)
+    settings = Settings(api_key="k", tavily_api_key="tvly-x", web_max_results=4)
     app = AppContext(settings=settings, workspace=Workspace.create(tmp_path / "o"))
     out = asyncio.run(tavily_web_search_impl(
         app, "茅台", client=_client(lambda r: httpx.Response(200, json=_PAYLOAD)),
@@ -91,3 +90,12 @@ def test_tavily_impl_returns_structured_results_and_note(tmp_path):
     assert out["evidence_id"].startswith("ev-")
     assert out["note"] == ""
     assert "summary" not in out  # 无任何 LLM 生成内容
+
+
+def test_tavily_impl_without_key_gives_config_guidance(tmp_path):
+    from finance_agent.tools.agent_tools import tavily_web_search_impl
+
+    app = AppContext(settings=Settings(api_key="k"),
+                     workspace=Workspace.create(tmp_path / "o2"))
+    with pytest.raises(ValueError, match="TAVILY_API_KEY"):
+        asyncio.run(tavily_web_search_impl(app, "任意查询"))
