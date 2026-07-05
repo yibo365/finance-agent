@@ -1,0 +1,1717 @@
+{
+  "run_id": "s-20260704-5294",
+  "items": [
+    {
+      "id": "ev-s-20260704-5294-1",
+      "kind": "market_data",
+      "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/GC=F?period1=1625356800&period2=1783209600&interval=1d&events=history",
+      "query": {
+        "ticker": "GC=F",
+        "start": "2021-07-04",
+        "end": "2026-07-04",
+        "source": "Yahoo Finance (query1)"
+      },
+      "fetched_at": "2026-07-04T04:10:06+00:00",
+      "excerpt": "1257 行日线，2021-07-06 至 2026-07-03，来源 Yahoo Finance (query1)"
+    },
+    {
+      "id": "ev-s-20260704-5294-2",
+      "kind": "computation",
+      "source_url": "evidence:ev-s-20260704-5294-1",
+      "query": {
+        "params": {
+          "trend_window": 20,
+          "trend_min_slope": 0.001,
+          "zscore_window": 21,
+          "zscore_threshold": 2.0,
+          "swing_threshold": 0.15,
+          "volume_window": 60,
+          "volume_multiple": 3.0,
+          "merge_window_days": 10
+        },
+        "rows": 1257
+      },
+      "fetched_at": "2026-07-04T04:10:11+00:00",
+      "excerpt": "117 个变化点：2021-08-06 accel_down(s2)；2021-08-31 trend_up(s1)；2021-09-16 accel_down(s2)；2021-09-20 trend_down(s2)；2021-09-30 accel_up(s3)；2021-10-13 accel_up(s2)；2021-10-20 trend_up(s1)；2021-11-04 accel_up(s2)"
+    },
+    {
+      "id": "ev-s-20260704-5294-3",
+      "kind": "market_data",
+      "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?period1=1625356800&period2=1783209600&interval=1d&events=history",
+      "query": {
+        "ticker": "BTC-USD",
+        "start": "2021-07-04",
+        "end": "2026-07-04",
+        "source": "Yahoo Finance (query1)"
+      },
+      "fetched_at": "2026-07-04T04:10:18+00:00",
+      "excerpt": "1826 行日线，2021-07-04 至 2026-07-04，来源 Yahoo Finance (query1)"
+    },
+    {
+      "id": "ev-s-20260704-5294-4",
+      "kind": "computation",
+      "source_url": "evidence:ev-s-20260704-5294-3",
+      "query": {
+        "params": {
+          "trend_window": 20,
+          "trend_min_slope": 0.001,
+          "zscore_window": 21,
+          "zscore_threshold": 2.0,
+          "swing_threshold": 0.15,
+          "volume_window": 60,
+          "volume_multiple": 3.0,
+          "merge_window_days": 10
+        },
+        "rows": 1826
+      },
+      "fetched_at": "2026-07-04T04:10:20+00:00",
+      "excerpt": "209 个变化点：2021-07-20 drawdown(s3)；2021-07-24 rally(s3)；2021-07-26 trend_up(s1)；2021-09-07 accel_down(s2)；2021-09-10 trend_down(s1)；2021-09-20 accel_down(s2)；2021-09-20 drawdown(s3)；2021-10-01 accel_up(s2)"
+    },
+    {
+      "id": "ev-s-20260704-5294-5",
+      "kind": "computation",
+      "source_url": "evidence:ev-s-20260704-5294-3",
+      "query": {
+        "params": {
+          "trend_window": 20,
+          "trend_min_slope": 0.001,
+          "zscore_window": 21,
+          "zscore_threshold": 2.0,
+          "swing_threshold": 0.15,
+          "volume_window": 60,
+          "volume_multiple": 3.0,
+          "merge_window_days": 10
+        },
+        "rows": 1826
+      },
+      "fetched_at": "2026-07-04T04:10:28+00:00",
+      "excerpt": "209 个变化点：2021-07-20 drawdown(s3)；2021-07-24 rally(s3)；2021-07-26 trend_up(s1)；2021-09-07 accel_down(s2)；2021-09-10 trend_down(s1)；2021-09-20 accel_down(s2)；2021-09-20 drawdown(s3)；2021-10-01 accel_up(s2)"
+    },
+    {
+      "id": "ev-s-20260704-5294-6",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/newsroom/speeches-statements/gensler-statement-spot-bitcoin-011023",
+      "query": {
+        "query": "Bitcoin ETF SEC approval date January 2024",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:13:07+00:00",
+      "excerpt": "SEC.gov | Statement on the Approval of Spot Bitcoin Exchange-Traded Products；Federal Register, Volume 89 Issue 11 (Wednesday, January 17, 2024)；SECURITIES AND EXCHANGE COMMISSION (Release No. 34-99306; File Nos. SR-NYSEARCA-2021-90; SR-NYSEARCA-2023-44; SR NYSEARCA-2023-58; SR-NASDAQ-2023-016; SR-NASDAQ-2023-019; SR-CboeBZX-2023- 028; SR-CboeBZX-2023-038; SR-CboeBZX-2023-040; SR-CboeBZX-2023-042; SR CboeBZX-2023-044; SR-CboeBZX-2023-072) January 10, 2024 Self-Regulatory Organizations; NYSE Arca, Inc.; The Nasdaq Stock Market LLC; Cboe BZX Exchange, Inc.; Order Granting Accelerated Approval of Proposed Rule Changes, as Modified by Amendments Thereto, to List and Trade Bitcoin-Based Commodity-Based Trust Shares and Trust Units I. INTRODUCTION Pursuant to Section 19(b)(1) of the Securities Exchange Act of 1934 (“Exchange Act”)；Spot Bitcoin ETFs Approved to Launch in US by Gensler’s SEC - Bloomberg；SEC Approves Bitcoin Exchange-Traded Products (ETPs)"
+    },
+    {
+      "id": "ev-s-20260704-5294-7",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/artificial-intelligence/what-is-deepseek-why-is-it-disrupting-ai-sector-2025-01-27/",
+      "query": {
+        "query": "DeepSeek AI launch date January 2025 impact markets",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:13:43+00:00",
+      "excerpt": "Explainer: What is DeepSeek and why is it disrupting the AI sector? | Reuters；DeepSeek | Rise, Technologies, Impact, & Global Response | Britannica Money；What is DeepSeek? Here's a quick guide to the Chinese AI company | PBS News；DeepSeek：这是一家什么公司？为何突然引发美国科技股暴跌？ - BBC News 中文；DeepSeek"
+    },
+    {
+      "id": "ev-s-20260704-5294-8",
+      "kind": "search",
+      "source_url": "https://www.fdic.gov/resources/resolutions/bank-failures/failed-bank-list/silicon-valley.html",
+      "query": {
+        "query": "Silicon Valley Bank SVB collapse date March 2023",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:13:43+00:00",
+      "excerpt": "Failed Bank Information for Silicon Valley Bank, Santa Clara, CA - FDIC；Silicon Valley Bank collapse: How it happened - CNBC；[PDF] background on failures of silicon valley bank and signature bank；March 13, 2023 Latest on the Silicon Valley Bank collapse | CNN Business；Silicon Valley Bank: A Timeline and Summary of Events"
+    },
+    {
+      "id": "ev-s-20260704-5294-9",
+      "kind": "search",
+      "source_url": "https://abcnews.com/Business/timeline-cryptocurrency-exchange-ftxs-historic-collapse/story?id=93337035",
+      "query": {
+        "query": "FTX collapse date November 2022 crypto crash",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:14:12+00:00",
+      "excerpt": "A timeline of cryptocurrency exchange FTX's historic collapse；Sam Bankman-Fried and the FTX collapse, explained - NBC News；What do we know so far about collapse of crypto exchange FTX?；[PDF] What Happened at FTX and What Does It Mean for Crypto?；Bankruptcy of FTX - Wikipedia"
+    },
+    {
+      "id": "ev-s-20260704-5294-10",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Russia+Ukraine&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1640995200%2Ccreated_at_i%3C%3D1656633599",
+      "query": {
+        "query": "Russia Ukraine",
+        "start": "2022-01-01",
+        "end": "2022-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:28+00:00",
+      "excerpt": "Russia Has Been Driven from Snake Island by Ukraine；Security experts are bracing for cyberattacks if Russia gets desperate；What If Russia Uses Nuclear Weapons in Ukraine?；Richard Branson discussed rebuilding Mriya, the largest cargo plane；Tracking where Russia is taking Ukraine's stolen grain"
+    },
+    {
+      "id": "ev-s-20260704-5294-11",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "bitcoin",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:28+00:00",
+      "excerpt": "MicroStrategy Buys Another $94.2M of Bitcoin；OpenSea freezes $2.2M of stolen Bored Apes；Does Bitcoin/Blockchain make sense for international money transfers?；Rubin's 2021 Bitcoin Advent Calendar；Elon Musk reveals who Bitcoin's mysterious creator Satoshi Nakamoto might be"
+    },
+    {
+      "id": "ev-s-20260704-5294-12",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=gold&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "gold",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:28+00:00",
+      "excerpt": "Good News Stories You Probably Didn't Hear About in 2021；Good-Bye, Goldman Sachs；Ask HN: Best advice to help me achieve my 2022 goals?；Horrible insurance kerfuffle gone good；Michael Goldhaber, the Cassandra of the Internet Age"
+    },
+    {
+      "id": "ev-s-20260704-5294-13",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=inflation+CPI&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "inflation CPI",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:28+00:00",
+      "excerpt": "Ask HN: Was commoditizing crypto a central government scam to fight inflation?；Ask HN: Covid Network Simulation?；Study: Use of Ivermectin showed significantly reduced Covid-19 adverse events；Inflation rises to 6.8% year over year；Ask HN: Is inflation just the cost of government borrowing?"
+    },
+    {
+      "id": "ev-s-20260704-5294-14",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=FTX&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1656633600%2Ccreated_at_i%3C%3D1672531199",
+      "query": {
+        "query": "FTX",
+        "start": "2022-07-01",
+        "end": "2022-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:36+00:00",
+      "excerpt": "Breakincludes: Fixincludes in GCC；Ask HN: How do you get through to Facebook for help?；FTX Debtors will seek return of crypto held by Bahamas regulator；Magic beans, Bahamian penthouses, old-fashioned fraud and other important SBF-in；Show HN: lambdaprompt – build, compose and call templated LLM prompts"
+    },
+    {
+      "id": "ev-s-20260704-5294-15",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=SVB&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1672531200%2Ccreated_at_i%3C%3D1688169599",
+      "query": {
+        "query": "SVB",
+        "start": "2023-01-01",
+        "end": "2023-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:36+00:00",
+      "excerpt": "iCloud Is 25% Pricier in the UK – Thoughts on Apple Subscriptions and Apple One；Why Didn't Ancient Rome Have a Space Program?；The Great White North’s Soaring Homeless Crisis；CS50 – Personal Programming Journey Blog #10 – Python；Hallucinations in AI"
+    },
+    {
+      "id": "ev-s-20260704-5294-16",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Fed+rate+hike&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1640995200%2Ccreated_at_i%3C%3D1656633599",
+      "query": {
+        "query": "Fed rate hike",
+        "start": "2022-01-01",
+        "end": "2022-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:36+00:00",
+      "excerpt": "The Fed hikes rates by 75 points and predicts 3 years of rising unemployment；Ask HN: Will the US Fed rate hike affect the tech industry；Student Loans, Mortgages, Credit Cards: Here’s Impact of Rate Hike；Powell: Fed 'not trying to induce a recession' with interest rate hikes；Fed Hikes Rates 75 Basis Points, Intensifying Inflation Fight"
+    },
+    {
+      "id": "ev-s-20260704-5294-17",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Ukraine+invasion&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1643673600%2Ccreated_at_i%3C%3D1648771199",
+      "query": {
+        "query": "Ukraine invasion",
+        "start": "2022-02-01",
+        "end": "2022-03-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:36+00:00",
+      "excerpt": "DeleteSlack for sanctioning innocent Ukrainian paying customers；Proposal to Sanction Kapersky Lab Over Ukraine Invasion Splits US Administration；Orthodox patriarch denounces 'atrocious invasion' of Ukraine；The invasion of Ukraine is not the first social media war, but is the most viral；Why is Abramovich playing peacemaker after Russia’s invasion of Ukraine?"
+    },
+    {
+      "id": "ev-s-20260704-5294-18",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=banking+crisis&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1672531200%2Ccreated_at_i%3C%3D1688169599",
+      "query": {
+        "query": "banking crisis",
+        "start": "2023-01-01",
+        "end": "2023-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:43+00:00",
+      "excerpt": "Not Buying Central Banks’ Favorite Excuse；Ask HN: Is there an impending Banking crisis?；US banking crisis: Warren Buffett says bosses should face ‘punishment’；US job creation robust despite banking crisis；First Republic falls. Is the banking crisis restarting?"
+    },
+    {
+      "id": "ev-s-20260704-5294-19",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=inflation&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1688169600%2Ccreated_at_i%3C%3D1704067199",
+      "query": {
+        "query": "inflation",
+        "start": "2023-07-01",
+        "end": "2023-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:43+00:00",
+      "excerpt": "Ask HN: What low risk passive income makes you feel secure?；Turkey Lifts Minimum Wage by 49% for 2024 as Inflation Soars；The 2024 economy could be shockingly normal；Inflation has created a dark cloud over how everyday Americans view the economy；Researchers used ML model to find antibiotic against drug resistant infections"
+    },
+    {
+      "id": "ev-s-20260704-5294-20",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin+crash&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1640995200%2Ccreated_at_i%3C%3D1656633599",
+      "query": {
+        "query": "bitcoin crash",
+        "start": "2022-01-01",
+        "end": "2022-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:43+00:00",
+      "excerpt": "CoinFLEX gets Roger Verified — the mystery of the missing Bitcoin Cash；Bitcoin Cash Pay-to-Script-Hash (P2SH): Past, Present, and Future；Crypto Is Crashing, But Companies Aren't Acting Like It；You can’t cash out: Bitcoin is not a Ponzi scheme It just works like one；What will the crypto crash mean for 'Bitcoin nation' El Salvador?"
+    },
+    {
+      "id": "ev-s-20260704-5294-21",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Bitcoin+ETF&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1704067200%2Ccreated_at_i%3C%3D1719791999",
+      "query": {
+        "query": "Bitcoin ETF",
+        "start": "2024-01-01",
+        "end": "2024-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:14:43+00:00",
+      "excerpt": "Show HN: Proactive Security Monitoring for GitHub Actions Workflows；The Bitcoin Writing Contest: $$17.5 in Prizes；Fidelity: Pension Funds Exploring Bitcoin Investments on ETF Approval；Hong Kong Bitcoin, ether ETFs see tepid trading on debut；Solana Developers Release Software Update to Alleviate Network Congestion"
+    },
+    {
+      "id": "ev-s-20260704-5294-22",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/markets/commodities/gold-climbs-safe-haven-demand-ahead-us-reciprocal-tariffs-2025-04-02/",
+      "query": {
+        "query": "Trump tariff announcement 2025 April gold bitcoin reaction",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:15:05+00:00",
+      "excerpt": "Gold prices extend rise after Trump unveils tariff plans | Reuters；Bitcoin as Digital Gold? Analyzing April's Market Events & Long-Term Store of Value；重磅！特朗普大规模关税行动细节来了 避险情绪急剧升温、金价暴涨32美元创历史新高_金市直播_黄金网_中金在线；Crypto Investors React to Trump’s Tariffs Announcement: Here’s What Happened；Bitcoin (BTC-USD) Reacts to Trump's Tariff Announcement with Volatility"
+    },
+    {
+      "id": "ev-s-20260704-5294-23",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/bitcoin-slumps-lowest-month-after-russia-invades-ukraine-2022-02-24/",
+      "query": {
+        "query": "Russia Ukraine invasion February 24 2022 gold bitcoin price reaction safe haven",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:15:20+00:00",
+      "excerpt": "Cryptocurrencies fall after Russia invades Ukraine | Reuters；First Mover Americas: Traders Prefer Gold, Fiat Safe Havens Over Bitcoin as Russia Goes to War；Russia's Ukraine invasion: Equities and crypto markets tank as gold moves higher；The reaction of financial markets to Russia’s invasion of Ukraine: evidence from gold, oil, bitcoin, and major stock markets；Are Bitcoin and Gold a Safe Haven during COVID-19 and the 2022 Russia–Ukraine War?"
+    },
+    {
+      "id": "ev-s-20260704-5294-24",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2024/04/19/bitcoin-network-completes-fourth-ever-halving-of-rewards-to-miners.html",
+      "query": {
+        "query": "Bitcoin halving April 2024 date impact price",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:15:21+00:00",
+      "excerpt": "Bitcoin network completes fourth-ever ‘halving’ of rewards to miners；Understanding Bitcoin Halving: Impact on Price and Investment Strategies；Bitcoin Halving 2024 – This Time It’s Different - CME Group；Bitcoin halving 2024 | LSEG；Bitcoin Halving Explained: History, Impact, & 2024 Predictions | VanEck"
+    },
+    {
+      "id": "ev-s-20260704-5294-25",
+      "kind": "search",
+      "source_url": "https://apnews.com/article/bitcoin-crypto-donald-trump-election-c2e2a1a895288c5e9c0df2721012a5bb",
+      "query": {
+        "query": "US election November 2024 Trump win bitcoin price reaction gold",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:16:22+00:00",
+      "excerpt": "Bitcoin price hits record high as Trump’s win boosts crypto | AP News；Bitcoin jumps to record as Trump's election turbocharges cryptocurrencies | Reuters；Bitcoin Hits a Record as Crypto Investors Root for a Trump Win - The New York Times；Stocks and bitcoin soar after Trump's victory, while inflation worries rise; Dow surges 1,200 | PBS News；Windsor Brokers Blog | Forex Market Analysis & Trading Insights"
+    },
+    {
+      "id": "ev-s-20260704-5294-26",
+      "kind": "search",
+      "source_url": "https://www.bls.gov/opub/ted/2022/consumer-prices-up-9-1-percent-over-the-year-ended-june-2022-largest-increase-in-40-years.htm",
+      "query": {
+        "query": "CPI inflation peak June 2022 9.1 percent gold bitcoin reaction",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:16:22+00:00",
+      "excerpt": "Consumer prices up 9.1 percent over the year ended June 2022, largest increase in 40 years  : The Economics Daily : U.S. Bureau of Labor Statistics；US CPI June 2022: Inflation Accelerates to 9.1%, Once Again Exceeding Forecasts - Bloomberg；Inflation rose 9.1% in June, even more than expected, as consumer pressures intensify；U.S. inflation rises 9.1% in June, more than expected, as prices keep climbing；June inflation hits 9.1 percent, a new peak - The Washington Post"
+    },
+    {
+      "id": "ev-s-20260704-5294-27",
+      "kind": "search",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm",
+      "query": {
+        "query": "Fed rate cut September 2024 first cut gold bitcoin",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:16:22+00:00",
+      "excerpt": "Federal Reserve Board - Federal Reserve issues FOMC statement；Gold gains over 1% as Fed begins deeper rate-cut cycle | Reuters；Fed cuts rates by a half point at September 2024 meeting；Fed Announces Big Rate Cut；September 2024: Crypto Gets a Lift from Fed Rate Cuts | Grayscale"
+    },
+    {
+      "id": "ev-s-20260704-5294-28",
+      "kind": "search",
+      "source_url": "https://www.bloomberg.com/news/articles/2021-08-08/gold-drops-silver-tumbles-after-u-s-jobs-growth-tops-estimates",
+      "query": {
+        "query": "gold price crash August 2021 reason",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:16:39+00:00",
+      "excerpt": "Gold Claws Back Some Ground After Early Morning Flash Crash - Bloomberg；Gold bounces off $1678; the low of the August 2021 “Flash Crash” | Kitco News；Gold Market Commentary August 2021 | World Gold Council；金价离奇大跌背后：日本机构止损离场，黄金沦落为风险资产？_腾讯新闻；黄金白银集体暴跌 20家银行贵金属交易提前“刹车” - 21财经"
+    },
+    {
+      "id": "ev-s-20260704-5294-29",
+      "kind": "search",
+      "source_url": "https://markets.businessinsider.com/news/commodities/gold-price-2000-ounce-russia-ukraine-safe-haven-investing-analysis-2022-3",
+      "query": {
+        "query": "gold price March 2022 surge above 2000 reason Russia Ukraine safe haven",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:17:03+00:00",
+      "excerpt": "Gold Price Today: Safe Haven Asset Hits $2,000 Over Russian Invasion - Markets Insider；Gold Price Outlook: Investing Analysis After Russia-Ukraine Conflict - Business Insider；Gold Watch - Impact of the Ukraine war on gold prices | ABN AMRO；Gold price hits one-year high as investors flock to safe haven；Gold price’s fate tied to Russia-Ukraine conflict, say analysts"
+    },
+    {
+      "id": "ev-s-20260704-5294-30",
+      "kind": "search",
+      "source_url": "https://www.congress.gov/crs_external_products/IN/PDF/IN11928/IN11928.1.pdf",
+      "query": {
+        "query": "Terra Luna crypto crash May 2022 bitcoin contagion",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:17:21+00:00",
+      "excerpt": "[PDF] Algorithmic Stablecoins and the TerraUSD Crash - Congress.gov；Crypto crash: Stablecoin collapse sends tokens tumbling - BBC；Cryptocurrency luna crashes to $0 as UST falls further from dollar peg；[PDF] Anatomy of a Run: The Terra Luna Crash - NBER；'Evil genius' may have caused Terra and Luna cryptocurrencies to crash in a 'death spiral' - ABC News"
+    },
+    {
+      "id": "ev-s-20260704-5294-31",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/world/china/china-central-bank-vows-crackdown-cryptocurrency-trading-2021-09-24/",
+      "query": {
+        "query": "China crypto ban September 2021 bitcoin crash",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:17:29+00:00",
+      "excerpt": "China's top regulators ban crypto trading and mining ... - Reuters；China Widens Ban on Crypto Transactions; Bitcoin Tumbles；China Cracks Down Harder on Cryptocurrency With New Ban；Bitcoin slumps as China bans all cryptocurrency transactions；關於進一步防範和處置虛擬貨幣交易炒作風險的通知_要聞發布_國家外匯管理局門戶網站"
+    },
+    {
+      "id": "ev-s-20260704-5294-32",
+      "kind": "search",
+      "source_url": "https://dipot.ulb.ac.be/dspace/bitstream/2013/345041/3/wp22008.pdf",
+      "query": {
+        "query": "gold bitcoin correlation DXY dollar index 2022 2023",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:17:51+00:00",
+      "excerpt": "Centre Emile Bernheim；The Relationship between Bitcoin and Nasdaq, U.S. Dollar Index ...；Are Bitcoin and Gold a Safe Haven during COVID-19 and the 2022 Russia–Ukraine War?；币价影响因素分析：对比利率、M2、纳指、美元指数、黄金走势 - 行业研究报告 - 小牛行研；Bitwise 研究: 比特币与黄金是投资的\"矛与盾\"？ - 吴说区块链"
+    },
+    {
+      "id": "ev-s-20260704-5294-33",
+      "kind": "search",
+      "source_url": "https://news.qq.com/rain/a/20260131A03F6S00",
+      "query": {
+        "query": "gold crash January 2026 reasons -11%",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:18:22+00:00",
+      "excerpt": "黄金、白银遭遇历史级暴跌：宏观事件+资金结构共振下的去杠杆_腾讯新闻；原因找到了，白银暴跌36%、黄金创40年最大跌幅，三股力量同踩刹车_腾讯新闻；黄金史诗级巨震！背后发生了什么？_腾讯新闻；特朗普大动作，金价30小时暴跌670美元！此前两周狂飙21%，也与他有关！后市怎么走？各大机构表态，专家解读|美联储_新浪财经_新浪网；黄金单日暴跌超过60美元！1月16日今日国际金价惊现高台跳水_腾讯新闻"
+    },
+    {
+      "id": "ev-s-20260704-5294-34",
+      "kind": "search",
+      "source_url": "https://www.cnn.com/2025/01/27/tech/deepseek-stocks-ai-china",
+      "query": {
+        "query": "DeepSeek January 2025 market impact gold bitcoin",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:18:37+00:00",
+      "excerpt": "A shocking Chinese AI advancement called DeepSeek is sending US stocks plunging | CNN Business；Deepseek: what it is and why it caused Bitcoin to crash；Explainer: What is DeepSeek and why is it disrupting the AI sector? | Reuters；DeepSeek sell-off: The winners and losers of Monday’s AI volatility | Trustnet；Deepseek殺死美股！NVDIA大跌17％「市值蒸發6,000億鎂」、比特幣摜破9.8萬鎂後反彈 | 動區動趨-最具影響力的區塊鏈新聞媒體"
+    },
+    {
+      "id": "ev-s-20260704-5294-35",
+      "kind": "search",
+      "source_url": "https://global.morningstar.com/en-ca/markets/gold-vs-bitcoin-why-safe-haven-debate-is-shifting-2025",
+      "query": {
+        "query": "US recession fears 2025 gold bitcoin safe haven",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:18:48+00:00",
+      "excerpt": "Gold vs. Bitcoin: Why the Safe-Haven Debate Is Shifting in 2025 | Morningstar Canada；Serious U.S. Dollar Fed Warning Issued As Bitcoin Mounts $24 Trillion Gold Price Challenge；Safe-Haven Flows in 2025: Bitcoin Vs. Gold After the Crash | Investing.com；The U.S. Recession Question: What It Means for Bitcoin and Crypto Assets | Bitwise；Bitcoin price plunges while gold rises, destroying crypto ‘safe haven’ narrative | Fortune"
+    },
+    {
+      "id": "ev-s-20260704-5294-36",
+      "kind": "search",
+      "source_url": "https://www.axios.com/2024/04/08/gold-record-highs",
+      "query": {
+        "query": "gold price record high 2024 2025 central bank buying reasons",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:19:07+00:00",
+      "excerpt": "Gold rallies to new records on worldwide tensions, central bank buying；Central Bank Gold Reserves Survey 2025 | World Gold Council；全球黄金需求趋势：2024年四季度及全年报告 | World Gold Council；Gold predicted to climb higher than expected as records shatter | Goldman Sachs；Gold beyond records"
+    },
+    {
+      "id": "ev-s-20260704-5294-37",
+      "kind": "search",
+      "source_url": "https://fortune.com/2025/11/25/bitcoin-price-gold-safe-haven-narrative-over/",
+      "query": {
+        "query": "Bitcoin 2025 November crash safe haven narrative gold divergence",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:20:20+00:00",
+      "excerpt": "Bitcoin price plunges while gold rises, destroying crypto ‘safe haven’ narrative | Fortune；Great Bitcoin Crash of 2025 Has It Lagging Bonds, Gold - Bloomberg；2025 比特幣宏觀報告：避險錯位、流動性工具與未來演化路徑 | OSL Research；为何黄金将在2025年胜过比特币（BTC）：流动性、交易与信任；风险资产与避险资产齐跌，比特币与黄金共同拉响流动性警报 - 21经济网"
+    },
+    {
+      "id": "ev-s-20260704-5294-38",
+      "kind": "search",
+      "source_url": "https://www.gold.org/goldhub/research/gold-market-commentary-march-2026",
+      "query": {
+        "query": "gold March 2026 crash 17% drawdown reason March 19 23",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:20:32+00:00",
+      "excerpt": "Gold Market Commentary: Anatomy of a fall | World Gold Council；Why Is Gold Crashing? How Low Can XAU/USD Chart Go and Gold Price Prediction 2026；US equity plunge and gold's worst week in decades | Market Navigator | IG International；国际金价年内涨幅归零，避险逻辑为何失灵？_腾讯新闻；火线解读！黄金史诗级暴跌，什么原因？|黄金_新浪财经_新浪网"
+    },
+    {
+      "id": "ev-s-20260704-5294-39",
+      "kind": "search",
+      "source_url": "https://www.coindesk.com/markets/2024/08/05/bitcoin-drops-15-against-japanese-yen-outpacing-declines-versus-usd-as-yen-carry-trades-unwind",
+      "query": {
+        "query": "Bitcoin August 2024 crash carry trade yen unwind August 5",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:21:11+00:00",
+      "excerpt": "Bitcoin Drops 15% Against Japanese Yen, Outpacing Declines Versus USD, as Yen Carry Trades Unwind；The market turbulence and carry trade unwind of August 2024；How the Bank of Japan wrecked the Yen carry trade – And crypto markets；Crypto Apocalypse? Why Bitcoin, Ethereum, and Crypto Collapsed | Nasdaq；'Yen Carry Trade' Blamed for Global Market Rout, Jump Crypto's ETH Sale Worsens Ether Plunge"
+    },
+    {
+      "id": "ev-s-20260704-5294-40",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2023/12/04/gold-prices-set-for-new-highs-amid-economic-geopolitical-uncertainty.html",
+      "query": {
+        "query": "gold breakout December 2023 record high above 2100",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:22:02+00:00",
+      "excerpt": "Gold prices at record highs amid economic, geopolitical ...；现货黄金突破2100美元，刷新历史记录，黄金基金ETF（518800）涨超1.7% | 每经网；Gold tops record high of $2100 per ounce: Why it's soaring；Gold Price Crosses $2,100, Setting New Record - JCK；現貨黃金創下歷史新高！突破2100美元關口 - 香港商報"
+    },
+    {
+      "id": "ev-s-20260704-5294-41",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/world/middle-east/attack-israel-could-boost-appeal-gold-safe-haven-assets-2023-10-08/",
+      "query": {
+        "query": "2023 October Hamas Israel attack gold price reaction October 7",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:22:08+00:00",
+      "excerpt": "Attack on Israel boosts appeal of gold, safe-haven assets | Reuters；Gold price comes close to breaking $2,000 as Middle East tensions escalate | IG International；Israel-Hamas War and the Price of Gold: the Possible Scenarios That Could Impact the Global Economy；Gold gleam dims amid Israel-Hamas war; is it no longer the ultimate safe haven?；“新中东战争”引爆恐慌！黄金一度飙高至1855，两大信号暗示多头依旧危险……_金市直播_黄金网_中金在线"
+    },
+    {
+      "id": "ev-s-20260704-5294-42",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/whats-behind-bitcoins-latest-surge-2023-03-22/",
+      "query": {
+        "query": "US regional banking crisis March 2023 gold bitcoin price surge",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:23:31+00:00",
+      "excerpt": "What's behind bitcoin's latest surge? | Reuters；Bitcoin rises in midst of mounting global banking crisis；Bank Crisis: Why Bitcoin Is Winning in Financial Turmoil - Markets Insider；Unraveling the Regional Banking Crisis Amid Skyrocketing Interest Rates - USFunds；Lessons Learned from the U.S. Regional Bank Failures of 2023 | FDIC.gov"
+    },
+    {
+      "id": "ev-s-20260704-5294-43",
+      "kind": "search",
+      "source_url": "https://www.financemagnates.com/trending/why-is-gold-crashing-how-low-can-gold-go-and-gold-price-prediction-2026/",
+      "query": {
+        "query": "gold price March 2026 crash reason FOMC hawkish PPI March 18 19",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:23:42+00:00",
+      "excerpt": "Why Is Gold Crashing? How Low Can XAU/USD Chart Go and Gold Price Prediction 2026；The Fed - Monetary Policy:；Gold Price Weekly Recap: 13% Crash to $4,612, Has the Safe Haven Betrayed Traders?；Gold and Silver futures prices slid on hot PPI data. - CME Group；Gold Price Prediction: Fed Slashes Rate Cut Outlook and Sends Gold Crashing 10% From $5,000 — Where Is the Floor? – CryptoMediaClub"
+    },
+    {
+      "id": "ev-s-20260704-5294-44",
+      "kind": "search",
+      "source_url": "https://www.gold.org/goldhub/research/gold-market-commentary-november-2021",
+      "query": {
+        "query": "Fed taper announcement November 2021 gold price",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T04:24:31+00:00",
+      "excerpt": "Gold Market Commentary November 2021；Powell Says Fed Patient on Hikes, Can Act on Inflation if Needed；美联储官宣11月“减码”！美两大数据表现强劲 金价多头再遭“重击”！-金点言论-金投网；风水轮流转，转完大宗转黄金？Taper靴子落地，机构称黄金有望迎来战术性机会，黄金ETF或可布局；美联储11月FOMC点评：美联储如期实施Taper，对资产价格着什么？_pdf_智研宝"
+    },
+    {
+      "id": "ev-s-20260704-5294-45",
+      "kind": "news",
+      "source_url": "https://query1.finance.yahoo.com/v1/finance/search?q=gold+bitcoin+safe+haven+2025&quotesCount=0&newsCount=10",
+      "query": {
+        "query": "gold bitcoin safe haven 2025",
+        "source": "yahoo-finance"
+      },
+      "fetched_at": "2026-07-04T04:24:51+00:00",
+      "excerpt": "Trump says American identity under 'renewed attack' as US turns 250；Haaland's stetson, Cape Verde's pride: World Cup last-32 moments；How Underrated Club Grew 400% in FY26: The D2C Streetwear Brand Nobody Saw Coming；America 250 July 4th celebrations, fireworks, TV options, everything to know；How to watch Ryan Seacrest host Disney's America 250 TV special"
+    },
+    {
+      "id": "ev-s-20260704-5294-46",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2025/01/20/bitcoin-jumps-to-a-new-record-as-traders-cheer-trump-inauguration-meme-coins.html",
+      "query": {
+        "query": "Bitcoin record high January 2025 above 109000 Trump inauguration",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T04:25:16+00:00",
+      "excerpt": "Bitcoin touches new high of $109,000, then reverses in volatile session on Trump inauguration day；Bitcoin Hits Record High Ahead of Trump Inauguration；Bitcoin hits record above $109,000 awaiting Trump - L'Orient Today；川普上任有利加密貨幣 比特幣衝破10.9萬美元創新高 | 國際 | 中央社 CNA；Bitcoin Hits $109,000 All-Time High on Trump Inauguration Day | MiningPool"
+    },
+    {
+      "id": "ev-s-20260704-5294-47",
+      "kind": "search",
+      "source_url": "https://en.wikipedia.org/wiki/2022_Russian_invasion_of_Ukraine",
+      "query": {
+        "query": "Russia Ukraine war start date February 2022 invasion",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:27:52+00:00",
+      "excerpt": "2022 Russian invasion of Ukraine - Wikipedia；俄罗斯乌克兰危机：俄罗斯向乌克兰发动全面入侵，乌克兰称已遭遇导弹和空袭 - BBC News 中文；Here's what we know about how Russia's invasion of Ukraine unfolded；俄罗斯入侵乌克兰，普京宣布发起“特别军事行动” - 纽约时报中文网；Conflict in Ukraine: A timeline (current conflict, 2022 - present)"
+    },
+    {
+      "id": "ev-s-20260704-5294-48",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2024/04/19/bitcoin-network-completes-fourth-ever-halving-of-rewards-to-miners.html",
+      "query": {
+        "query": "Bitcoin halving date April 2024",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:27:57+00:00",
+      "excerpt": "Bitcoin network completes fourth-ever ‘halving’ of rewards to miners；Bitcoin halving 2024 | LSEG；Bitcoin Halving Countdown - 654 Days to Next Halving | CoinWarz；Bitcoin Halving 2024 - Digital Asset Research；Bitcoin halving explained with key dates and rewards"
+    },
+    {
+      "id": "ev-s-20260704-5294-49",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/newsroom/speeches-statements/gensler-statement-spot-bitcoin-011023",
+      "query": {
+        "query": "Bitcoin ETF SEC approval date January 2024",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:27:59+00:00",
+      "excerpt": "SEC.gov | Statement on the Approval of Spot Bitcoin Exchange-Traded Products；Federal Register, Volume 89 Issue 11 (Wednesday, January 17, 2024)；SECURITIES AND EXCHANGE COMMISSION (Release No. 34-99306; File Nos. SR-NYSEARCA-2021-90; SR-NYSEARCA-2023-44; SR NYSEARCA-2023-58; SR-NASDAQ-2023-016; SR-NASDAQ-2023-019; SR-CboeBZX-2023- 028; SR-CboeBZX-2023-038; SR-CboeBZX-2023-040; SR-CboeBZX-2023-042; SR CboeBZX-2023-044; SR-CboeBZX-2023-072) January 10, 2024 Self-Regulatory Organizations; NYSE Arca, Inc.; The Nasdaq Stock Market LLC; Cboe BZX Exchange, Inc.; Order Granting Accelerated Approval of Proposed Rule Changes, as Modified by Amendments Thereto, to List and Trade Bitcoin-Based Commodity-Based Trust Shares and Trust Units I. INTRODUCTION Pursuant to Section 19(b)(1) of the Securities Exchange Act of 1934 (“Exchange Act”)；Spot Bitcoin ETFs Approved to Launch in US by Gensler’s SEC - Bloomberg；SEC Approves Bitcoin Exchange-Traded Products (ETPs)"
+    },
+    {
+      "id": "ev-s-20260704-5294-50",
+      "kind": "search",
+      "source_url": "https://www.fdic.gov/resources/resolutions/bank-failures/failed-bank-list/silicon-valley.html",
+      "query": {
+        "query": "Silicon Valley Bank collapse date March 2023",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:28:09+00:00",
+      "excerpt": "Silicon Valley Bank | FDIC.gov；Silicon Valley Bank collapse: How it happened - CNBC；A timeline of the Silicon Valley Bank collapse - ABC News；[PDF] Material Loss Review of Silicon Valley Bank；The Failure of Silicon Valley Bank and the Panic of 2023"
+    },
+    {
+      "id": "ev-s-20260704-5294-51",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/business/ftx-start-us-bankruptcy-proceedings-ceo-exit-2022-11-11/",
+      "query": {
+        "query": "FTX collapse date November 2022 crypto exchange bankruptcy",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:28:10+00:00",
+      "excerpt": "Crypto exchange FTX files for bankruptcy as wunderkind CEO exits；[PDF] What Happened at FTX and What Does It Mean for Crypto?；Bankruptcy of FTX - Wikipedia；FTX Files Chapter 11 Bankruptcy；FTX Crypto Exchange Collapse: Causes, Consequences, and ..."
+    },
+    {
+      "id": "ev-s-20260704-5294-52",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=gold&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1624752000%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "gold",
+        "start": "2021-06-27",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:39+00:00",
+      "excerpt": "Good News Stories You Probably Didn't Hear About in 2021；Good-Bye, Goldman Sachs；Ask HN: Best advice to help me achieve my 2022 goals?；Horrible insurance kerfuffle gone good；Michael Goldhaber, the Cassandra of the Internet Age"
+    },
+    {
+      "id": "ev-s-20260704-5294-53",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=taper&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1624752000%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "taper",
+        "start": "2021-06-27",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:40+00:00",
+      "excerpt": "How to Store Data on Paper?；What are your favorite papers of 2021?；Net-Tamer, Inc. DOS Internet Specialists；Show HN: Popular Math Papers；JSDoc.dev Landing page from 2021 I never finished"
+    },
+    {
+      "id": "ev-s-20260704-5294-54",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1624752000%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "bitcoin",
+        "start": "2021-06-27",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:40+00:00",
+      "excerpt": "MicroStrategy Buys Another $94.2M of Bitcoin；OpenSea freezes $2.2M of stolen Bored Apes；Does Bitcoin/Blockchain make sense for international money transfers?；Rubin's 2021 Bitcoin Advent Calendar；Elon Musk reveals who Bitcoin's mysterious creator Satoshi Nakamoto might be"
+    },
+    {
+      "id": "ev-s-20260704-5294-55",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=inflation&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1624752000%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "inflation",
+        "start": "2021-06-27",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:41+00:00",
+      "excerpt": "We have a powerful weapon to fight inflation；A powerful weapon to fight inflation: price controls. It’s time we consider it；NFTs: Does Infinitely Printing JPEGs Cause Inflation?；How Can B2B Firms Price with Confidence as Inflation Rises?；The Fed’s Doomsday Prophet Has a Dire Warning About Where We’re Headed"
+    },
+    {
+      "id": "ev-s-20260704-5294-56",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=SVB&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1677628800%2Ccreated_at_i%3C%3D1680307199",
+      "query": {
+        "query": "SVB",
+        "start": "2023-03-01",
+        "end": "2023-03-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:50+00:00",
+      "excerpt": "Rent control madness, and the apartments of 1133-44 Taylor Street；Sergey Brin, Other Billionaires Issued Subpoenas in JPMorgan Epstein Suit；This has to stop；Fiction vs. Reality: My Texts with Michael Shellenberger；Regional Fallout"
+    },
+    {
+      "id": "ev-s-20260704-5294-57",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=FTX&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1666828800%2Ccreated_at_i%3C%3D1672531199",
+      "query": {
+        "query": "FTX",
+        "start": "2022-10-27",
+        "end": "2022-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:50+00:00",
+      "excerpt": "Breakincludes: Fixincludes in GCC；Ask HN: How do you get through to Facebook for help?；FTX Debtors will seek return of crypto held by Bahamas regulator；Magic beans, Bahamian penthouses, old-fashioned fraud and other important SBF-in；Show HN: lambdaprompt – build, compose and call templated LLM prompts"
+    },
+    {
+      "id": "ev-s-20260704-5294-58",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Ukraine&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1645056000%2Ccreated_at_i%3C%3D1647388799",
+      "query": {
+        "query": "Ukraine",
+        "start": "2022-02-17",
+        "end": "2022-03-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:50+00:00",
+      "excerpt": "Tensions rise for Ukrainian workers at Toptal freelance marketplace；A ghost of World War II history haunts Ukraine’s standoff with Russia (2014)；Ukraine begins use of Clearview AI’s facial recognition database；Three EU country leaders arrive in Kyiv in show of support for Ukraine；Canadian University Gives Free cloud storage to Ukrainian academic institutions"
+    },
+    {
+      "id": "ev-s-20260704-5294-59",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=fed&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1640390400%2Ccreated_at_i%3C%3D1656633599",
+      "query": {
+        "query": "fed",
+        "start": "2021-12-25",
+        "end": "2022-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:28:50+00:00",
+      "excerpt": "Job cuts are rolling in as recession fears rise；Full-body haptic suit has ruined the Oculus Quest 2 for me；U.S. tells pharmas to make Covid boosters targeting BA.4 and BA.5；Ask HN: Are all-in-one bundles or à-la-carte modules are better for enterprise?；Police Are Harassing Mom Who Pulled Kids from Uvalde School Shooting"
+    },
+    {
+      "id": "ev-s-20260704-5294-60",
+      "kind": "search",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_07132022.htm",
+      "query": {
+        "query": "US CPI peak June 2022 9.1%",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:29:17+00:00",
+      "excerpt": "Consumer Price Index News Release - 2022 M06 Results；Consumer prices up 9.1 percent over the year ended June 2022 ...；[PDF] Consumer Price Index - June 2022 - U.S. Department of Labor；US Inflation Quickens to 9.1%, Amping Up Fed Pressure to Go Big；Inflation rose 9.1% in June, even more than expected, as consumer ..."
+    },
+    {
+      "id": "ev-s-20260704-5294-61",
+      "kind": "search",
+      "source_url": "https://www.csis.org/analysis/liberation-day-tariffs-explained",
+      "query": {
+        "query": "Trump tariff Liberation Day April 2025",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:29:29+00:00",
+      "excerpt": "“Liberation Day” Tariffs Explained；Presidential Tariff Actions | United States Trade Representative；Presidential 2025 Tariff Actions: Timeline and Status | Congress.gov | Library of Congress；Liberation Day tariffs；Modifying Reciprocal Tariff Rates to Reflect Trading Partner Retaliation and Alignment – The White House"
+    },
+    {
+      "id": "ev-s-20260704-5294-62",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/bitcoin-become-legal-tender-el-salvador-sept-7-2021-06-25/",
+      "query": {
+        "query": "El Salvador Bitcoin legal tender date September 2021",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:29:30+00:00",
+      "excerpt": "Bitcoin to become legal tender in El Salvador on Sept 7；Bitcoin Is Now Legal Tender In El Salvador；Bitcoin Law；Bitcoin: El Salvador divided over legal tender law；El Salvador, primer país del mundo en reconocer al Bitcoin como moneda de curso legal | Asamblea Legislativa de El Salvador"
+    },
+    {
+      "id": "ev-s-20260704-5294-63",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/world/us/all-systems-go-feds-liftoff-us-interest-rates-2022-03-16/",
+      "query": {
+        "query": "Fed first rate hike March 2022 inflation",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:29:39+00:00",
+      "excerpt": "Fed hikes interest rates, signals aggressive fight to curb inflation；Federal Reserve issues FOMC statement；Federal Reserve approves first interest rate hike in more than three ...；Federal Reserve Board - Federal Reserve issues FOMC statement；美聯儲四年來首次加息 通脹幅度已創40年新高 - BBC News 中文"
+    },
+    {
+      "id": "ev-s-20260704-5294-64",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/world/middle-east/attack-israel-could-boost-appeal-gold-safe-haven-assets-2023-10-08/",
+      "query": {
+        "query": "Hamas attack Israel October 7 2023 gold safe haven",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:30:17+00:00",
+      "excerpt": "Attack on Israel boosts appeal of gold, safe-haven assets | Reuters；以巴衝突：哈馬斯發動突襲，以色列宣佈進入戰爭狀態 - BBC News 中文；October 7 attack | Israel, Gaza, Deaths, & Hostages - Britannica；BBC核查：哈马斯是如何对以色列发动闪电式袭击的？ - BBC News 中文；How the Hamas attack on Israel unfolded - Axios"
+    },
+    {
+      "id": "ev-s-20260704-5294-65",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/markets/europe/fed-lift-rates-by-75-basis-points-july-50-bps-september-2022-06-22/",
+      "query": {
+        "query": "Fed 75 basis point rate hike June July September November 2022",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:30:17+00:00",
+      "excerpt": "Fed to lift rates by 75 basis points in July, 50 bps in September - Reuters poll；Federal Funds Rate History 1990 to 2026 – Forbes Advisor；Fed approves 0.75-point hike to take rates to highest since 2008 and hints at change in policy ahead；【2022美國升息時間表】全年7次暴力升息紀錄完整回顧(日期/幅度/影響)；聯準會連兩度升息3碼 抗通膨之餘防經濟衰退 | 國際 | 中央社 CNA"
+    },
+    {
+      "id": "ev-s-20260704-5294-66",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/bitcoin-surges-record-high-trump-bets-2024-11-11/",
+      "query": {
+        "query": "Trump election win November 2024 Bitcoin gold rally",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:30:42+00:00",
+      "excerpt": "Bitcoin jumps to record as Trump's election turbocharges cryptocurrencies | Reuters；Bitcoin price hits record high as Trump’s win boosts crypto | AP News；Bitcoin Hits a Record as Crypto Investors Root for a Trump Win - The New York Times；Bitcoin tops record $80,000 as Trump nears sweep of US Congress；Bitcoin hits record high after Trump's decisive win - Los Angeles Times"
+    },
+    {
+      "id": "ev-s-20260704-5294-67",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/world/us/biden-signs-bill-lifting-us-debt-limit-2023-06-03/",
+      "query": {
+        "query": "US debt ceiling crisis May June 2023 resolution",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:30:54+00:00",
+      "excerpt": "Biden signs debt limit bill, avoiding U.S. default；Biden signs debt ceiling bill that pulls US back from brink of unprecedented default | AP News；US Congress averts historic default, approves debt-limit suspension | Reuters；Senate passes US debt ceiling deal, averting a US default；Just days to spare, Senate gives final approval to debt ceiling deal, sending it to Biden | AP News"
+    },
+    {
+      "id": "ev-s-20260704-5294-68",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=gold&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1677628800%2Ccreated_at_i%3C%3D1688169599",
+      "query": {
+        "query": "gold",
+        "start": "2023-03-01",
+        "end": "2023-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:31:05+00:00",
+      "excerpt": "Reddit users are saying goodbye to their favorite apps with tributes and memes；CA Stories: The Good, the Bad, and the Ugly；Goldman Sachs Wants to End Apple Partnership, American Express Might Take Over；Goldman is looking for a way out of its partnership with Apple；Ask HN: What bug tracking tool are you using?"
+    },
+    {
+      "id": "ev-s-20260704-5294-69",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=inflation&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1656288000%2Ccreated_at_i%3C%3D1657929599",
+      "query": {
+        "query": "inflation",
+        "start": "2022-06-27",
+        "end": "2022-07-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:31:05+00:00",
+      "excerpt": "Ask HN: How will things work out this school year without an effective vaccine?；How the Fed ended the last great American inflation – and how much it hurt；One coronavirus infection wards off another – but only if it’s a similar variant；The $1.50 Costco Hot Dog Combo That Defies Inflation；Social Security checks could grow by about $175 a month"
+    },
+    {
+      "id": "ev-s-20260704-5294-70",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1672531200%2Ccreated_at_i%3C%3D1688169599",
+      "query": {
+        "query": "bitcoin",
+        "start": "2023-01-01",
+        "end": "2023-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:31:05+00:00",
+      "excerpt": "Copyright in the Bitcoin File Format: a question of content over structure；Bitcoin Cash (BCH) Makes 30% Jump to $300: Decoding the Surge’s Motivation；SEC says spot Bitcoin ETF filings are inadequate: report；SEC Says Spot Bitcoin ETF Filings Are Inadequate；UK man who pleaded guilty to celebrity Twitter hack gets five years in prison"
+    },
+    {
+      "id": "ev-s-20260704-5294-71",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/world/americas/lawmakers-el-salvador-rush-new-bitcoin-reform-after-imf-deal-2025-01-30/",
+      "query": {
+        "query": "El Salvador Bitcoin law repealed January 2025 IMF deal",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:31:34+00:00",
+      "excerpt": "Lawmakers in El Salvador rush new bitcoin reform after IMF deal | Reuters；El Salvador walks back its bitcoin law, ending its status as legal currency；El Salvador Abandons Bitcoin as Legal Tender After Failed Experiment；El Salvador Congress Amends Bitcoin Laws to Meet IMF Agreement on Crypto Exposure；In El Salvador, Bitcoin’s Retreat Left Valuable Lessons"
+    },
+    {
+      "id": "ev-s-20260704-5294-72",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1704067200%2Ccreated_at_i%3C%3D1719791999",
+      "query": {
+        "query": "bitcoin",
+        "start": "2024-01-01",
+        "end": "2024-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:31:42+00:00",
+      "excerpt": "'Boring' Bitcoin Sends Weekend Trading Volume to All-Time Lows；Bitcoin windfall for Mt. Gox creditors after 10 year wait；Bitcoin (BTC) Donation of More Than $500K Received by Assange；US gov't sends 3,940 Bitcoin to Coinbase exchange；Julian Assange Received $500K Bitcoin Donation To cover travel costs"
+    },
+    {
+      "id": "ev-s-20260704-5294-73",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1727740800%2Ccreated_at_i%3C%3D1735689599",
+      "query": {
+        "query": "bitcoin",
+        "start": "2024-10-01",
+        "end": "2024-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:31:42+00:00",
+      "excerpt": "Bitcoin Core Contributors；A Deep Dive into Bitcoin and Web3；Software firm MicroStrategy's big bet on Bitcoin went stratospheric；Ask HN: Do need to implement my own crypto to verify a btc wallet in a browser?；Africa's largest dam generates 18% of its revenue from Bitcoin mining"
+    },
+    {
+      "id": "ev-s-20260704-5294-74",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=gold&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1694736000%2Ccreated_at_i%3C%3D1704067199",
+      "query": {
+        "query": "gold",
+        "start": "2023-09-15",
+        "end": "2023-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:31:42+00:00",
+      "excerpt": "Tell HN: Good Luck to Oncallers；Show HN: Cassette, a Personal Programming Language；Elon Musk reclaims title as world’s richest person in good year for billionaires；Ask HN: Creating a small social media app；Ask HN: Is there any good Linux-based mining pool software?"
+    },
+    {
+      "id": "ev-s-20260704-5294-75",
+      "kind": "search",
+      "source_url": "https://www.cbsnews.com/news/have-gold-prices-peaked-for-2024-heres-what-experts-say/",
+      "query": {
+        "query": "gold price record all time high 2024 March April May",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:32:44+00:00",
+      "excerpt": "Have gold prices peaked for 2024? Here's what experts say - CBS News；Gold rises above $2,100 to highest level ever；金价再创历史新高！首饰金突破742元/克，还要上车吗_腾讯新闻；Gold Hits Fresh Record High for Easter 2024 Ahead of US Inflation Data | Gold News；国际金价再创历史新高  后市仍被机构看涨_腾讯新闻"
+    },
+    {
+      "id": "ev-s-20260704-5294-76",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/artificial-intelligence/what-is-deepseek-why-is-it-disrupting-ai-sector-2025-01-27/",
+      "query": {
+        "query": "deepseek R1 release January 2025 market impact",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:33:21+00:00",
+      "excerpt": "Explainer: What is DeepSeek and why is it disrupting the AI sector? | Reuters；DeepSeek-R1 Release | DeepSeek API Docs；DeepSeek | Rise, Technologies, Impact, & Global Response | Britannica Money；狂飙13天：开源DeepSeek如何撼动全球AI市场_腾讯新闻；DeepSeek’s release of an open-weight frontier AI model"
+    },
+    {
+      "id": "ev-s-20260704-5294-77",
+      "kind": "search",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm",
+      "query": {
+        "query": "Fed rate cut September 2024 first cut",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:33:27+00:00",
+      "excerpt": "Federal Reserve Board - Federal Reserve issues FOMC statement；Fed cuts rates by a half point at September 2024 meeting；Asia FX Talk - Is the first Fed rate cut the deepest? - 19 Sep 2024 - MUFG Research；Fed to go big on first rate cut, traders bet；美联储“大转向”：为何是降息50个基点？"
+    },
+    {
+      "id": "ev-s-20260704-5294-78",
+      "kind": "search",
+      "source_url": "https://www.bloomberg.com/news/articles/2025-03-14/gold-breaks-through-3-000-as-trump-turbocharges-record-rally",
+      "query": {
+        "query": "gold price 3000 record high March 2025",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:33:27+00:00",
+      "excerpt": "Gold Price Hits Record High Breaking Through $3,000 - Bloomberg；Gold price hits $3,000 as trade tensions mount；Gold price hits record $3,000 per ounce | CNN Business；Gold scales record high, sprints towards $3,000 milestone | Reuters；Gold's price breaks record $3,000 per ounce: Everything to know now - CBS News"
+    },
+    {
+      "id": "ev-s-20260704-5294-79",
+      "kind": "search",
+      "source_url": "https://news.qq.com/rain/a/20250825A08W9500",
+      "query": {
+        "query": "US recession fears 2025 crypto crash August",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:33:55+00:00",
+      "excerpt": "美联储降息预期未能引爆行情，加密货币集体杀跌，超16万人爆仓_腾讯新闻；短暂利空袭扰，上涨逻辑未变，加仓抄底 | PANews；Fed jitters triggered $1.43 billion in outflows from cryptocurrency funds, the largest since March. - 区块链网；Analysis of the Crypto Market Crash on August 5 and Future Trends；BTC、ETH、DOGE 价格新闻：下跌加速"
+    },
+    {
+      "id": "ev-s-20260704-5294-80",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1980994/000143774923017574/bit20230608_s1.htm",
+      "query": {
+        "query": "BlackRock Bitcoin ETF filing June 2023 date",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:34:36+00:00",
+      "excerpt": "bit20230608_s1.htm - SEC.gov；BlackRock files for bitcoin ETF in push into crypto - Reuters；BlackRock files for spot bitcoin ETF, Coinbase as crypto custodian - CNBC；BlackRock Close to Filing for Bitcoin ETF Application: Source；BlackRock’s Spot Bitcoin ETF Plan Appears To Be A Case Of Perception Bending Reality"
+    },
+    {
+      "id": "ev-s-20260704-5294-81",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2022/05/13/cryptocurrency-luna-crashes-to-0-as-ust-falls-from-peg-bitcoin-rises.html",
+      "query": {
+        "query": "Terra Luna collapse May 2022 crypto crash date",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:34:48+00:00",
+      "excerpt": "Cryptocurrency luna crashes to $0 as UST falls from peg；Crypto crash: Stablecoin collapse sends tokens tumbling；Anatomy of a Run: The Terra Luna Crash | CFI；After Terra, Luna crashes, regulators count cost of crypto；Working Paper 31160 http://www.nber.org/papers/w31160"
+    },
+    {
+      "id": "ev-s-20260704-5294-82",
+      "kind": "search",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250129a.htm",
+      "query": {
+        "query": "Fed hold rate pause January 2025 inflation sticky",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:35:18+00:00",
+      "excerpt": "Federal Reserve Board - Federal Reserve issues FOMC statement；Fed rate decision January 2025: Fed holds rates steady, takes less confident view on inflation；The Federal Reserve keeps interest rates on hold : NPR；Federal Reserve holds interest rates steady as inflation remains above 2% - CBS News；A Fed on hold, for now, eyes strong jobs, easing inflation | Reuters"
+    },
+    {
+      "id": "ev-s-20260704-5294-83",
+      "kind": "search",
+      "source_url": "https://www.ndrc.gov.cn/xxgk/zcfb/tz/202109/t20210924_1297474.html",
+      "query": {
+        "query": "China bitcoin mining ban September 2021 date",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:36:27+00:00",
+      "excerpt": "【关于整治虚拟货币“挖矿”活动的通知(发改运行〔2021〕1283号)】-国家发展和改革委员会；China's top regulators ban crypto trading and mining ...；关于整治虚拟货币“挖矿”活动的通知(发改运行〔2021〕1283号)_政府信息公开_政务公开-国家发展改革委；【国家发展改革委有关负责同志就《关于整治虚拟货币“挖矿”活动的通知》答记者问】-国家发展和改革委员会；11部门联合印发通知整治虚拟货币“挖矿”活动-新华网"
+    },
+    {
+      "id": "ev-s-20260704-5294-84",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/legal/us-court-says-sec-wrong-deny-grayscales-spot-bitcoin-etf-proposal-2023-08-29/",
+      "query": {
+        "query": "Grayscale SEC court win August 2023 Bitcoin ETF",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:36:56+00:00",
+      "excerpt": "US court says SEC wrong to deny Grayscale's spot bitcoin ETF proposal | Reuters；Grayscale Investments, LLC v. SEC, No. 22-1142 (D.C. Cir. ...；Explainer: Understanding Grayscale's victory in spot bitcoin ETF case；Grayscale victory big boost for decade-long spot bitcoin ETF push；Crypto Scores Landmark US Legal Win With Grayscale ..."
+    },
+    {
+      "id": "ev-s-20260704-5294-85",
+      "kind": "search",
+      "source_url": "https://www.supremecourt.gov/opinions/25pdf/24-1287_4gcj.pdf",
+      "query": {
+        "query": "Supreme Court Trump tariffs unconstitutional February 2026",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:37:10+00:00",
+      "excerpt": "24-1287 Learning Resources, Inc. v. Trump (02/20/2026)；Supreme Court strikes down tariffs | SCOTUSblog；Supreme Court Rules Against Tariffs Imposed Under the International Emergency Economic Powers Act (IEEPA) | Congress.gov | Library of Congress；Supreme Court rules that Trump’s sweeping emergency tariffs are illegal | CNN Politics；Supreme Court Trump Tariffs Ruling: Analysis | Tax Foundation"
+    },
+    {
+      "id": "ev-s-20260704-5294-86",
+      "kind": "search",
+      "source_url": "https://www.bls.gov/opub/ted/2024/consumer-price-index-2023-in-review.htm",
+      "query": {
+        "query": "US CPI 2023 inflation decline disinflation trend",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:37:19+00:00",
+      "excerpt": "Consumer Price Index: 2023 in review : The Economics Daily : U.S. Bureau of Labor Statistics；A year in review: exploring consumer price trends in 2023 : Beyond the Numbers : U.S. Bureau of Labor Statistics；https://www.dol.gov/newsroom/economicdata/cpi_01112024.pdf；A Visual Guide to Inflation From 2020 Through 2023；12-month percentage change, Consumer Price Index, selected categories"
+    },
+    {
+      "id": "ev-s-20260704-5294-87",
+      "kind": "search",
+      "source_url": "https://cryptoslate.com/blackrock-ceo-larry-fink-likens-crypto-to-digitizing-gold-praises-bitcoin-as-an-international-asset/",
+      "query": {
+        "query": "Larry Fink Bitcoin digital gold BlackRock 2023",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:37:20+00:00",
+      "excerpt": "BlackRock CEO Larry Fink likens crypto to 'digitizing gold'; praises Bitcoin as an 'international asset'；BlackRock Boss Larry Fink Praises Bitcoin for ‘Digitizing Gold’ - Decrypt；BlackRock CEO Larry Fink sees bitcoin as 'digitizing gold' - The Block；Larry Fink says 'crypto is digitizing gold' and that BlackRock's Bitcoin ...；Formerly Skeptical BlackRock CEO Touts Bitcoin as 'Digital Gold' - DailyCoin"
+    },
+    {
+      "id": "ev-s-20260704-5294-88",
+      "kind": "search",
+      "source_url": "https://www.bls.gov/news.release/archives/cpi_12102021.htm",
+      "query": {
+        "query": "US CPI November 2021 6.8% release date December 10",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:38:11+00:00",
+      "excerpt": "Consumer Price Index News Release - 2021 M11 Results；[PDF] Consumer Price Index-November 2021 - Bureau of Labor Statistics；U.S. inflation sizzles as consumer prices post biggest annual gain since 1982 | Reuters；Consumer prices up 6.8 percent for year ended November 2021 : The Economics Daily : U.S. Bureau of Labor Statistics；Inflation surged 6.8% in November, more than expected, to fastest since 1982 - CNBC"
+    },
+    {
+      "id": "ev-s-20260704-5294-89",
+      "kind": "search",
+      "source_url": "https://www.mining.com/web/to-be-or-not-to-be-how-the-evergrande-crisis-can-affect-gold/",
+      "query": {
+        "query": "China Evergrande crisis September October 2021 gold",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:38:35+00:00",
+      "excerpt": "To be or not to be: how the Evergrande crisis can affect gold；China Evergrande's snowballing debt crisis；China's indebted property market and the Evergrande crisis - Reuters；Cover Story: How Evergrande Could Turn Into ‘China’s Lehman Brothers’ - Caixin Global；With Gucci bags and Dyson appliances, Evergrande wooed retail investors"
+    },
+    {
+      "id": "ev-s-20260704-5294-90",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=BRICS&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1688169600%2Ccreated_at_i%3C%3D1694822399",
+      "query": {
+        "query": "BRICS",
+        "start": "2023-07-01",
+        "end": "2023-09-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:38:55+00:00",
+      "excerpt": "Lego’s color choices over time: The evolution of a company’s palette；Show HN: Create OpenAI keys with permission controls；Linux scheduling latency debug and analysis；Life-sized IBM z16 Lego model；Some notes on local-first development"
+    },
+    {
+      "id": "ev-s-20260704-5294-91",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=tariff&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1742860800%2Ccreated_at_i%3C%3D1751327999",
+      "query": {
+        "query": "tariff",
+        "start": "2025-03-25",
+        "end": "2025-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:38:55+00:00",
+      "excerpt": "Tracking the money Trump's tariffs are bringing in；White House ends all trade talks with Canada over digital services tax；Deep inside U.S. economy, more sticker prices start going up due to tariffs；Show HN: News-Hook lets you prompt alerts to stay informed on anything；US economy shrank 0.5% in the first quarter, worse than earlier estimates"
+    },
+    {
+      "id": "ev-s-20260704-5294-92",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2025/10/06/gold-sails-past-3900-per-ounce-for-first-time-on-safe-haven-bids.html",
+      "query": {
+        "query": "gold all time high September October 2025 record",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:39:36+00:00",
+      "excerpt": "Gold hits record high above $3,900/oz on Fed rate cut bets, global uncertainty；Gold slips from record peak; markets eye US economic data | Reuters；国际现货黄金价格涨破每盎司3800美元-新华网；唐晓甫：金银暴涨是全球进入大滞胀时代的前奏，中国是个例外；突破4000美元，本轮黄金牛市还能走多远？_腾讯新闻"
+    },
+    {
+      "id": "ev-s-20260704-5294-93",
+      "kind": "search",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20211103a.htm",
+      "query": {
+        "query": "Fed taper announcement November 2021 Powell date",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:40:06+00:00",
+      "excerpt": "Federal Reserve issues FOMC statement；Transcript of Chair Powell's Press Conference -- November 3, 2021；Powell Says Fed Patient on Hikes, Can Act on Inflation if Needed；Federal Reserve issues FOMC statement；Fed pulls trigger on taper - Central Banking"
+    },
+    {
+      "id": "ev-s-20260704-5294-94",
+      "kind": "search",
+      "source_url": "https://www.worldatlarge.news/2023/08/24/brics-summit-2023-brics-gold-backed-currency-decision-delayed-6-new-members-invited-to-join/",
+      "query": {
+        "query": "BRICS gold backed currency 2023 summit August",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T04:41:00+00:00",
+      "excerpt": "BRICS Summit 2023: BRICS Gold-Backed Currency Decision Delayed–6 New Members Invited to Join；XV BRICS Summit Johannesburg II Declaration；BRICS' new gold-backed currency is coming, but first watch ...；金砖国家领导人第十五次会晤约翰内斯堡宣言_中华人民共和国外交部；Declaração de Joanesburgo II - Sandton, Gauteng, África do Sul - 23 de agosto de 2023 — Ministério das Relações Exteriores"
+    },
+    {
+      "id": "ev-s-20260704-5294-95",
+      "kind": "search",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241218a.htm",
+      "query": {
+        "query": "Federal Reserve December 2024 rate cut 25bp",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T04:42:02+00:00",
+      "excerpt": "Federal Reserve Board - Federal Reserve issues FOMC statement；Federal Reserve Board - Implementation Note issued December 18, 2024；Fed meeting December 2024: Fed cuts rate by a quarter point；Federal Reserve interest rate cut: December 2024 -- how much and what's next for the economy；Federal Reserve issues FOMC statement"
+    },
+    {
+      "id": "ev-s-20260704-5294-96",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=inflation&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "inflation",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:44:55+00:00",
+      "excerpt": "We have a powerful weapon to fight inflation；A powerful weapon to fight inflation: price controls. It’s time we consider it；NFTs: Does Infinitely Printing JPEGs Cause Inflation?；How Can B2B Firms Price with Confidence as Inflation Rises?；The Fed’s Doomsday Prophet Has a Dire Warning About Where We’re Headed"
+    },
+    {
+      "id": "ev-s-20260704-5294-97",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "bitcoin",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:44:55+00:00",
+      "excerpt": "MicroStrategy Buys Another $94.2M of Bitcoin；OpenSea freezes $2.2M of stolen Bored Apes；Does Bitcoin/Blockchain make sense for international money transfers?；Rubin's 2021 Bitcoin Advent Calendar；Elon Musk reveals who Bitcoin's mysterious creator Satoshi Nakamoto might be"
+    },
+    {
+      "id": "ev-s-20260704-5294-98",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=gold&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "gold",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:44:55+00:00",
+      "excerpt": "Good News Stories You Probably Didn't Hear About in 2021；Good-Bye, Goldman Sachs；Ask HN: Best advice to help me achieve my 2022 goals?；Horrible insurance kerfuffle gone good；Michael Goldhaber, the Cassandra of the Internet Age"
+    },
+    {
+      "id": "ev-s-20260704-5294-99",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=China+ban+bitcoin&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "China ban bitcoin",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:02+00:00",
+      "excerpt": "Bitcoin network hashrate hits all-time high after China crypto ban；China’s Bitcoin Ban Geopolitical Event – Bitcoin Magazine；US Leads Bitcoin Mining as China Ban Takes Effect；US overtakes China as biggest Bitcoin mining hub after Beijing ban；US leads Bitcoin mining as China ban takes effect"
+    },
+    {
+      "id": "ev-s-20260704-5294-100",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=FTX&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1656633600%2Ccreated_at_i%3C%3D1672531199",
+      "query": {
+        "query": "FTX",
+        "start": "2022-07-01",
+        "end": "2022-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:02+00:00",
+      "excerpt": "Breakincludes: Fixincludes in GCC；Ask HN: How do you get through to Facebook for help?；FTX Debtors will seek return of crypto held by Bahamas regulator；Magic beans, Bahamian penthouses, old-fashioned fraud and other important SBF-in；Show HN: lambdaprompt – build, compose and call templated LLM prompts"
+    },
+    {
+      "id": "ev-s-20260704-5294-101",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Ukraine&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1640995200%2Ccreated_at_i%3C%3D1656633599",
+      "query": {
+        "query": "Ukraine",
+        "start": "2022-01-01",
+        "end": "2022-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:02+00:00",
+      "excerpt": "Russia Has Been Driven from Snake Island by Ukraine；Jokowi says Putin agrees to sea route for Ukraine wheat exports；All Ukrainian children know to 'never leave breadcrumbs on the table'；The Other Big Lessons That the U.S. Army Should Learn from Ukraine；Security experts are bracing for cyberattacks if Russia gets desperate"
+    },
+    {
+      "id": "ev-s-20260704-5294-102",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Evergrande&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1625097600%2Ccreated_at_i%3C%3D1640995199",
+      "query": {
+        "query": "Evergrande",
+        "start": "2021-07-01",
+        "end": "2021-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:02+00:00",
+      "excerpt": "China Has a Debt Problem Three Times Larger Than Evergrande；Evergrande Finally Defaults；Evergrande has defaulted on its debt, Fitch Ratings says；China’s Evergrande defaults on dollar debt；Evergrande, Kaisa cut by Fitch to default after missed pay deadlines"
+    },
+    {
+      "id": "ev-s-20260704-5294-103",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=BlackRock+bitcoin+ETF&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1685577600%2Ccreated_at_i%3C%3D1688169599",
+      "query": {
+        "query": "BlackRock bitcoin ETF",
+        "start": "2023-06-01",
+        "end": "2023-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:09+00:00",
+      "excerpt": "Negative side effects of BlackRock’s foray into a Bitcoin spot ETF；BlackRock Files Bitcoin ETF Application, Leveraging Coinbase Custody；BlackRock files for spot Bitcoin ETF, Coinbase as crypto custodian；BlackRock's iShares Files Paperwork for Spot Bitcoin ETF；BlackRock Close to Filing for Bitcoin ETF Application"
+    },
+    {
+      "id": "ev-s-20260704-5294-104",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=FTX+collapse&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1667260800%2Ccreated_at_i%3C%3D1669852799",
+      "query": {
+        "query": "FTX collapse",
+        "start": "2022-11-01",
+        "end": "2022-11-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:09+00:00",
+      "excerpt": "CNBC interviewing Sam on the FTX Collapse - Live；FTX’s Collapse Was a Crime, Not an Accident；FTX’s collapse was a crime, not an accident；Sam Bankman-Fried Addresses Withdrawals, FTX Collapse；BlockFi Bankruptcy Hijacks More Customer Cash"
+    },
+    {
+      "id": "ev-s-20260704-5294-105",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=SVB&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1677628800%2Ccreated_at_i%3C%3D1680307199",
+      "query": {
+        "query": "SVB",
+        "start": "2023-03-01",
+        "end": "2023-03-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:09+00:00",
+      "excerpt": "Rent control madness, and the apartments of 1133-44 Taylor Street；Sergey Brin, Other Billionaires Issued Subpoenas in JPMorgan Epstein Suit；This has to stop；Fiction vs. Reality: My Texts with Michael Shellenberger；Regional Fallout"
+    },
+    {
+      "id": "ev-s-20260704-5294-106",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Russia+invades&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1644883200%2Ccreated_at_i%3C%3D1648771199",
+      "query": {
+        "query": "Russia invades",
+        "start": "2022-02-15",
+        "end": "2022-03-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:09+00:00",
+      "excerpt": "DeleteSlack for sanctioning innocent Ukrainian paying customers；Patterns of civilian harm from Russia’s military actions in Syria (2015-2022)；China sees 'unprecedented' capital outflow since Russia invaded Ukraine；Russia's stock market reopens after month-long closure；How the NYT has changed its map symbology as Russia invaded Ukraine"
+    },
+    {
+      "id": "ev-s-20260704-5294-107",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Bitcoin+halving&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1711929600%2Ccreated_at_i%3C%3D1714521599",
+      "query": {
+        "query": "Bitcoin halving",
+        "start": "2024-04-01",
+        "end": "2024-04-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:19+00:00",
+      "excerpt": "Reasons Bitcoin Will Hit $200k After the Halving；Bitcoin miners upgrade power centers and get into AI to brace for post halving；Bitcoin miners upgrade power centers to brace for slashed revenue post halving；Bitcoin's 'halving': what is it and does it matter?；Live Bitcoin Halving Clock"
+    },
+    {
+      "id": "ev-s-20260704-5294-108",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Silicon+Valley+Bank&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1677974400%2Ccreated_at_i%3C%3D1679356799",
+      "query": {
+        "query": "Silicon Valley Bank",
+        "start": "2023-03-05",
+        "end": "2023-03-20",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:19+00:00",
+      "excerpt": "Raleigh Based First Citizens Bank Could Buy SVB；Cybercriminals capitalize on Silicon Valley Bank's demise；Close to 190 banks could face Silicon Valley Bank's fate, according to new study；FDIC Moves Toward Breakup Plan for Silicon Valley Bank；SVB’s collapse will not be a one-off – a banking crisis was long overdue"
+    },
+    {
+      "id": "ev-s-20260704-5294-109",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Fed+rate+hike&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1640995200%2Ccreated_at_i%3C%3D1656633599",
+      "query": {
+        "query": "Fed rate hike",
+        "start": "2022-01-01",
+        "end": "2022-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:20+00:00",
+      "excerpt": "The Fed hikes rates by 75 points and predicts 3 years of rising unemployment；Ask HN: Will the US Fed rate hike affect the tech industry；Student Loans, Mortgages, Credit Cards: Here’s Impact of Rate Hike；Powell: Fed 'not trying to induce a recession' with interest rate hikes；Fed Hikes Rates 75 Basis Points, Intensifying Inflation Fight"
+    },
+    {
+      "id": "ev-s-20260704-5294-110",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Bitcoin+ETF+approved&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1704067200%2Ccreated_at_i%3C%3D1706745599",
+      "query": {
+        "query": "Bitcoin ETF approved",
+        "start": "2024-01-01",
+        "end": "2024-01-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:20+00:00",
+      "excerpt": "Bitcoin is dead, but it was a good try；Alibaba Cloud shuts down Data Center in India；Ask HN: Are ChatGPT current issues linked to the Bitcoin ETF approval?；Bitcoin ETFs Approved by SEC；SEC approves first spot Bitcoin ETFs in boost to crypto advocates"
+    },
+    {
+      "id": "ev-s-20260704-5294-111",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Trump+tariff&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1735689600%2Ccreated_at_i%3C%3D1746057599",
+      "query": {
+        "query": "Trump tariff",
+        "start": "2025-01-01",
+        "end": "2025-04-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:30+00:00",
+      "excerpt": "EU Set to Concede Dependence on US Tech as Tarif Tensions Flare；Big Tech's MAGA alliance hits a big speedbump；Trump called Amazon's Jeff Bezos about tariff cost report；Amazon Doesn't Want You to Know How Much the Trade War Costs；White House Attacks Amazon over Idea of Showing Tariffs' Cost"
+    },
+    {
+      "id": "ev-s-20260704-5294-112",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Trump+election&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1730419200%2Ccreated_at_i%3C%3D1733011199",
+      "query": {
+        "query": "Trump election",
+        "start": "2024-11-01",
+        "end": "2024-11-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:30+00:00",
+      "excerpt": "How a French Whale Made $85MM Off Election Win on Polymarket；Just how big was Donald Trump's election victory?；Watching CGPGrey's \"The Rules for Rulers\" after the re-election of Trump [video]；'How to Change My Vote' Searches Spike in States Won by Donald Trump；Discussion: Trump Is Changing the Game: What's Next for Tech Startups?"
+    },
+    {
+      "id": "ev-s-20260704-5294-113",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=inflation+CPI&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1656633600%2Ccreated_at_i%3C%3D1672531199",
+      "query": {
+        "query": "inflation CPI",
+        "start": "2022-07-01",
+        "end": "2022-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:45:30+00:00",
+      "excerpt": "CPI: Prices rose less than expected in November, up 7.1% from a year ago；US annual inflation declines to 7.1% in November vs. 7.3% expected；Crypto Exchange Binance Experiences Sharp Increaser in Customer Withdrawals；Launch HN: Kalshi (YC W19) – A regulated exchange for trading on events；US annual inflation declines to 7.7% in October vs. 7.9% expected"
+    },
+    {
+      "id": "ev-s-20260704-5294-114",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/markets/commodities/gold-mounts-record-summit-eyes-3000-peak-2025-03-14/",
+      "query": {
+        "query": "gold price 3000 dollars 2025 why gold reached 3000",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 15
+      },
+      "fetched_at": "2026-07-04T04:46:03+00:00",
+      "excerpt": "Gold pops above $3,000/oz for first time in historic safe-haven rally | Reuters；Gold price hits $3,000 as trade tensions mount；Gold price hits record $3,000 per ounce | CNN Business；Gold Price Hits Record $3,000: What’s Driving The Rally?；You asked, we answered: Gold hits $3,000 – What comes next? | Post by Taylor Burnette | Insights | World Gold Council"
+    },
+    {
+      "id": "ev-s-20260704-5294-115",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=DeepSeek&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1736899200%2Ccreated_at_i%3C%3D1739663999",
+      "query": {
+        "query": "DeepSeek",
+        "start": "2025-01-15",
+        "end": "2025-02-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:46:10+00:00",
+      "excerpt": "Future of AI: what happens after DeepSeek? [video]；Deepseek-R1 32B Training with Supervised Fine-Tuning；Deepseek R1 Distill 8B Q40 on 4 x Raspberry Pi 5；DeepSearcher；From Brute Force to Brain Power: How Stanford's S1 Surpasses DeepSeek-R1"
+    },
+    {
+      "id": "ev-s-20260704-5294-116",
+      "kind": "search",
+      "source_url": "https://www.cbsnews.com/news/trump-liberation-day-new-tariffs-us/",
+      "query": {
+        "query": "Trump Liberation Day tariffs April 2 2025 announcement",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 15
+      },
+      "fetched_at": "2026-07-04T04:46:31+00:00",
+      "excerpt": "Trump announces new tariffs on what he calls \"Liberation Day\" amid fears of higher prices - CBS News；Remarks Announcing Additional United States Tariff Actions on Foreign Imports；“Liberation Day” Tariffs Explained；Remarks Announcing Additional United States Tariff Actions on Foreign Imports | The American Presidency Project；Presidential 2025 Tariff Actions: Timeline and Status | Congress.gov | Library of Congress"
+    },
+    {
+      "id": "ev-s-20260704-5294-117",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/artificial-intelligence/what-is-deepseek-why-is-it-disrupting-ai-sector-2025-01-27/",
+      "query": {
+        "query": "DeepSeek AI release date January 2025 impact markets",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 15
+      },
+      "fetched_at": "2026-07-04T04:46:37+00:00",
+      "excerpt": "Explainer: What is DeepSeek and why is it disrupting the AI sector? | Reuters；DeepSeek：這是一家什麼公司？為何突然引發美國科技股暴跌？ - BBC News 中文；DeepSeek | Rise, Technologies, Impact, & Global Response | Britannica Money；DeepSeek-R1模型发布，性能对标OpenAI o1正式版；DeepSeek"
+    },
+    {
+      "id": "ev-s-20260704-5294-118",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Fed+cut&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1751328000%2Ccreated_at_i%3C%3D1767225599",
+      "query": {
+        "query": "Fed cut",
+        "start": "2025-07-01",
+        "end": "2025-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:46:44+00:00",
+      "excerpt": "Future Fed Leaders Push Rate Cuts；The Fed Is Cutting Bank Oversight. Critics See Risks；Fed's Logan: Would be hard to support December rate cut；Fed's Schmid Says More Cuts Could Drive Inflation Pressures；Show HN: DBOS Java – Postgres-Backed Durable Workflows"
+    },
+    {
+      "id": "ev-s-20260704-5294-119",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=gold+record&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1748736000%2Ccreated_at_i%3C%3D1751673599",
+      "query": {
+        "query": "gold record",
+        "start": "2025-06-01",
+        "end": "2025-07-04",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:46:44+00:00",
+      "excerpt": "Show HN: I made a zero-log, ephemeral, E2EE web chat；Show HN: Struggling with Marketing? Try UGC with My App；Show HN: RM2000 Tape Recorder, an audio sampler for macOS；Show HN: screen recorder made for bug reporting on mobile；AI Healthspan Prediction: Leading the Future with Avio Health's Agentic AI"
+    },
+    {
+      "id": "ev-s-20260704-5294-120",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/bitcoin-slumps-lowest-month-after-russia-invades-ukraine-2022-02-24/",
+      "query": {
+        "query": "Russia Ukraine war February 24 2022 gold bitcoin price reaction safe haven",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:47:16+00:00",
+      "excerpt": "Cryptocurrencies fall after Russia invades Ukraine | Reuters；First Mover Americas: Traders Prefer Gold, Fiat Safe Havens Over Bitcoin as Russia Goes to War；Russia's Ukraine invasion: Equities and crypto markets tank as gold moves higher；The reaction of financial markets to Russia’s invasion of Ukraine: evidence from gold, oil, bitcoin, and major stock markets；Are Bitcoin and Gold a Safe Haven during COVID-19 and the 2022 Russia–Ukraine War?"
+    },
+    {
+      "id": "ev-s-20260704-5294-121",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1767225600%2Ccreated_at_i%3C%3D1783209599",
+      "query": {
+        "query": "bitcoin",
+        "start": "2026-01-01",
+        "end": "2026-07-04",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:47:23+00:00",
+      "excerpt": "Claude Fable is useless for bioinformaticians；Markovian – keyless, Bitcoin-anchored provenance for AI agent outputs；Ditching Claude for OpenCode and OpenRouter；Show HN: Is grep enough? A transparent benchmark for agentic code navigation；Strategy may sell up to $1.25B in Bitcoin to calm investor jitters"
+    },
+    {
+      "id": "ev-s-20260704-5294-122",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=gold&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1767225600%2Ccreated_at_i%3C%3D1783209599",
+      "query": {
+        "query": "gold",
+        "start": "2026-01-01",
+        "end": "2026-07-04",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:47:23+00:00",
+      "excerpt": "Show HN: A tree-based replacement for PowerPoint；Donald Trump confident Elon Musk will donate SpaceX stock to Trump accounts；Bending Spoons Reviving AOL, Vimeo and Other Internet Oldies Amid the A.I. Boom；Show HN: Pixel a Go-Go – GameBoy Camera and retro screenshot upscaling for iOS；Goodbye, Forever, Probably"
+    },
+    {
+      "id": "ev-s-20260704-5294-123",
+      "kind": "search",
+      "source_url": "https://www.coindesk.com/markets/2024/08/05/bitcoin-drops-15-against-japanese-yen-outpacing-declines-versus-usd-as-yen-carry-trades-unwind",
+      "query": {
+        "query": "bitcoin drawdown August 2024 -20% reasons yen carry trade",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:47:50+00:00",
+      "excerpt": "Bitcoin Drops 15% Against Japanese Yen, Outpacing Declines Versus USD, as Yen Carry Trades Unwind；The market turbulence and carry trade unwind of August 2024；How the Bank of Japan wrecked the Yen carry trade – And crypto markets；Bitcoin Crash 2024: What happened with the Yen Carry Trading；Attention Bitcoin Traders, the Japanese Yen Is Strengthening Again"
+    },
+    {
+      "id": "ev-s-20260704-5294-124",
+      "kind": "search",
+      "source_url": "https://news.qq.com/rain/a/20260130A0781Y00",
+      "query": {
+        "query": "gold crash January 2026 selloff reason -11%",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:48:17+00:00",
+      "excerpt": "金银突发暴跌，怎么回事？_腾讯新闻；黄金、白银史诗级暴跌，国内金饰克价一夜大跌上百元！柜姐：不能因降价就退货！_腾讯新闻；黄金史诗级巨震！背后发生了什么？_腾讯新闻；黄金、白银遭遇历史级暴跌：宏观事件+资金结构共振下的去杠杆_腾讯新闻；黄金盘中暴跌450美元：短期回调还是泡沫破裂前兆？_外汇动态报道"
+    },
+    {
+      "id": "ev-s-20260704-5294-125",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/bitcoin-surges-record-high-trump-bets-2024-11-11/",
+      "query": {
+        "query": "Trump November 2024 win gold selloff bitcoin rally crypto pro-crypto policy",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:48:41+00:00",
+      "excerpt": "Bitcoin jumps to record as Trump's election turbocharges cryptocurrencies | Reuters；What Trump promised the crypto industry ahead of the election；Trump hurls bitcoin to new records — will the rally endure?；Bitcoin Crosses $82,000 For The First Time—Boosted By Trump’s Win；Trump claims credit for bitcoin hitting $100,000 as pro-crypto administration takes shape with SEC pick"
+    },
+    {
+      "id": "ev-s-20260704-5294-126",
+      "kind": "search",
+      "source_url": "http://dianzibao.cb.com.cn/html/2024-06/24/content_331649.htm?div=-1",
+      "query": {
+        "query": "gold price June 2024 decline reason selloff interest rate outlook",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:48:46+00:00",
+      "excerpt": "中国经营报数字报刊平台；多头无力！美联储“鹰派立场”助力美元 黄金一度失守2300关口！-金点言论-金投网；金价持续走弱，分析师：一旦跌破2300，或剑指5月份低点_金市直播_黄金网_中金在线；The Price of Gold is Sinking. What's Driving the Sell-Off?；国际金价一度失守2300美元，黄金股承压，是风险还是机会？_腾讯新闻"
+    },
+    {
+      "id": "ev-s-20260704-5294-127",
+      "kind": "search",
+      "source_url": "https://www.supremecourt.gov/opinions/25pdf/24-1287_4gcj.pdf",
+      "query": {
+        "query": "Supreme Court tariff unconstitutional ruling 2025 2026",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:49:05+00:00",
+      "excerpt": "24-1287 Learning Resources, Inc. v. Trump (02/20/2026)；Supreme Court strikes down tariffs | SCOTUSblog；Supreme Court Rules Against Tariffs Imposed Under the International Emergency Economic Powers Act (IEEPA) | Congress.gov | Library of Congress；Supreme Court rules that Trump’s sweeping emergency tariffs are illegal | CNN Politics；Supreme Court Trump Tariffs Ruling: Analysis | Tax Foundation"
+    },
+    {
+      "id": "ev-s-20260704-5294-128",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=Hamas&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1696118400%2Ccreated_at_i%3C%3D1704067199",
+      "query": {
+        "query": "Hamas",
+        "start": "2023-10-01",
+        "end": "2023-12-31",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:49:24+00:00",
+      "excerpt": "When Being a Spokeswoman Attracts Leering Internet Trolls；Substack says it will not remove or demonetize Nazi content；Who made millions trading the October 7th attacks?；Screams Without Words；Developers and Makers STOOOP building B2C products"
+    },
+    {
+      "id": "ev-s-20260704-5294-129",
+      "kind": "search",
+      "source_url": "https://k.sina.cn/article_7879922977_1d5ae152106801dduo.html?from=finance",
+      "query": {
+        "query": "gold selloff March 23 2026 drawdown -17% reason",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:49:53+00:00",
+      "excerpt": "2026年3月23日现货黄金暴跌的具体原因是什么？|美元|美联储|COMEX黄金|黄金连续AU0|美债相关基金_新浪财经_新浪新闻；黄金遭遇史诗级暴跌，三月累计跌幅超20%！黄金成为风险资产了吗？提供者FX168；国际金价年内涨幅归零，避险逻辑为何失灵？_腾讯新闻；黄金创43年最大周跌幅，避险资产为什么最先倒下？_腾讯新闻；黄金暴跌，年内涨幅快归零！ 国内金价重回3位数|金价_新浪财经_新浪网"
+    },
+    {
+      "id": "ev-s-20260704-5294-130",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/markets/commodities/safe-haven-gold-hits-record-peak-trump-announces-sweeping-tariffs-2025-04-03/",
+      "query": {
+        "query": "gold price March 2025 crash April 3 tariff selloff reason",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:50:15+00:00",
+      "excerpt": "Gold eases after record high on knock-on effect of wider selloff | Reuters；Gold (XAUUSD) Falls Further at Open as Traders Assess Tariff Turmoil - Bloomberg；Gold slumps as Trump tariffs roil markets, but it remains a safe-haven choice: analysts | South China Morning Post；Gold sails above $3,100 to uncharted territory as US tariffs approach；Gold Prices Plunge After Record Highs Amid Tariff-Induced Market Volatility - USAGOLD"
+    },
+    {
+      "id": "ev-s-20260704-5294-131",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=carry+trade&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1722470400%2Ccreated_at_i%3C%3D1723334399",
+      "query": {
+        "query": "carry trade",
+        "start": "2024-08-01",
+        "end": "2024-08-10",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:50:26+00:00",
+      "excerpt": "The end of the 'carry trade'? How Japan's yen could be ripping through stocks；Berkshire Hathaway Plays the Yen Carry Trade – The Right Way；The turmoil in global fx and equity markets；Carry Trade；Implosion of the Yen Carry Trade"
+    },
+    {
+      "id": "ev-s-20260704-5294-132",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=debt+ceiling&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1682899200%2Ccreated_at_i%3C%3D1688169599",
+      "query": {
+        "query": "debt ceiling",
+        "start": "2023-05-01",
+        "end": "2023-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:50:27+00:00",
+      "excerpt": "Ask HN: Should the US lower its debt and balance its budget?；Biden signs deal: Debt Ceiling Raised；US debt ceiling deal strands $16B of defense side-projects；The Debt-Limit Deal Suggests Debt Will Keep Growing, Fast；When markets melt down, these traders cash in"
+    },
+    {
+      "id": "ev-s-20260704-5294-133",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/world/china/china-central-bank-vows-crackdown-cryptocurrency-trading-2021-09-24/",
+      "query": {
+        "query": "bitcoin China ban September 2021 crackdown price drop",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:51:03+00:00",
+      "excerpt": "China's top regulators ban crypto trading and mining ...；China Widens Ban on Crypto Transactions; Bitcoin Tumbles；China Cracks Down Harder on Cryptocurrency With New Ban；十部门：比特币、以太币等虚拟货币业务属于非法金融活动--经济·科技--人民网；關於進一步防範和處置虛擬貨幣交易炒作風險的通知_要聞發布_國家外匯管理局門戶網站"
+    },
+    {
+      "id": "ev-s-20260704-5294-134",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=FTX+bankruptcy&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1667779200%2Ccreated_at_i%3C%3D1668556799",
+      "query": {
+        "query": "FTX bankruptcy",
+        "start": "2022-11-07",
+        "end": "2022-11-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T04:51:21+00:00",
+      "excerpt": "Crypto exchange FTX expects to have more than 1M creditors；FTX Founder Sam Bankman-Fried Attempts to Raise Fresh Cash Despite Bankruptcy；FTX Wrangles More Than a Million Creditors Amid Chaotic Collapse；Crypto Billionaires with $96B Loss Add Distance from FTX；FTX bankruptcy case stalls as lawyers confront crypto chaos"
+    },
+    {
+      "id": "ev-s-20260704-5294-135",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/markets/commodities/gold-gains-softer-us-dollar-geopolitical-concerns-set-weekly-fall-2024-11-29/",
+      "query": {
+        "query": "gold November 2024 selloff Trump election dollar strength",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:51:44+00:00",
+      "excerpt": "Gold braces for worst month in over a year on Trump-driven sell-off | Reuters；Gold is suddenly not so glittery after Trump's White House victory | AP News；Trump victory drives gold to near 2-month lows as investors pile into equities, cryptocurrencies；Why Is Gold Falling After Trump's Election Win?；“特朗普效应”还在持续，金价跌7%创年内最大回撤_腾讯新闻"
+    },
+    {
+      "id": "ev-s-20260704-5294-136",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/view-bitcoin-surges-above-100000-2024-12-05/",
+      "query": {
+        "query": "bitcoin $100000 December 2024 reached milestone",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 10
+      },
+      "fetched_at": "2026-07-04T04:52:12+00:00",
+      "excerpt": "Experts react to bitcoin's $100,000 milestone | Reuters；Bitcoin hits $100,000: what next for the booming cryptocurrency? - BBC News；Bitcoin price reaches $100,000 mark for first time ever - CBS News；Bitcoin falls below $100,000 after reaching the milestone level for the first time；Bitcoin just hit $100,000, but how did it get here? | Fortune"
+    }
+  ]
+}

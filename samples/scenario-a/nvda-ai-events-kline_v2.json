@@ -1,0 +1,1446 @@
+{
+  "artifact_id": "nvda-ai-events-kline",
+  "kind": "html",
+  "title": "NVDA K线×AI事件对齐复盘",
+  "subtitle": "2021.07-2026.07 五年行情与15个重大AI事件交叉验证 | 40个变化点 · 5组高度吻合 · 全链路溯源",
+  "skill": "kline-html-report",
+  "blocks": [
+    {
+      "type": "heading",
+      "text": "五年总览：NVDA的三段式演进",
+      "level": 2
+    },
+    {
+      "type": "narrative",
+      "text": "回顾2021年7月至2026年7月这五年，NVDA的行情与GPU需求结构经历了三次根本性重塑，清晰划分为三个阶段：\n\n第一阶段：挖矿出清期（2021.07–2022.10）。加密市场崩盘导致游戏GPU需求骤降，2022年8月NVIDIA发布营收预警、计提约13.2亿美元库存费用；2022年9月以太坊完成合并，GPU挖矿正式终结，矿卡涌入二手市场进一步压制游戏GPU定价。NVDA从区间高位持续下行，至2022年10月触底约$11（拆股调整后）。这一阶段标志着GPU需求结构从「挖矿+游戏」双驱动出清为纯游戏基底。\n\n第二阶段：ChatGPT驱动主升浪（2022.11–2024.06）。2022年11月30日ChatGPT发布，两个月内达到1亿月活用户，引爆全球AI算力军备竞赛。NVDA从约$16启动，经历GPT-4确认Scaling Law有效性、H200/Blackwell连续迭代、数据中心营收同比增长427%等催化，至2024年6月市值突破3万亿美元——从2万亿到3万亿仅用96天，史上最快。拆股调整后股价触及约$122区间高位。这一阶段GPU需求结构完成向「AI训练」的根本性跃迁。\n\n第三阶段：DeepSeek后高波动平台期（2024.07–2026.07）。Blackwell设计缺陷导致产品延迟、2025年1月DeepSeek R1以<$600万训练成本挑战「Scale is all you need」逻辑、H20对华出口管制触发55亿美元计提、以及GTC 2026 Rubin路线图发布，共同推动NVDA进入$90–$130宽幅震荡区间。波动率显著上升：2025年1月27日单日暴跌-16.97%（-5.9σ）为五年区间最大单日冲击。这一阶段GPU需求结构正在向「AI推理多元化」方向重塑——推理负载占比持续上升，需求从训练垄断走向推理分散化。\n\n三个阶段对应GPU需求结构的三次重塑：挖矿出清→AI训练爆发→AI推理多元化。每一次结构切换都伴随着剧烈的行情重定价，而AI事件正是这些切换的标记点。",
+      "evidence_refs": [
+        "ev-s-20260704-c608-1"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "报告概要",
+      "level": 2
+    },
+    {
+      "type": "narrative",
+      "text": "本报告基于 NVDA 2021年7月6日至2026年7月2日五年日线行情数据（Yahoo Finance，1254个交易日），梳理15个AI行业重大事件，通过确定性变化点算法识别40个severity≥2的行情变化点，进行事件-行情交叉验证。\n\n核心观察：\n\n一、ChatGPT发布（2022-11-30）后约43个交易日，NVDA启动+17.6%反弹（2023-01-12变化点），标志着AI算力需求逻辑开始主导NVDA估值叙事。\n\n二、DeepSeek R1发布（2025-01-20）后，NVDA在2025-01-27单日暴跌-16.97%（-5.9σ），为五年区间最大单日跌幅，同日触发accel_down与drawdown双重变化点——区间内唯一一次同日双触发，量能达3.9倍均量。\n\n三、出口管制是贯穿全程的持续性扰动：2022年8月A100/H100管制与drawdown同日触发；2023年10月管制升级前市场已提前回撤；2025年4月H20管制触发55亿美元计提后-15.2%回撤高度吻合。\n\n40个变化点中，5个高度吻合、5个部分吻合、30个（75%）暂未匹配AI事件。这说明行情受多因素驱动——宏观流动性、仓位博弈、技术面等——事件归因需保持克制。",
+      "evidence_refs": [
+        "ev-s-20260704-c608-1"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "K线主图：行情×事件×变化点",
+      "level": 2
+    },
+    {
+      "type": "kline_chart",
+      "data_ref": "ds-nvda-20210704-20260704",
+      "ticker": "NVDA",
+      "events": [
+        {
+          "date": "2022-03-22",
+          "title": "Hopper H100发布(GTC 2022)",
+          "category": "产品发布",
+          "direction": "up",
+          "move": "发布前3日rally触发+16.1%，市场提前定价",
+          "impact": 4,
+          "notes": "首个专为Transformer优化的GPU架构，训练性能比A100提升9倍",
+          "sources": [
+            {
+              "name": "NVIDIA GTC 2022",
+              "url": "https://www.nvidia.com/en-us/gtc/keynote/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-08-08",
+          "title": "Q2 FY2023财报预警：游戏营收暴跌33%",
+          "category": "财报/预警",
+          "direction": "down",
+          "move": "预警后drawdown触发-15.4%，与出口管制同日叠加",
+          "impact": 5,
+          "notes": "加密崩盘致游戏GPU需求骤降，计提约13.2亿美元库存费用",
+          "sources": [
+            {
+              "name": "NVIDIA Q2 FY2023 Preliminary",
+              "url": "https://investor.nvidia.com/news/news-details/2022/NVIDIA-Announces-Preliminary-Financial-Results-for-Second-Quarter-Fiscal-2023/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-08-26",
+          "title": "A100/H100对华出口新许可要求",
+          "category": "出口管制",
+          "direction": "down",
+          "move": "管制生效日与drawdown触发日完全重合，-15.4%回撤",
+          "impact": 4,
+          "notes": "立即生效许可证要求，约4亿美元中国销售额受影响",
+          "sources": [
+            {
+              "name": "BIS Federal Register",
+              "url": "https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-09-15",
+          "title": "以太坊合并，GPU挖矿终结",
+          "category": "行业转型",
+          "direction": "down",
+          "move": "无独立变化点，利空已被提前消化",
+          "impact": 4,
+          "notes": "矿卡涌入二手市场压制游戏GPU需求和定价；标志着GPU需求结构完成从挖矿+游戏到AI数据中心+游戏的根本性切换，为ChatGPT引发的AI算力需求接棒扫清供给端障碍。",
+          "sources": [
+            {
+              "name": "Ethereum: The Merge",
+              "url": "https://ethereum.org/en/history/#the-merge"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-11-30",
+          "title": "OpenAI发布ChatGPT",
+          "category": "行业催化",
+          "direction": "up",
+          "move": "约43日后rally触发+17.6%，AI算力逻辑开始主导估值",
+          "impact": 5,
+          "notes": "两月达1亿月活，引爆全球AI算力需求",
+          "sources": [
+            {
+              "name": "OpenAI: ChatGPT",
+              "url": "https://openai.com/blog/chatgpt"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-03-14",
+          "title": "OpenAI发布GPT-4",
+          "category": "行业催化",
+          "direction": "up",
+          "move": "无独立变化点，属趋势加强型事件",
+          "impact": 4,
+          "notes": "多模态大模型开启，确认Scaling Law有效性",
+          "sources": [
+            {
+              "name": "OpenAI: GPT-4",
+              "url": "https://openai.com/research/gpt-4"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-10-17",
+          "title": "美国升级出口管制：封杀A800/H800",
+          "category": "出口管制",
+          "direction": "down",
+          "move": "管制前18日drawdown已触发-16.9%，市场提前定价",
+          "impact": 4,
+          "notes": "取消带宽参数、新增性能密度指标，专门封堵降规芯片",
+          "sources": [
+            {
+              "name": "BIS Oct 2023 Controls",
+              "url": "https://www.bis.gov/press-release/commerce-strengthens-restrictions-advanced-computing-semiconductors"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-11-13",
+          "title": "NVIDIA发布H200 GPU",
+          "category": "产品发布",
+          "direction": "up",
+          "move": "发布前5日rally触发+15.5%，新品预期提前定价",
+          "impact": 3,
+          "notes": "首款HBM3e，LLM推理速度接近H100两倍",
+          "sources": [
+            {
+              "name": "NVIDIA H200",
+              "url": "https://www.nvidia.com/en-us/data-center/h200/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-03-18",
+          "title": "GTC 2024: Blackwell B200/B100发布",
+          "category": "产品发布",
+          "direction": "up",
+          "move": "发布后一月drawdown-19.8%(买预期卖事实)，随后rally+15.1%",
+          "impact": 5,
+          "notes": "支持万亿参数LLM，推理成本降25倍，2080亿晶体管",
+          "sources": [
+            {
+              "name": "NVIDIA GTC 2024",
+              "url": "https://www.nvidia.com/en-us/gtc/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-05-22",
+          "title": "Q1 FY2025财报：营收260亿+262%，10:1拆股",
+          "category": "财报",
+          "direction": "up",
+          "move": "无独立变化点，拆股推动散户参与度持续上升",
+          "impact": 4,
+          "notes": "数据中心营收226亿(+427%)，Q2指引280亿超预期",
+          "sources": [
+            {
+              "name": "NVIDIA Q1 FY2025",
+              "url": "https://investor.nvidia.com/news/news-details/2024/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2025/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-06-05",
+          "title": "市值突破3万亿美元",
+          "category": "里程碑",
+          "direction": "up",
+          "move": "里程碑后12日进入-15.7%回撤，估值高位获利了结",
+          "impact": 4,
+          "notes": "从2万亿到3万亿美元仅96天，史上最快",
+          "sources": [
+            {
+              "name": "Reuters: Nvidia $3T",
+              "url": "https://www.reuters.com/technology/nvidia-hits-3-trillion-market-cap/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-08-02",
+          "title": "Blackwell GPU设计缺陷延迟≥3个月",
+          "category": "产品延迟",
+          "direction": "down",
+          "move": "延迟消息前7日drawdown已触发，后续反弹+17.4%",
+          "impact": 4,
+          "notes": "芯片die存在设计缺陷，GB200推迟至2025年Q1",
+          "sources": [
+            {
+              "name": "The Information: Blackwell Delay",
+              "url": "https://www.theinformation.com/articles/nvidias-next-gen-blackwell-chip-delayed"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-08-28",
+          "title": "Q2 FY2025财报：营收300亿，毛利率指引不及预期",
+          "category": "财报",
+          "direction": "mixed",
+          "move": "财报后6日drawdown触发-16.9%，毛利率边际敏感度放大",
+          "impact": 3,
+          "notes": "Q2营收300.4亿(+122%)，毛利率指引低于投资者高期望",
+          "sources": [
+            {
+              "name": "NVIDIA Q2 FY2025",
+              "url": "https://investor.nvidia.com/news/news-details/2024/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2025/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-01-20",
+          "title": "DeepSeek发布R1，引发AI估值恐慌",
+          "category": "行业冲击",
+          "direction": "down",
+          "move": "R1后单日暴跌-16.97%(-5.9σ)，同日双触发accel_down+drawdown，五年区间唯一",
+          "impact": 5,
+          "notes": "训练成本<$600万，挑战Scale is all you need逻辑",
+          "sources": [
+            {
+              "name": "DeepSeek R1 Paper",
+              "url": "https://arxiv.org/abs/2501.12948"
+            },
+            {
+              "name": "DeepSeek R1 GitHub",
+              "url": "https://github.com/deepseek-ai/DeepSeek-R1"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-04-09",
+          "title": "H20对华出口需许可证，计提55亿美元损失",
+          "category": "出口管制",
+          "direction": "down",
+          "move": "先rally+21.2%(消息落地反弹)，12日后drawdown-15.2%(基本面消化)",
+          "impact": 5,
+          "notes": "H20为中国市场最先进合规芯片，约占营收8-9%",
+          "sources": [
+            {
+              "name": "NVIDIA 8-K Filing",
+              "url": "https://investor.nvidia.com/sec-filings/"
+            }
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        }
+      ],
+      "changepoints": [
+        {
+          "date": "2021-08-19",
+          "kind": "accel_up",
+          "rule": "单日收益+3.98%，+2.3σ",
+          "severity": 2,
+          "window": [
+            "2021-08-19",
+            "2021-08-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-08-23",
+          "kind": "rally",
+          "rule": "自2021-07-16反弹+20.9%",
+          "severity": 3,
+          "window": [
+            "2021-07-16",
+            "2021-08-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-09-20",
+          "kind": "accel_down",
+          "rule": "单日收益-3.59%，-2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-09-20",
+            "2021-09-20"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-10-04",
+          "kind": "accel_down",
+          "rule": "单日收益-4.87%，-2.4σ",
+          "severity": 2,
+          "window": [
+            "2021-10-04",
+            "2021-10-04"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-10-05",
+          "kind": "accel_up",
+          "rule": "单日收益+3.64%，+2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-10-05",
+            "2021-10-05"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-10-26",
+          "kind": "accel_up",
+          "rule": "单日收益+6.70%，+2.9σ；量能4.4×均量",
+          "severity": 3,
+          "window": [
+            "2021-10-26",
+            "2021-10-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-11-18",
+          "kind": "accel_up",
+          "rule": "单日收益+8.25%，+2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-11-18",
+            "2021-11-18"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-12-07",
+          "kind": "accel_up",
+          "rule": "单日收益+7.96%，+2.2σ",
+          "severity": 2,
+          "window": [
+            "2021-12-07",
+            "2021-12-07"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-12-13",
+          "kind": "drawdown",
+          "rule": "自2021-11-29回撤-15.6%",
+          "severity": 3,
+          "window": [
+            "2021-11-29",
+            "2021-12-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-02-02",
+          "kind": "rally",
+          "rule": "自2022-01-27反弹+15.0%",
+          "severity": 3,
+          "window": [
+            "2022-01-27",
+            "2022-02-02"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-02-23",
+          "kind": "drawdown",
+          "rule": "自2022-02-09回撤-16.2%",
+          "severity": 3,
+          "window": [
+            "2022-02-09",
+            "2022-02-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-03-17",
+          "kind": "rally",
+          "rule": "自2022-03-14反弹+16.1%",
+          "severity": 3,
+          "window": [
+            "2022-03-14",
+            "2022-03-17"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-04-07",
+          "kind": "drawdown",
+          "rule": "自2022-03-29回撤-15.5%",
+          "severity": 3,
+          "window": [
+            "2022-03-29",
+            "2022-04-07"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-05-27",
+          "kind": "rally",
+          "rule": "自2022-05-24反弹+16.4%",
+          "severity": 3,
+          "window": [
+            "2022-05-24",
+            "2022-05-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-06-13",
+          "kind": "drawdown",
+          "rule": "自2022-06-02回撤-20.1%",
+          "severity": 3,
+          "window": [
+            "2022-06-02",
+            "2022-06-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-07-19",
+          "kind": "rally",
+          "rule": "自2022-07-01反弹+17.0%",
+          "severity": 3,
+          "window": [
+            "2022-07-01",
+            "2022-07-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-08-26",
+          "kind": "drawdown",
+          "rule": "自2022-08-04回撤-15.4%",
+          "severity": 3,
+          "window": [
+            "2022-08-04",
+            "2022-08-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-10-25",
+          "kind": "rally",
+          "rule": "自2022-10-14反弹+18.1%",
+          "severity": 3,
+          "window": [
+            "2022-10-14",
+            "2022-10-25"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-12-22",
+          "kind": "drawdown",
+          "rule": "自2022-12-13回撤-15.1%",
+          "severity": 3,
+          "window": [
+            "2022-12-13",
+            "2022-12-22"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-01-12",
+          "kind": "rally",
+          "rule": "自2022-12-28反弹+17.6%",
+          "severity": 3,
+          "window": [
+            "2022-12-28",
+            "2023-01-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-05-18",
+          "kind": "accel_up",
+          "rule": "单日收益+4.97%，+2.1σ；量能3.5×均量",
+          "severity": 3,
+          "window": [
+            "2023-05-18",
+            "2023-05-18"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-09-21",
+          "kind": "drawdown",
+          "rule": "自2023-08-31回撤-16.9%",
+          "severity": 3,
+          "window": [
+            "2023-08-31",
+            "2023-09-21"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-11-08",
+          "kind": "rally",
+          "rule": "自2023-10-26反弹+15.5%",
+          "severity": 3,
+          "window": [
+            "2023-10-26",
+            "2023-11-08"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-04-19",
+          "kind": "drawdown",
+          "rule": "自2024-03-25回撤-19.8%",
+          "severity": 3,
+          "window": [
+            "2024-03-25",
+            "2024-04-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-04-26",
+          "kind": "rally",
+          "rule": "自2024-04-19反弹+15.1%",
+          "severity": 3,
+          "window": [
+            "2024-04-19",
+            "2024-04-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-07-24",
+          "kind": "drawdown",
+          "rule": "自2024-06-18回撤-15.7%",
+          "severity": 3,
+          "window": [
+            "2024-06-18",
+            "2024-07-24"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-08-13",
+          "kind": "rally",
+          "rule": "自2024-08-07反弹+17.4%",
+          "severity": 3,
+          "window": [
+            "2024-08-07",
+            "2024-08-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-09-03",
+          "kind": "drawdown",
+          "rule": "自2024-08-19回撤-16.9%",
+          "severity": 3,
+          "window": [
+            "2024-08-19",
+            "2024-09-03"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-09-12",
+          "kind": "rally",
+          "rule": "自2024-09-06反弹+15.9%",
+          "severity": 3,
+          "window": [
+            "2024-09-06",
+            "2024-09-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-01-27",
+          "kind": "accel_down",
+          "rule": "单日收益-16.97%，-5.9σ；量能3.9×均量",
+          "severity": 3,
+          "window": [
+            "2025-01-27",
+            "2025-01-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-01-27",
+          "kind": "drawdown",
+          "rule": "自2025-01-06回撤-20.8%，量能3.9×均量",
+          "severity": 3,
+          "window": [
+            "2025-01-06",
+            "2025-01-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-01-28",
+          "kind": "accel_up",
+          "rule": "单日收益+8.93%，+2.0σ；量能3.9×均量",
+          "severity": 3,
+          "window": [
+            "2025-01-28",
+            "2025-01-28"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-02-13",
+          "kind": "rally",
+          "rule": "自2025-02-03反弹+16.0%",
+          "severity": 3,
+          "window": [
+            "2025-02-03",
+            "2025-02-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-03-03",
+          "kind": "drawdown",
+          "rule": "自2025-02-20回撤-18.6%",
+          "severity": 3,
+          "window": [
+            "2025-02-20",
+            "2025-03-03"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-04-09",
+          "kind": "rally",
+          "rule": "自2025-04-04反弹+21.2%",
+          "severity": 3,
+          "window": [
+            "2025-04-04",
+            "2025-04-09"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-04-21",
+          "kind": "drawdown",
+          "rule": "自2025-04-09回撤-15.2%",
+          "severity": 3,
+          "window": [
+            "2025-04-09",
+            "2025-04-21"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-05-01",
+          "kind": "rally",
+          "rule": "自2025-04-21反弹+15.2%",
+          "severity": 3,
+          "window": [
+            "2025-04-21",
+            "2025-05-01"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-12-12",
+          "kind": "drawdown",
+          "rule": "自2025-10-29回撤-15.5%",
+          "severity": 3,
+          "window": [
+            "2025-10-29",
+            "2025-12-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2026-04-14",
+          "kind": "rally",
+          "rule": "自2026-03-30反弹+19.0%",
+          "severity": 3,
+          "window": [
+            "2026-03-30",
+            "2026-04-14"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2026-06-23",
+          "kind": "drawdown",
+          "rule": "自2026-05-14回撤-15.1%",
+          "severity": 3,
+          "window": [
+            "2026-05-14",
+            "2026-06-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "事件-变化点对齐分析",
+      "level": 2
+    },
+    {
+      "type": "narrative",
+      "text": "以下按时间线梳理15个AI重大事件与40个行情变化点的对齐关系。对齐分三类：高度吻合（match）——事件日与变化点触发日重合或紧密相邻（≤7个交易日），方向逻辑一致；部分吻合（partial）——方向一致但时间差较大（8–45个交易日），或事件位于变化点窗口内但非精确触发日；未匹配（none）——变化点附近未发现重大AI事件。\n\n【高度吻合 5组】\n\n1. 2022-08-26 drawdown（-15.4%）← 财报预警（8月8日）+ A100/H100出口管制（8月26日）。预警先于窗口启动，管制生效日与drawdown触发日完全重合。五年区间唯一一次「财报预警+政策冲击」同日共振。\n\n2. 2023-11-08 rally（+15.5%）← H200发布（11月13日）。H200发布前5个交易日反弹已触发，新品预期提前定价。\n\n3. 2024-09-03 drawdown（-16.9%）← Q2 FY2025财报毛利率指引不及预期（8月28日）。财报后6个交易日触发回撤，估值高位时毛利率边际敏感度被放大。\n\n4. 2025-01-27 accel_down+drawdown双触发 ← DeepSeek R1（1月20日）。R1后首个完整交易周，NVDA遭遇五年区间最大单日冲击——-16.97%（-5.9σ），同日双触发，回撤-20.8%。区间内唯一同日双触发事件。\n\n5. 2025-04-21 drawdown（-15.2%）← H20出口管制（4月9日）。管制宣布日先触发+21.2% rally（消息落地反弹），12个交易日后drawdown触发——55亿美元损失的盈利影响被市场逐步消化。\n\n【部分吻合 5组】\n\n1. 2022-03-17 rally（+16.1%）与 Hopper H100发布（3月22日）——rally早3天。\n2. 2023-01-12 rally（+17.6%）与 ChatGPT（11月30日）——rally滞后约43个交易日，但这是ChatGPT后NVDA首次大规模反弹。\n3. 2023-09-21 drawdown（-16.9%）与 出口管制升级（10月17日）——drawdown早18天，市场或提前定价。\n4. 2024-07-24 drawdown（-15.7%）与 Blackwell延迟（8月2日）——drawdown早7天，消息正式确认前已反映。\n5. 2024-08-13 rally（+17.4%）与 Q2 FY2025财报（8月28日）——rally早11天，或为抢跑资金布局。\n\n【未匹配 30个变化点】\n\n剩余30个变化点（75%）在时间窗口内未发现明确AI行业重大事件。这些变化点可能由以下因素驱动：美联储利率决策与流动性周期、半导体行业整体波动、期权到期/仓位调整、技术面信号与量化策略触发、宏观经济数据发布等。这提醒我们：即使对AI核心标的，单一事件归因的解释力有限。",
+      "evidence_refs": [
+        "ev-s-20260704-c608-1"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "事件影响力评级方法论",
+      "level": 2
+    },
+    {
+      "type": "table",
+      "caption": "事件影响力评级标准（impact 1-5）",
+      "headers": [
+        "评级",
+        "含义",
+        "典型表现",
+        "本报告示例"
+      ],
+      "rows": [
+        [
+          "5",
+          "直接改变盈利/估值中枢或触发大幅重定价",
+          "单日波动>10%，同日触发多重变化点",
+          "DeepSeek R1、H20管制55亿计提、ChatGPT"
+        ],
+        [
+          "4",
+          "直接影响需求、产品周期、政策约束",
+          "触发drawdown/rally变化点或明显趋势转折",
+          "Hopper发布、Blackwell发布、A100/H100管制、Blackwell延迟、以太坊合并"
+        ],
+        [
+          "3",
+          "影响生态与中期预期",
+          "位于变化点窗口附近或有间接影响",
+          "H200发布、Q2 FY2025毛利率"
+        ],
+        [
+          "2",
+          "观察级",
+          "影响有限或已被市场消化",
+          "（本报告min_severity=2，无impact=2的AI事件）"
+        ],
+        [
+          "1",
+          "背景噪声",
+          "几乎无可见行情影响",
+          "（未收录）"
+        ]
+      ],
+      "evidence_refs": [
+        "ev-s-20260704-c608-1"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "变化点明细",
+      "level": 2
+    },
+    {
+      "type": "changepoint_table",
+      "caption": "行情变化点明细（规则触发，severity≥2，共40个）",
+      "changepoints": [
+        {
+          "date": "2021-08-19",
+          "kind": "accel_up",
+          "rule": "单日收益+3.98%，+2.3σ",
+          "severity": 2,
+          "window": [
+            "2021-08-19",
+            "2021-08-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-08-23",
+          "kind": "rally",
+          "rule": "自2021-07-16反弹+20.9%",
+          "severity": 3,
+          "window": [
+            "2021-07-16",
+            "2021-08-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-09-20",
+          "kind": "accel_down",
+          "rule": "单日收益-3.59%，-2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-09-20",
+            "2021-09-20"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-10-04",
+          "kind": "accel_down",
+          "rule": "单日收益-4.87%，-2.4σ",
+          "severity": 2,
+          "window": [
+            "2021-10-04",
+            "2021-10-04"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-10-05",
+          "kind": "accel_up",
+          "rule": "单日收益+3.64%，+2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-10-05",
+            "2021-10-05"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-10-26",
+          "kind": "accel_up",
+          "rule": "单日收益+6.70%，+2.9σ；量能4.4×均量",
+          "severity": 3,
+          "window": [
+            "2021-10-26",
+            "2021-10-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-11-18",
+          "kind": "accel_up",
+          "rule": "单日收益+8.25%，+2.0σ",
+          "severity": 2,
+          "window": [
+            "2021-11-18",
+            "2021-11-18"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-12-07",
+          "kind": "accel_up",
+          "rule": "单日收益+7.96%，+2.2σ",
+          "severity": 2,
+          "window": [
+            "2021-12-07",
+            "2021-12-07"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2021-12-13",
+          "kind": "drawdown",
+          "rule": "自2021-11-29回撤-15.6%",
+          "severity": 3,
+          "window": [
+            "2021-11-29",
+            "2021-12-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-02-02",
+          "kind": "rally",
+          "rule": "自2022-01-27反弹+15.0%",
+          "severity": 3,
+          "window": [
+            "2022-01-27",
+            "2022-02-02"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-02-23",
+          "kind": "drawdown",
+          "rule": "自2022-02-09回撤-16.2%",
+          "severity": 3,
+          "window": [
+            "2022-02-09",
+            "2022-02-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-03-17",
+          "kind": "rally",
+          "rule": "自2022-03-14反弹+16.1%",
+          "severity": 3,
+          "window": [
+            "2022-03-14",
+            "2022-03-17"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-04-07",
+          "kind": "drawdown",
+          "rule": "自2022-03-29回撤-15.5%",
+          "severity": 3,
+          "window": [
+            "2022-03-29",
+            "2022-04-07"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-05-27",
+          "kind": "rally",
+          "rule": "自2022-05-24反弹+16.4%",
+          "severity": 3,
+          "window": [
+            "2022-05-24",
+            "2022-05-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-06-13",
+          "kind": "drawdown",
+          "rule": "自2022-06-02回撤-20.1%",
+          "severity": 3,
+          "window": [
+            "2022-06-02",
+            "2022-06-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-07-19",
+          "kind": "rally",
+          "rule": "自2022-07-01反弹+17.0%",
+          "severity": 3,
+          "window": [
+            "2022-07-01",
+            "2022-07-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-08-26",
+          "kind": "drawdown",
+          "rule": "自2022-08-04回撤-15.4%",
+          "severity": 3,
+          "window": [
+            "2022-08-04",
+            "2022-08-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-10-25",
+          "kind": "rally",
+          "rule": "自2022-10-14反弹+18.1%",
+          "severity": 3,
+          "window": [
+            "2022-10-14",
+            "2022-10-25"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2022-12-22",
+          "kind": "drawdown",
+          "rule": "自2022-12-13回撤-15.1%",
+          "severity": 3,
+          "window": [
+            "2022-12-13",
+            "2022-12-22"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-01-12",
+          "kind": "rally",
+          "rule": "自2022-12-28反弹+17.6%",
+          "severity": 3,
+          "window": [
+            "2022-12-28",
+            "2023-01-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-05-18",
+          "kind": "accel_up",
+          "rule": "单日收益+4.97%，+2.1σ；量能3.5×均量",
+          "severity": 3,
+          "window": [
+            "2023-05-18",
+            "2023-05-18"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-09-21",
+          "kind": "drawdown",
+          "rule": "自2023-08-31回撤-16.9%",
+          "severity": 3,
+          "window": [
+            "2023-08-31",
+            "2023-09-21"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2023-11-08",
+          "kind": "rally",
+          "rule": "自2023-10-26反弹+15.5%",
+          "severity": 3,
+          "window": [
+            "2023-10-26",
+            "2023-11-08"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-04-19",
+          "kind": "drawdown",
+          "rule": "自2024-03-25回撤-19.8%",
+          "severity": 3,
+          "window": [
+            "2024-03-25",
+            "2024-04-19"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-04-26",
+          "kind": "rally",
+          "rule": "自2024-04-19反弹+15.1%",
+          "severity": 3,
+          "window": [
+            "2024-04-19",
+            "2024-04-26"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-07-24",
+          "kind": "drawdown",
+          "rule": "自2024-06-18回撤-15.7%",
+          "severity": 3,
+          "window": [
+            "2024-06-18",
+            "2024-07-24"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-08-13",
+          "kind": "rally",
+          "rule": "自2024-08-07反弹+17.4%",
+          "severity": 3,
+          "window": [
+            "2024-08-07",
+            "2024-08-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-09-03",
+          "kind": "drawdown",
+          "rule": "自2024-08-19回撤-16.9%",
+          "severity": 3,
+          "window": [
+            "2024-08-19",
+            "2024-09-03"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2024-09-12",
+          "kind": "rally",
+          "rule": "自2024-09-06反弹+15.9%",
+          "severity": 3,
+          "window": [
+            "2024-09-06",
+            "2024-09-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-01-27",
+          "kind": "accel_down",
+          "rule": "单日收益-16.97%，-5.9σ；量能3.9×均量",
+          "severity": 3,
+          "window": [
+            "2025-01-27",
+            "2025-01-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-01-27",
+          "kind": "drawdown",
+          "rule": "自2025-01-06回撤-20.8%，量能3.9×均量",
+          "severity": 3,
+          "window": [
+            "2025-01-06",
+            "2025-01-27"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-01-28",
+          "kind": "accel_up",
+          "rule": "单日收益+8.93%，+2.0σ；量能3.9×均量",
+          "severity": 3,
+          "window": [
+            "2025-01-28",
+            "2025-01-28"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-02-13",
+          "kind": "rally",
+          "rule": "自2025-02-03反弹+16.0%",
+          "severity": 3,
+          "window": [
+            "2025-02-03",
+            "2025-02-13"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-03-03",
+          "kind": "drawdown",
+          "rule": "自2025-02-20回撤-18.6%",
+          "severity": 3,
+          "window": [
+            "2025-02-20",
+            "2025-03-03"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-04-09",
+          "kind": "rally",
+          "rule": "自2025-04-04反弹+21.2%",
+          "severity": 3,
+          "window": [
+            "2025-04-04",
+            "2025-04-09"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-04-21",
+          "kind": "drawdown",
+          "rule": "自2025-04-09回撤-15.2%",
+          "severity": 3,
+          "window": [
+            "2025-04-09",
+            "2025-04-21"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-05-01",
+          "kind": "rally",
+          "rule": "自2025-04-21反弹+15.2%",
+          "severity": 3,
+          "window": [
+            "2025-04-21",
+            "2025-05-01"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2025-12-12",
+          "kind": "drawdown",
+          "rule": "自2025-10-29回撤-15.5%",
+          "severity": 3,
+          "window": [
+            "2025-10-29",
+            "2025-12-12"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2026-04-14",
+          "kind": "rally",
+          "rule": "自2026-03-30反弹+19.0%",
+          "severity": 3,
+          "window": [
+            "2026-03-30",
+            "2026-04-14"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        },
+        {
+          "date": "2026-06-23",
+          "kind": "drawdown",
+          "rule": "自2026-05-14回撤-15.1%",
+          "severity": 3,
+          "window": [
+            "2026-05-14",
+            "2026-06-23"
+          ],
+          "evidence_refs": [
+            "ev-s-20260704-c608-1"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "局限性与未尽事项",
+      "level": 2
+    },
+    {
+      "type": "narrative",
+      "text": "一、事件清单的非完备性。本报告选取的15个AI事件基于公开报道与市场共识，但必然遗漏部分重要事件（如供应链传闻、竞争产品动态、机构调仓等）。30个未匹配变化点（75%）中相当部分可能对应未被收录的事件。\n\n二、变化点算法局限。当前规则为「单日收益超2σ」或「区间反弹/回撤超15%」，阈值设定影响检出结果。min_severity=2过滤前检出150个变化点，仅40个入选——较低阈值可能揭示更多事件-行情关联。\n\n三、归因的单向性风险。事件→行情的方向性标注（up/down/mixed）基于逻辑推演而非实证因果。部分事件的实际市场反应可能与直觉相反（如'利好出尽'导致下跌），报告中已尽量标注此类情况（如Blackwell发布后的drawdown），但仍可能遗漏。\n\n四、数据来源。行情数据来自Yahoo Finance（可能含复权误差），事件来源为公开报道（可能存在报道日期与市场知晓日期的偏差）。事件后N日收益基于收盘价计算，不考虑盘中波动。\n\n五、未覆盖因素。宏观层面（美联储利率周期、10年期美债收益率、VIX）、半导体行业层面（费城半导体指数SOX联动）、公司层面（持仓集中度、期权Gamma效应）等均未纳入本报告对齐框架。这些因素在某些时间段可能比AI事件更能解释行情变化。",
+      "evidence_refs": [
+        "ev-s-20260704-c608-1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,871 @@
+{
+  "run_id": "s-20260704-c608",
+  "items": [
+    {
+      "id": "ev-s-20260704-c608-1",
+      "kind": "market_data",
+      "source_url": "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?period1=1625356800&period2=1783209600&interval=1d&events=history",
+      "query": {
+        "ticker": "NVDA",
+        "start": "2021-07-04",
+        "end": "2026-07-04",
+        "source": "Yahoo Finance (query1)"
+      },
+      "fetched_at": "2026-07-04T03:06:45+00:00",
+      "excerpt": "1254 行日线，2021-07-06 至 2026-07-02，来源 Yahoo Finance (query1)"
+    },
+    {
+      "id": "ev-s-20260704-c608-2",
+      "kind": "computation",
+      "source_url": "evidence:ev-s-20260704-c608-1",
+      "query": {
+        "params": {
+          "trend_window": 20,
+          "trend_min_slope": 0.001,
+          "zscore_window": 21,
+          "zscore_threshold": 2.0,
+          "swing_threshold": 0.15,
+          "volume_window": 60,
+          "volume_multiple": 3.0,
+          "merge_window_days": 10
+        },
+        "rows": 1254
+      },
+      "fetched_at": "2026-07-04T03:06:53+00:00",
+      "excerpt": "150 个变化点：2021-08-06 trend_up(s1)；2021-08-19 accel_up(s2)；2021-08-23 rally(s3)；2021-09-20 accel_down(s2)；2021-09-21 trend_down(s1)；2021-10-04 accel_down(s2)；2021-10-05 accel_up(s2)；2021-10-20 trend_up(s1)"
+    },
+    {
+      "id": "ev-s-20260704-c608-3",
+      "kind": "search",
+      "source_url": "https://openai.com/index/chatgpt/",
+      "query": {
+        "query": "ChatGPT release date November 2022 OpenAI",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:08:43+00:00",
+      "excerpt": "Introducing ChatGPT - OpenAI；Introducing ChatGPT；Introducing ChatGPT | OpenAI；ChatGPT, the generative AI chatbot, is released - History.com；隆重推出 ChatGPT | OpenAI"
+    },
+    {
+      "id": "ev-s-20260704-c608-4",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing",
+      "query": {
+        "query": "NVIDIA B100 Blackwell chip announcement date 2024",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:08:53+00:00",
+      "excerpt": "NVIDIA Blackwell Platform Arrives to Power a New Era of Computing | NVIDIA Newsroom；Nvidia unveils flagship AI chip, the B200, aiming to extend dominance | Reuters；Nvidia announces GB200 Blackwell AI chip, launching later this year；Nvidia CEO Jensen Huang Unveils Next-Generation AI Chip, 'Blackwell' - Business Insider；Nvidia debuts next-generation Blackwell AI chip at GTC 2024"
+    },
+    {
+      "id": "ev-s-20260704-c608-5",
+      "kind": "search",
+      "source_url": "https://www.bloomberg.com/news/articles/2025-01-27/what-is-deepseek-r1-and-how-does-china-s-ai-model-compare-to-openai-meta",
+      "query": {
+        "query": "DeepSeek R1 release date January 2025 market impact NVIDIA",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:09:05+00:00",
+      "excerpt": "What Is DeepSeek R1? Why Has China’s AI Model Hit Nvidia, ASML, Meta Shares? - Bloomberg；DeepSeek-R1 Release | DeepSeek API Docs；Nvidia calls China’s DeepSeek R1 model ‘an excellent AI advancement’；​​NVIDIA Stock Plunges 17% on Chinese AI Breakthrough​ | IG International；DeepSeek-R1模型发布，性能对标OpenAI o1正式版"
+    },
+    {
+      "id": "ev-s-20260704-c608-6",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1643155200%2Ccreated_at_i%3C%3D1655769599",
+      "query": {
+        "query": "nvidia",
+        "start": "2022-01-26",
+        "end": "2022-06-20",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:17+00:00",
+      "excerpt": "Graphics card prices plotted against Ethereum profitability；GPUs aren’t always your best bet, Twitter ML tests suggest；AMD Hip vs. Nvidia CUDA vs. Nvidia OptiX on Blender 3.2；The size of CUDA dlls for deep-learning has gone out of control；If Nvidia’s next-gen GPUs can live up to hype, it'll make the RTX 3090 look slow"
+    },
+    {
+      "id": "ev-s-20260704-c608-7",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=chip&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1643155200%2Ccreated_at_i%3C%3D1655769599",
+      "query": {
+        "query": "chip",
+        "start": "2022-01-26",
+        "end": "2022-06-20",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:17+00:00",
+      "excerpt": "Tesla cars are banned from Chinese town over spying fear；Putin is winning the war over Ukraine – both on and off the battlefield；You can run Doom on a chip from a $15 IKEA smart lamp；Tesla Cars Won’t Be Allowed Near China Leadership Meeting；Show HN: Hacker News but it's only the comments with none of the context"
+    },
+    {
+      "id": "ev-s-20260704-c608-8",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1628726400%2Ccreated_at_i%3C%3D1640044799",
+      "query": {
+        "query": "nvidia",
+        "start": "2021-08-12",
+        "end": "2021-12-20",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:17+00:00",
+      "excerpt": "Nvidia’s new RTX 2050 laptop GPU could potentially power more affordable laptops；Rendering in Real Time with Spatiotemporal Blue Noise Textures；Nintendo: Lateral Thinking with Withered Technology (fun over specs)；Nvidia will lose its grip on the AI industry；WSL 2 GPU Support for Docker Desktop on Nvidia GPUs"
+    },
+    {
+      "id": "ev-s-20260704-c608-9",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=GPU&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1628726400%2Ccreated_at_i%3C%3D1640044799",
+      "query": {
+        "query": "GPU",
+        "start": "2021-08-12",
+        "end": "2021-12-20",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:17+00:00",
+      "excerpt": "Article One of Project Gutenburg；Designing Better Links for Websites and Emails；Ask HN: Rejecting client work at last minute；Ramanujan Prize winner Neena Gupta who solved Zariski problem；A Funding Guide for Startups"
+    },
+    {
+      "id": "ev-s-20260704-c608-10",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1657584000%2Ccreated_at_i%3C%3D1672358399",
+      "query": {
+        "query": "nvidia",
+        "start": "2022-07-12",
+        "end": "2022-12-29",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:26+00:00",
+      "excerpt": "Nvidia to Kill Off Gamestream；Intel Shakes Up Graphics Unit in Bid to Topple AMD and Nvidia；Nvidia: This Will Not End Well；Nvidia’s New AI: Video Game Graphics, Now 60x Smaller [video]；The Meta Grand Teton 8x Nvidia H100 AI Machine"
+    },
+    {
+      "id": "ev-s-20260704-c608-11",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1672876800%2Ccreated_at_i%3C%3D1685059199",
+      "query": {
+        "query": "nvidia",
+        "start": "2023-01-05",
+        "end": "2023-05-25",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:26+00:00",
+      "excerpt": "Intel's $200 Arc A750 GPU is the best budget GPU by far；Nvidia close to becoming first trillion-dollar chip firm after stellar forecast；Nvidia Hints at Upcoming AI-Focused Spectrum-4 Ethernet；Nvidia – Gamers Be Damned；AI chip boom sends Nvidia’s stock surging after whopper of a quarter"
+    },
+    {
+      "id": "ev-s-20260704-c608-12",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=export&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1657584000%2Ccreated_at_i%3C%3D1672358399",
+      "query": {
+        "query": "export",
+        "start": "2022-07-12",
+        "end": "2022-12-29",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:26+00:00",
+      "excerpt": "Long Covid may be onset of menopause for women, say experts；LastPass disclosure of leaked password vaults torn apart by security experts；Experts debate the risks of made-to-order DNA；LastPass disclosure of leaked vaults is being torn apart by security experts；Scratch for Experts?"
+    },
+    {
+      "id": "ev-s-20260704-c608-13",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=GPT&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1672876800%2Ccreated_at_i%3C%3D1685059199",
+      "query": {
+        "query": "GPT",
+        "start": "2023-01-05",
+        "end": "2023-05-25",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:26+00:00",
+      "excerpt": "How some people get away with doing nothing at work；Ford EV owners to get access to Tesla Supercharger network in 2024；Why should I use Either<Left,Right> over exceptions?；Neuralink gets U.S. FDA approval for human clinical study of brain implants；Neuralink gets FDA approval for first human clinical study"
+    },
+    {
+      "id": "ev-s-20260704-c608-14",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=blackwell&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1712880000%2Ccreated_at_i%3C%3D1714780799",
+      "query": {
+        "query": "blackwell",
+        "start": "2024-04-12",
+        "end": "2024-05-03",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:35+00:00",
+      "excerpt": "Waste Mesh Networks – With a New Waste Client；Q: Who Found a Way to Crack the U.K.'S Premier Quiz Show?；Jim Keller suggests Nvidia should have used Ethernet to link Blackwell GPUs"
+    },
+    {
+      "id": "ev-s-20260704-c608-15",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1712880000%2Ccreated_at_i%3C%3D1714780799",
+      "query": {
+        "query": "nvidia",
+        "start": "2024-04-12",
+        "end": "2024-05-03",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:36+00:00",
+      "excerpt": "How the Kindness of Sega Saved Nvidia from Going Under；How to Make More Money Renting a GPU Than Nvidia Makes Selling It；Nvidia Calls RTX the \"Premium\" AI PC Platform, NPUs Only Good for \"Basic\" AI PCs；Nvidia has published a competitive llama3-70B QA/RAG fine tune；Nvidia Just Published ChatQA 1.5, a Llama3 QA/RAG Finetune"
+    },
+    {
+      "id": "ev-s-20260704-c608-16",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1694649600%2Ccreated_at_i%3C%3D1700092799",
+      "query": {
+        "query": "nvidia",
+        "start": "2023-09-14",
+        "end": "2023-11-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:36+00:00",
+      "excerpt": "Nvidia is using LLMs in chip development；Microsoft announces custom AI chip that could compete with Nvidia；Microsoft Releases Phi-2；Nvidia Envy: understanding the GPU gold rush；Nvidia H200 Tensor Core GPU"
+    },
+    {
+      "id": "ev-s-20260704-c608-17",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=export&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1694649600%2Ccreated_at_i%3C%3D1700092799",
+      "query": {
+        "query": "export",
+        "start": "2023-09-14",
+        "end": "2023-11-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:36+00:00",
+      "excerpt": "Moss, a custom GPT that's an expert in Go；Personalize B2B Outbound at Scale；California's Biggest Flex；OpenAI recruits Google AI experts with huge offers；Show HN: The AI Personal Financial Adviser – Your Investment Professional"
+    },
+    {
+      "id": "ev-s-20260704-c608-18",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=hopper&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1721174400%2Ccreated_at_i%3C%3D1726790399",
+      "query": {
+        "query": "hopper",
+        "start": "2024-07-17",
+        "end": "2024-09-19",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:42+00:00",
+      "excerpt": "Shopper's videos of himself trying to beat speedy Aldi cashiers go viral；Copper Wires Have Already Failed Clustered AI Systems；Grace Hopper – Future Possibilities: Data, Hardware, Software, and People (1982)；A Quick Introduction to the Nvidia GH200 a.k.a. Grace Hopper – ServeTheHome；Mexican shoppers say Shein and Temu's delivery partner is stealing their stuff"
+    },
+    {
+      "id": "ev-s-20260704-c608-19",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=deepseek&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1737331200%2Ccreated_at_i%3C%3D1741651199",
+      "query": {
+        "query": "deepseek",
+        "start": "2025-01-20",
+        "end": "2025-03-10",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:42+00:00",
+      "excerpt": "Show HN: L Theanine Song [video]；Show HN: Using LLM to predict future trends and headlines before they happen；Show HN: Built Pay as per Use SOTA AI App to Avoid Subscriptions Hell；Manus probably isn't China's second 'DeepSeek moment'；Show HN: How to collect personal productivity data without sharing with anyone?"
+    },
+    {
+      "id": "ev-s-20260704-c608-20",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1737331200%2Ccreated_at_i%3C%3D1741651199",
+      "query": {
+        "query": "nvidia",
+        "start": "2025-01-20",
+        "end": "2025-03-10",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:42+00:00",
+      "excerpt": "The New Rust-Written Nvidia \"Nova\" Driver Submitted Ahead of Linux 6.15；Nvidia's 90% Market Dominance: Killing Competition；Nvidia Might Re-Launch RTX 4090 with Up to 96GB of VRAM；Llama.cpp AI Performance with the GeForce RTX 5090 Review；Nvidia RTX PRO 6000 Blackwell 24064 cores, 96GB G7 memory"
+    },
+    {
+      "id": "ev-s-20260704-c608-21",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1721174400%2Ccreated_at_i%3C%3D1726790399",
+      "query": {
+        "query": "nvidia",
+        "start": "2024-07-17",
+        "end": "2024-09-19",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:09:42+00:00",
+      "excerpt": "NVLM: Open Frontier-Class Multimodal LLMs from Nvidia；Sync joins Nvidia Inception program to expand to GPU acceleration；Challengers Are Coming for Nvidia's Crown；Scalable data pre processing and curation toolkit for AI；GPU Acceleration with Polars and Nvidia Rapids"
+    },
+    {
+      "id": "ev-s-20260704-c608-22",
+      "kind": "search",
+      "source_url": "https://www.govinfo.gov/content/pkg/FR-2022-10-13/pdf/2022-21658.pdf",
+      "query": {
+        "query": "US export controls China AI chips NVIDIA October 2022",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:10:28+00:00",
+      "excerpt": "62186；U.S. officials order Nvidia to halt sales of top AI chips to China；Your phones and cars aren’t going to work the same after new U.S. rules on selling chips to China – The China Project；Sweeping New US Semiconductor-Related Export Controls on China | Insights | Mayer Brown；包括军用高阶晶片与半导体制造设备 美国新出口管制阻中国科技军事发展 | 联合早报"
+    },
+    {
+      "id": "ev-s-20260704-c608-23",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-hopper-architecture-the-next-generation-of-accelerated-computing",
+      "query": {
+        "query": "NVIDIA Hopper H100 announcement date March 2022 GTC",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:10:34+00:00",
+      "excerpt": "NVIDIA Announces Hopper Architecture, the Next Generation of ...；NVIDIA Announces Hopper Architecture, the Next Generation；Keynote Wrap-Up: Turning Data Centers into ‘AI Factories,’ NVIDIA CEO Intros Hopper Architecture, H100 GPU, New Supercomputers, Software | NVIDIA Blog；At GTC: NVIDIA Launches Hopper Architecture and 80-billion Transistor GPU for AI Data Centers | Inside HPC & AI News；Nvidia Launches Hopper H100 GPU, New DGXs and Grace Superchips"
+    },
+    {
+      "id": "ev-s-20260704-c608-24",
+      "kind": "search",
+      "source_url": "https://www.bloomberg.com/news/articles/2024-08-06/nvidia-nvda-blackwell-ai-chip-rollout-slowed-by-engineering-snags",
+      "query": {
+        "query": "NVIDIA Blackwell chip delay August 2024",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:10:38+00:00",
+      "excerpt": "Two New Nvidia Next-Gen AI Chips Hit by Engineering Delays - Bloomberg；Nvidia's AI chip demand to face limited impact from potential production delay, analysts say | Reuters；Report: Design flaw discovery set to delay launch of Nvidia's new Blackwell GPUs - SiliconANGLE；Nvidia's AI Chip Launch Delay Challenges Annual Product Cadence - Business Insider；Nvidia Stock Plummets on Reported Delay of Its New AI Chip Amid Global Sell-Off"
+    },
+    {
+      "id": "ev-s-20260704-c608-25",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2025/04/16/chip-stocks-fall-as-nvidia-amd-warn-of-china-export-control-costs.html",
+      "query": {
+        "query": "NVIDIA stock drop April 2025 tariff trade war China",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:11:28+00:00",
+      "excerpt": "Chip stocks drop as Nvidia, AMD warn of China export control costs；U.S. stocks drop as Nvidia slides and the fog of Trump's trade war thickens  : NPR；U.S. stocks drop as Nvidia slides and the fog of Trump’s trade war thickens - OPB；H20限制令太痛！輝達認列1788億損失 市值蒸發1.8兆 - 自由財經；華府加辣 H20 GPU 限制出口 NVIDIA 或損 55 億美元股價再暴挫 - PCM"
+    },
+    {
+      "id": "ev-s-20260704-c608-26",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2023/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2024/default.aspx",
+      "query": {
+        "query": "NVIDIA stock rally May 2023 Q1 earnings forecast beat AI demand",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:11:28+00:00",
+      "excerpt": "NVIDIA Corporation - NVIDIA Announces Financial Results for First Quarter Fiscal 2024；Nvidia's results spark nearly $300 billion rally in AI stocks | Reuters；Nvidia (NVDA) earnings report Q1 2024；英伟达第一财季营收71.92亿美元 净利润同比增长26%|英伟达_新浪财经_新浪网；Nvidia繳出超狂財測！本季營收預估達110億，盤後股價狂飆25％|數位時代 BusinessNext"
+    },
+    {
+      "id": "ev-s-20260704-c608-27",
+      "kind": "search",
+      "source_url": "https://apnews.com/article/nvidia-gtc-jensen-huang-ai-457e9260aa2a34c1bbcc07c98b7a0555",
+      "query": {
+        "query": "NVIDIA GTC March 2025 Rubin platform announcement",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:11:28+00:00",
+      "excerpt": "Nvidia CEO Jensen Huang unveils new Rubin AI chips at GTC 2025 | AP News；GTC March 2025 Keynote with NVIDIA CEO Jensen Huang；Nvidia Unveils Its Big Bets at AI 'Super Bowl' - Business Insider；NVIDIA CEO Highlights Blackwell Ultra Chip and Vera Rubin Platform in GTC Keynote | INN；10 Big Nvidia GTC 2025 Announcements: Blackwell Ultra, Rubin Ultra, DGX Spark And More"
+    },
+    {
+      "id": "ev-s-20260704-c608-28",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1643155200%2Ccreated_at_i%3C%3D1651363199",
+      "query": {
+        "query": "nvidia",
+        "start": "2022-01-26",
+        "end": "2022-04-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:11:35+00:00",
+      "excerpt": "ZFS Without a Server Using the Nvidia BlueField-2 DPU；Nvidia: ML Model Is Making Next-Gen GPUs ‘Better Than Human’；Synthetic Data Startups Pick Up More Real Cash；Ubuntu 22.04 LTS Changes Default Nvidia Driver Back to X.org Rather Than Wayland；Pop OS and Linux Mint Debian Edition vs. Nvidia"
+    },
+    {
+      "id": "ev-s-20260704-c608-29",
+      "kind": "search",
+      "source_url": "https://openai.com/index/gpt-4-research/",
+      "query": {
+        "query": "GPT-4 release date March 2023 OpenAI",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:12:07+00:00",
+      "excerpt": "GPT-4 - OpenAI；Microsoft-backed OpenAI starts release of powerful AI known as ...；GPT-4；OpenAI announces ChatGPT successor GPT-4 - BBC；[2303.08774] GPT-4 Technical Report - arXiv"
+    },
+    {
+      "id": "ev-s-20260704-c608-30",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/business/softbanks-66-bln-sale-arm-nvidia-collapses-ft-2022-02-08/",
+      "query": {
+        "query": "NVIDIA Arm acquisition failed February 2022",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:12:17+00:00",
+      "excerpt": "SoftBank dumps sale of Arm over regulatory hurdles, to IPO instead；NVIDIA and SoftBank Group Announce Termination of NVIDIA’s Acquisition of Arm Limited；NVIDIA and SoftBank Group Announce Termination of NVIDIA's ...；Nvidia's $40bn takeover of UK chip designer Arm collapses；Nvidia calls off its efforts to acquire Arm | TechCrunch"
+    },
+    {
+      "id": "ev-s-20260704-c608-31",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=30&numericFilters=created_at_i%3E%3D1696118400%2Ccreated_at_i%3C%3D1699487999",
+      "query": {
+        "query": "nvidia",
+        "start": "2023-10-01",
+        "end": "2023-11-08",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:12:24+00:00",
+      "excerpt": "Rapids CuDF Accelerates Pandas Nearly 150x with Zero Code Changes；Nvidia Is Piloting a Generative AI for Its Engineers；The First AI Nation?；Aerial Research Cloud – Arc-A1.0；Ask HN: Open-Source DIY Robot"
+    },
+    {
+      "id": "ev-s-20260704-c608-32",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2023/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2024/default.aspx",
+      "query": {
+        "query": "NVIDIA Q3 FY2024 earnings November 2023 results",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:13:23+00:00",
+      "excerpt": "NVIDIA Corporation - NVIDIA Announces Financial Results for Third Quarter Fiscal 2024；NVIDIA Announces Financial Results for Third Quarter ...；Nvidia's revenue triples as AI chip boom continues；NVIDIA 发布 2024 财年第三季度财务报告 | NVIDIA 英伟达博客；英伟达三季度营收增两倍，但预警出口管制影响：正开发不需要许可证的新品_10%公司_澎湃新闻-The Paper"
+    },
+    {
+      "id": "ev-s-20260704-c608-33",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581023000217/nvda-20231017.htm",
+      "query": {
+        "query": "US export controls China chips tightened October 2023 NVIDIA impact",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:13:35+00:00",
+      "excerpt": "nvda-20231017；Explainer: The Commerce Department's October 2023 Export Control Update；美国将停止向中国提供英伟达等公司的先进人工智能芯片，以阻遏中国军力发展；Where the Chips Fall: U.S. Export Controls Under the Biden Administration from 2022 to 2024；美國升級對華晶片出口禁令 中國批「單邊霸凌」"
+    },
+    {
+      "id": "ev-s-20260704-c608-34",
+      "kind": "search",
+      "source_url": "https://ai.meta.com/blog/llama-2/",
+      "query": {
+        "query": "Meta Llama 2 release date July 2023 open source AI model",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:14:14+00:00",
+      "excerpt": "Meta and Microsoft Introduce the Next Generation of Llama；Llama 2: Open Foundation and Fine-Tuned Chat Models；meta-llama/llama；Meta and Microsoft Introduce the Next Generation of Llama；Llama (language model)"
+    },
+    {
+      "id": "ev-s-20260704-c608-35",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2025/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2025/default.aspx",
+      "query": {
+        "query": "NVIDIA Q4 FY2025 earnings February 2025 DeepSeek",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:14:18+00:00",
+      "excerpt": "NVIDIA Corporation - NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2025；Nvidia (NVDA) earnings report Q4 2025；NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2025 | NVIDIA Newsroom；Nvidia beats Wall Street expectations in first earnings after DeepSeek’s AI debut | Nvidia | The Guardian；Nvidia Earnings Live: Results Top Expectations on Booming Demand for AI; CEO Huang Says DeepSeek 'Ignited Global Enthusiasm'"
+    },
+    {
+      "id": "ev-s-20260704-c608-36",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000262/q2fy25pr.htm",
+      "query": {
+        "query": "NVIDIA earnings August 2024 Q2 FY2025 results Blackwell",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:14:28+00:00",
+      "excerpt": "Document；NVIDIA Announces Financial Results for Second Quarter；https://s201.q4cdn.com/141608511/files/doc_financials/2025/q2/NVDA-F2Q25-Quarterly-Presentation-FINAL.pdf；Nvidia Earnings Live Coverage: Results Top Expectations, But Growth Slows; Stock Slides；英伟达：AI 信仰也崩，蜜汁要成毒药？_腾讯新闻"
+    },
+    {
+      "id": "ev-s-20260704-c608-37",
+      "kind": "search",
+      "source_url": "https://blogs.nvidia.com/blog/gtc-2026-news/",
+      "query": {
+        "query": "NVIDIA GTC March 2026 announcements Rubin Feynman",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:15:31+00:00",
+      "excerpt": "NVIDIA GTC 2026: Live Updates on What’s Next in AI | NVIDIA Blog；NVIDIA Vera Rubin 开启代理式 AI 前沿 | NVIDIA 英伟达博客；Nvidia GTC 2026: CEO Jensen Huang keynote Blackwell Vera Rubin；Nvidia GTC 2026 keynote – Jon Peddie Research；NVIDIA GTC 2026 Keynote: Jensen Huang Unveils Vera Rubin Platform and Six New Chips | TechDrop"
+    },
+    {
+      "id": "ev-s-20260704-c608-38",
+      "kind": "search",
+      "source_url": "https://www.npr.org/2025/04/17/nx-s1-5367592/us-stocks-drop-nvidia-trump-tariffs",
+      "query": {
+        "query": "NVIDIA stock April 2025 tariff trade war market sell-off",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:15:34+00:00",
+      "excerpt": "U.S. stocks drop as Nvidia slides and the fog of Trump's trade war thickens  : NPR；Nvidia Stock Price Today: Deep YTD Sell-Off on Trump Tariffs,  DeepSeek - Business Insider；U.S. stocks drop as Nvidia slides and the fog of Trump’s trade war thickens - OPB；新聞幕後／輝達認列55億損失蝴蝶效應　恐拖累整個亞洲股市 | 財經 | 三立新聞網  SETN.COM；Nvidia stock drops, tech leads markets lower after Trump backs broader reciprocal tariffs"
+    },
+    {
+      "id": "ev-s-20260704-c608-39",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000113/nvda-20240522.htm",
+      "query": {
+        "query": "NVIDIA 10 for 1 stock split June 2024",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:15:35+00:00",
+      "excerpt": "nvda-20240522；NVIDIA Announces Financial Results for First Quarter Fiscal 2025 | NVIDIA Newsroom；NVIDIA CORP (Form: 8-K, Received: 06/07/2024 16:20:17)；NVIDIA 2024 Stock Split_FAQ_Investors (June 11, 2024)；Nvidia 10-for-1 stock split goes into effect after stock price for the chipmaker doubled this year | AP News"
+    },
+    {
+      "id": "ev-s-20260704-c608-40",
+      "kind": "search",
+      "source_url": "https://openai.com/index/chatgpt/",
+      "query": {
+        "query": "ChatGPT release date November 30 2022 OpenAI",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:17:56+00:00",
+      "excerpt": "Introducing ChatGPT - OpenAI；Introducing ChatGPT；Introducing ChatGPT | OpenAI；ChatGPT - Wikipedia；ChatGPT, the generative AI chatbot, is released - History.com"
+    },
+    {
+      "id": "ev-s-20260704-c608-41",
+      "kind": "search",
+      "source_url": "https://openai.com/index/gpt-4-research/",
+      "query": {
+        "query": "GPT-4 release date March 2023 OpenAI",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:18:03+00:00",
+      "excerpt": "GPT-4；Microsoft-backed OpenAI starts release of powerful AI ...；OpenAI announces ChatGPT successor GPT-4；GPT-4；GPT-4"
+    },
+    {
+      "id": "ev-s-20260704-c608-42",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-hopper-architecture-the-next-generation-of-accelerated-computing",
+      "query": {
+        "query": "NVIDIA Hopper H100 announcement date GTC 2022",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:18:05+00:00",
+      "excerpt": "NVIDIA Announces Hopper Architecture, the Next Generation of ...；NVIDIA Announces Hopper Architecture, the Next Generation；Keynote Wrap-Up: Turning Data Centers into ‘AI Factories,’ NVIDIA CEO Intros Hopper Architecture, H100 GPU, New Supercomputers, Software | NVIDIA Blog；NVIDIA 宣布推出 Hopper 架构，掀起新一代加速计算浪潮 | NVIDIA 英伟达博客；NVIDIA Announces Hopper Architecture, the Next"
+    },
+    {
+      "id": "ev-s-20260704-c608-43",
+      "kind": "search",
+      "source_url": "https://api-docs.deepseek.com/news/news250120",
+      "query": {
+        "query": "DeepSeek R1 release date January 2025",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:18:11+00:00",
+      "excerpt": "DeepSeek-R1 Release | DeepSeek API Docs；DeepSeek-R1模型发布，性能对标OpenAI o1正式版；deepseek-ai/DeepSeek-R1；DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via；DeepSeek"
+    },
+    {
+      "id": "ev-s-20260704-c608-44",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing",
+      "query": {
+        "query": "NVIDIA Blackwell B200 B100 announcement date GTC 2024 March",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:18:11+00:00",
+      "excerpt": "NVIDIA Blackwell Platform Arrives to Power a New Era of Computing | NVIDIA Newsroom；Nvidia announces GB200 Blackwell AI chip, launching later this year；Live from Nvidia GTC 2024: Meet Blackwell, the new GPU for the AI era - Engineering.com；Nvidia debuts next-generation Blackwell AI chip at GTC 2024；11 Big Nvidia Announcements At GTC 2024: Blackwell GPUs, AI Microservices And More"
+    },
+    {
+      "id": "ev-s-20260704-c608-45",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1628726400%2Ccreated_at_i%3C%3D1655769599",
+      "query": {
+        "query": "nvidia",
+        "start": "2021-08-12",
+        "end": "2022-06-20",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:22+00:00",
+      "excerpt": "Graphics card prices plotted against Ethereum profitability；GPUs aren’t always your best bet, Twitter ML tests suggest；AMD Hip vs. Nvidia CUDA vs. Nvidia OptiX on Blender 3.2；The size of CUDA dlls for deep-learning has gone out of control；If Nvidia’s next-gen GPUs can live up to hype, it'll make the RTX 3090 look slow"
+    },
+    {
+      "id": "ev-s-20260704-c608-46",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1710115200%2Ccreated_at_i%3C%3D1711411199",
+      "query": {
+        "query": "nvidia",
+        "start": "2024-03-11",
+        "end": "2024-03-25",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:22+00:00",
+      "excerpt": "Nvidia's GPU IP Drives into MediaTek's Dimension Auto SoCs；Behind the plot to break Nvidia's grip on AI by targeting software；Nvidia could be primed to be the next AWS；Nvidia's Optical Boogeyman – NVL72, Infiniband Scale Out, 800G and 1.6T Ramp；Nvidia: Why write code when you can string together a couple chat bots?"
+    },
+    {
+      "id": "ev-s-20260704-c608-47",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=blackwell&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1710115200%2Ccreated_at_i%3C%3D1711411199",
+      "query": {
+        "query": "blackwell",
+        "start": "2024-03-11",
+        "end": "2024-03-25",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:22+00:00",
+      "excerpt": "Nvidia Blackwell Architecture for AI Applications；AWS and Nvidia Reboot \"Ceiba\" Supercomputer for Blackwell GPUs；Nvidia turns up the AI heat with 1,200W Blackwell GPUs；Nvidia Blackwell Systems Attack 1T Parameter AI Models；Nvidia Unveils Blackwell, Its Next GPU"
+    },
+    {
+      "id": "ev-s-20260704-c608-48",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1694649600%2Ccreated_at_i%3C%3D1700092799",
+      "query": {
+        "query": "nvidia",
+        "start": "2023-09-14",
+        "end": "2023-11-15",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:22+00:00",
+      "excerpt": "Nvidia is using LLMs in chip development；Microsoft announces custom AI chip that could compete with Nvidia；Microsoft Releases Phi-2；Nvidia Envy: understanding the GPU gold rush；Nvidia H200 Tensor Core GPU"
+    },
+    {
+      "id": "ev-s-20260704-c608-49",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=chatgpt&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1657584000%2Ccreated_at_i%3C%3D1672358399",
+      "query": {
+        "query": "chatgpt",
+        "start": "2022-07-12",
+        "end": "2022-12-29",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:22+00:00",
+      "excerpt": "ChatGPT and implications of popular generative AI；Quick Summary of “Atomic Habits”；Show HN: Media Hoarder X ChatGPT；YouChat – Even better alternative to ChatGPT；Soon You’ll Be Able to Make Your Own Movie with AI"
+    },
+    {
+      "id": "ev-s-20260704-c608-50",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=GPT-4&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1672876800%2Ccreated_at_i%3C%3D1685059199",
+      "query": {
+        "query": "GPT-4",
+        "start": "2023-01-05",
+        "end": "2023-05-25",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:22+00:00",
+      "excerpt": "Ask HN: How are you dealing with AI FOMO?；Hacker News in Slow Italian；Ask HN: Where to start for Fine-tuning a GPT4All model；Lessons from Creating a VSCode Extension with GPT-4；Tell HN: OpenAI server misconfiguration is breaking API outputs"
+    },
+    {
+      "id": "ev-s-20260704-c608-51",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1657584000%2Ccreated_at_i%3C%3D1671753599",
+      "query": {
+        "query": "nvidia",
+        "start": "2022-07-12",
+        "end": "2022-12-22",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:30+00:00",
+      "excerpt": "Nvidia: This Will Not End Well；Nvidia’s New AI: Video Game Graphics, Now 60x Smaller [video]；The Meta Grand Teton 8x Nvidia H100 AI Machine；Nvidia ends Gamestream on all Shield devices. Suggests switching to Steam Link；Nvidia to drop support for GameStream in 2023"
+    },
+    {
+      "id": "ev-s-20260704-c608-52",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=deepseek&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1736726400%2Ccreated_at_i%3C%3D1741651199",
+      "query": {
+        "query": "deepseek",
+        "start": "2025-01-13",
+        "end": "2025-03-10",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:30+00:00",
+      "excerpt": "Show HN: L Theanine Song [video]；Show HN: Using LLM to predict future trends and headlines before they happen；Show HN: Built Pay as per Use SOTA AI App to Avoid Subscriptions Hell；Manus probably isn't China's second 'DeepSeek moment'；Show HN: How to collect personal productivity data without sharing with anyone?"
+    },
+    {
+      "id": "ev-s-20260704-c608-53",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1628726400%2Ccreated_at_i%3C%3D1655164799",
+      "query": {
+        "query": "nvidia",
+        "start": "2021-08-12",
+        "end": "2022-06-13",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:30+00:00",
+      "excerpt": "If Nvidia’s next-gen GPUs can live up to hype, it'll make the RTX 3090 look slow；Nvidia’s budget GPU could be delayed – and RTX 4000 graphics cards might be, too；How did Nvidia come on top in video cards in the 90s and early 00s?；Blender 3.2 Performance with AMD Radeon HIP vs. Nvidia GeForce on Linux；Tao Toolkit – Nvidia Developer"
+    },
+    {
+      "id": "ev-s-20260704-c608-54",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1712880000%2Ccreated_at_i%3C%3D1726790399",
+      "query": {
+        "query": "nvidia",
+        "start": "2024-04-12",
+        "end": "2024-09-19",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:30+00:00",
+      "excerpt": "NVLM: Open Frontier-Class Multimodal LLMs from Nvidia；Sync joins Nvidia Inception program to expand to GPU acceleration；Challengers Are Coming for Nvidia's Crown；Scalable data pre processing and curation toolkit for AI；GPU Acceleration with Polars and Nvidia Rapids"
+    },
+    {
+      "id": "ev-s-20260704-c608-55",
+      "kind": "news",
+      "source_url": "https://hn.algolia.com/api/v1/search_by_date?query=nvidia&tags=story&hitsPerPage=20&numericFilters=created_at_i%3E%3D1743552000%2Ccreated_at_i%3C%3D1782863999",
+      "query": {
+        "query": "nvidia",
+        "start": "2025-04-02",
+        "end": "2026-06-30",
+        "source": "hn-algolia"
+      },
+      "fetched_at": "2026-07-04T03:18:30+00:00",
+      "excerpt": "Nvidia resurrects older graphics cards as RAM demands impact tech prices；Show HN: I indexed 37h of my videos using an RTX 4090 and local ML models in 24h；Zluda 6 release (run unmodified CUDA applications on non-Nvidia GPUs)；Super Micro Office Raided as Taiwan Expands Nvidia Chip Smuggling Probe；Firefly Aerospace Operates Nvidia Jetson in Lunar Orbit for First Time"
+    },
+    {
+      "id": "ev-s-20260704-c608-56",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000113/nvda-20240522.htm",
+      "query": {
+        "query": "NVIDIA stock split June 2024 10-for-1",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:19:10+00:00",
+      "excerpt": "nvda-20240522；NVIDIA CORP (Form: 8-K, Received: 06/07/2024 16:20:17)；NVIDIA 2024 Stock Split_FAQ_Investors (June 11, 2024)；NVIDIA Announces Financial Results for First Quarter Fiscal 2025 | NVIDIA Newsroom；Nvidia 10-for-1 stock split goes into effect after stock price for the chipmaker doubled this year | AP News"
+    },
+    {
+      "id": "ev-s-20260704-c608-57",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2023/NVIDIA-Supercharges-Hopper-the-Worlds-Leading-AI-Computing-Platform/default.aspx",
+      "query": {
+        "query": "NVIDIA H200 announcement date November 2023",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:19:11+00:00",
+      "excerpt": "NVIDIA Corporation - NVIDIA Supercharges Hopper, the World’s Leading AI Computing Platform；NVIDIA Supercharges Hopper, the World's Leading AI Computing ...；Nvidia unveils H200, its newest high-end chip for training AI models；NVIDIA 为全球领先的 AI 计算平台 Hopper 再添新动力 | NVIDIA 英伟达博客；新型加速节能 AI 系统开创超级计算的新时代 | NVIDIA 英伟达博客"
+    },
+    {
+      "id": "ev-s-20260704-c608-58",
+      "kind": "search",
+      "source_url": "https://www.govinfo.gov/content/pkg/FR-2022-10-13/pdf/2022-21658.pdf",
+      "query": {
+        "query": "US export controls on NVIDIA AI chips to China October 2022",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:19:20+00:00",
+      "excerpt": "62186；U.S. officials order Nvidia to halt sales of top AI chips to China | Reuters；nvda-20220826；Sweeping New US Semiconductor-Related Export Controls on China | Insights | Mayer Brown；Your phones and cars aren’t going to work the same after new U.S. rules on selling chips to China – The China Project"
+    },
+    {
+      "id": "ev-s-20260704-c608-59",
+      "kind": "search",
+      "source_url": "https://arstechnica.com/gaming/2022/08/crypto-driven-gpu-crash-makes-nvidia-miss-q2-projections-by-1-4-billion/",
+      "query": {
+        "query": "NVIDIA crypto mining GPU crash 2022",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:19:24+00:00",
+      "excerpt": "Crypto-driven GPU crash makes Nvidia miss Q2 projections by $1.4 ...；Nvidia Game Card Prices Fall Along With Crypto Mining Demand；NVIDIA Blames Crypto Crash For Sagging GPU Sales But The Data ...；英伟达遭遇“矿难” 市值蒸发476亿美元 - 21世纪经济报道；Nvidia Profit Seen Down Amid Crypto Crash, Tech Cuts - Investopedia"
+    },
+    {
+      "id": "ev-s-20260704-c608-60",
+      "kind": "search",
+      "source_url": "https://www.cnbc.com/2023/10/17/us-bans-export-of-more-ai-chips-including-nvidia-h800-to-china.html",
+      "query": {
+        "query": "US export controls AI chips China October 2023 NVIDIA A800 H800",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:19:47+00:00",
+      "excerpt": "U.S. bans export of more AI chips, including Nvidia H800, to China；US orders immediate halt to some AI chip exports to China, says Nvidia | Technology sector | The Guardian；Tech war: US ban on tailor-made Nvidia and Intel chips hits Beijing’s AI ambitions | South China Morning Post；What to Know About U.S. Curbs on AI Chip Exports to China；Exclusive: US tackles loopholes in curbs on AI chip exports to China | Reuters"
+    },
+    {
+      "id": "ev-s-20260704-c608-61",
+      "kind": "search",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581025000082/nvda-20250409.htm",
+      "query": {
+        "query": "US export controls chip ban NVIDIA China April 2025 new restrictions",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:20:21+00:00",
+      "excerpt": "nvda-20250409；Nvidia Says U.S. Will Restrict Sales of More of Its A.I. Chips to China - The New York Times；Nvidia says U.S. will limit sales of advanced chips to China : NPR；Nvidia discloses that U.S. will limit sales of advanced chips to China after all - OPB；輝達：嚴格遵守美方晶片出口規定 新加坡帳單出貨地不含中國 | 產經 | 中央社 CNA"
+    },
+    {
+      "id": "ev-s-20260704-c608-62",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2025",
+      "query": {
+        "query": "NVIDIA first quarter FY2025 earnings May 2024 record revenue",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:20:31+00:00",
+      "excerpt": "NVIDIA Announces Financial Results for First Quarter Fiscal 2025 | NVIDIA Newsroom；NVIDIA Announces Financial Results for First Quarter；Nvidia (NVDA) earnings report Q1 2025；Nvidia Earnings Top Expectations As Sales Soar Amid Booming AI Demand；NVIDIA 发布 2025 财年第一季度财务报告 | NVIDIA 英伟达博客"
+    },
+    {
+      "id": "ev-s-20260704-c608-63",
+      "kind": "search",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-hopper-architecture-the-next-generation-of-accelerated-computing",
+      "query": {
+        "query": "NVIDIA GTC March 2022 Hopper H100 announcement",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:20:33+00:00",
+      "excerpt": "NVIDIA Announces Hopper Architecture, the Next Generation of ...；Keynote Wrap-Up: Turning Data Centers into ‘AI Factories,’ NVIDIA CEO Intros Hopper Architecture, H100 GPU, New Supercomputers, Software | NVIDIA Blog；NVIDIA Announces Hopper Architecture, the Next Generation；GTC 2022 Spring Keynote with NVIDIA CEO Jensen Huang - YouTube；NVIDIA Hopper Architecture In-Depth | NVIDIA Technical Blog"
+    },
+    {
+      "id": "ev-s-20260704-c608-64",
+      "kind": "search",
+      "source_url": "https://www.bloomberg.com/news/articles/2024-08-06/nvidia-nvda-blackwell-ai-chip-rollout-slowed-by-engineering-snags",
+      "query": {
+        "query": "NVIDIA Blackwell delay August 2024 production pushback",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:21:14+00:00",
+      "excerpt": "Two New Nvidia Next-Gen AI Chips Hit by Engineering Delays - Bloomberg；Nvidia's AI chip demand to face limited impact from potential production delay, analysts say | Reuters；Nvidia's AI Chip Launch Delay Challenges Annual Product Cadence - Business Insider；Report: Design flaw discovery set to delay launch of Nvidia's new Blackwell GPUs - SiliconANGLE；Nvidia Delays Next-Gen Blackwell GPUs Due To Design Issues: Reports"
+    },
+    {
+      "id": "ev-s-20260704-c608-65",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/chinas-deepseek-sets-off-ai-market-rout-2025-01-27/",
+      "query": {
+        "query": "DeepSeek R1 caused NVIDIA stock crash January 27 2025",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:21:14+00:00",
+      "excerpt": "DeepSeek sparks AI stock selloff; Nvidia posts record market-cap loss | Reuters；Nvidia drops nearly 17% as China's cheaper AI model DeepSeek sparks global tech sell-off；What is DeepSeek, and why is it causing Nvidia and other stocks to slump? - CBS News；China’s DeepSeek causes rout among AI-linked stocks, Nvidia shares tumble | Financial Markets News | Al Jazeera；Stock Market News, Jan. 27, 2025: Nvidia Stock Sinks in AI Rout Sparked by China's DeepSeek"
+    },
+    {
+      "id": "ev-s-20260704-c608-66",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/nvidias-stock-market-value-hits-3-trillion-first-time-2024-06-05/",
+      "query": {
+        "query": "NVIDIA stock all-time high June 2024 market cap 3 trillion",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:21:52+00:00",
+      "excerpt": "Nvidia's stock market value hits $3 trillion for first time | Reuters；Nvidia, with $3.34 Trillion Market Cap, Becomes Most Valuable Company - The New York Times；Nvidia hits $3 trillion market cap on back of AI boom；Nvidia Market Cap Crosses $3 Trillion；Nvidia—World’s Most Valuable Company—Rallies Another 3% As $4 Trillion Valuation In Sight"
+    },
+    {
+      "id": "ev-s-20260704-c608-67",
+      "kind": "search",
+      "source_url": "https://investor.nvidia.com/news/press-release-details/2024/NVIDIA-Announces-Financial-Results-for-Second-Quarter-Fiscal-2025/default.aspx",
+      "query": {
+        "query": "NVIDIA earnings date Q2 FY2025 August 28 2024",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:21:54+00:00",
+      "excerpt": "NVIDIA Corporation - NVIDIA Announces Financial Results for Second Quarter Fiscal 2025；NVIDIA Announces Financial Results for Second Quarter Fiscal 2025 | NVIDIA Newsroom；Nvidia (NVDA) earnings report Q2 2025；https://s201.q4cdn.com/141608511/files/doc_financials/2025/q2/NVDA-F2Q25-Quarterly-Presentation-FINAL.pdf；〈財報〉輝達Q2超預期營收增122% 財測難及華爾街高標 盤後重挫6% | 鉅亨網 - 美股雷達"
+    },
+    {
+      "id": "ev-s-20260704-c608-68",
+      "kind": "search",
+      "source_url": "https://www.reuters.com/technology/nvidia-expects-second-quarter-revenue-drop-gaming-weakness-2022-08-08/",
+      "query": {
+        "query": "NVIDIA Q2 FY2023 August 2022 revenue warning gaming down",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 5
+      },
+      "fetched_at": "2026-07-04T03:21:59+00:00",
+      "excerpt": "Nvidia warns of lower second-quarter revenue on gaming weakness；NVIDIA Announces Preliminary Financial Results for Second ...；NVIDIA Announces Financial Results for Second Quarter Fiscal 2023；Nvidia (NVDA) earnings Q2 2023 - CNBC；NVIDIA Announces Preliminary Financial Results for"
+    },
+    {
+      "id": "ev-s-20260704-c608-69",
+      "kind": "search",
+      "source_url": "https://www.pcmag.com/news/gpu-mining-for-ethereum-ends-as-the-merge-completes",
+      "query": {
+        "query": "Ethereum Merge September 15 2022 GPU mining end NVIDIA",
+        "model": "deepseek/deepseek-v4-pro",
+        "max_results": 3
+      },
+      "fetched_at": "2026-07-04T03:23:04+00:00",
+      "excerpt": "GPU Mining for Ethereum Ends as 'The Merge' Completes | PCMag；Ethereum completes the “Merge,” which ends mining and cuts ...；The Merge | ethereum.org"
+    }
+  ]
+}
