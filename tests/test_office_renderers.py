@@ -93,12 +93,50 @@ def test_pptx_slides_and_evidence_page(ws):
     })
     version = ws.render_artifact(spec)
     prs = Presentation(ws.dir / version.file)
+    # 16:9 画幅
+    assert round(prs.slide_width / prs.slide_height, 2) == round(16 / 9, 2)
     assert len(prs.slides) == 5  # 4 页 spec + 1 页自动溯源清单
-    titles = [s.shapes.title.text for s in prs.slides if s.shapes.title]
-    assert "数据来源与溯源清单" in titles
+
+    def slide_text(slide):
+        return " ".join(
+            run.text
+            for shape in slide.shapes if shape.has_text_frame
+            for para in shape.text_frame.paragraphs for run in para.runs
+        )
+
+    assert "数据来源与溯源清单" in slide_text(prs.slides[4])
     # 表格页确实有表格
     table_slide = prs.slides[3]
     assert any(shape.has_table for shape in table_slide.shapes)
+    # 所有形状都落在画幅内（旧版默认模板正是排版溢出的重灾区）
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            assert shape.left >= 0 and shape.top >= 0
+            assert shape.left + shape.width <= prs.slide_width
+            assert shape.top + shape.height <= prs.slide_height + 1
+
+
+def test_pptx_overflow_splits_into_continuation_slides(ws):
+    spec = ArtifactSpec.model_validate({
+        "artifact_id": "overflow-deck", "kind": "pptx", "title": "容量测试",
+        "blocks": [
+            {"type": "slide", "layout": "bullets", "title": "十条要点",
+             "bullets": [f"要点 {i}" for i in range(10)]},
+            {"type": "slide", "layout": "table", "title": "长表",
+             "table_headers": ["维度", "值"],
+             "table_rows": [[f"行{i}", str(i)] for i in range(20)]},
+        ],
+    })
+    version = ws.render_artifact(spec)
+    prs = Presentation(ws.dir / version.file)
+    # 自动封面 1 + bullets 2（6+4）+ table 3（8+8+4）+ 溯源 1 = 7
+    assert len(prs.slides) == 7
+    texts = [
+        " ".join(r.text for s in slide.shapes if s.has_text_frame
+                 for p in s.text_frame.paragraphs for r in p.runs)
+        for slide in prs.slides
+    ]
+    assert sum("（续）" in t for t in texts) == 3
 
 
 def test_pptx_rejects_non_slide_blocks(ws):
