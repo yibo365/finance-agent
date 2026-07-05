@@ -25,3 +25,5 @@ outputs/s-*
 
 # Local git worktrees
 .worktrees/
+
+record/
