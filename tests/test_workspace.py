@@ -182,8 +182,8 @@ def test_list_artifacts_summary(ws, df):
     assert len(summary["history"]) == 2
 
 
-def test_office_kinds_not_yet_supported(ws, df):
+def test_unknown_skill_rejected(ws, df):
     ws.store_dataset("ds-nvda", df, ticker="NVDA")
-    spec = html_spec(kind="xlsx", artifact_id="gold-btc-backtest")
-    with pytest.raises(WorkspaceError, match="暂不支持"):
+    spec = html_spec(skill="no-such-skill")
+    with pytest.raises(WorkspaceError, match="skill 不存在"):
         ws.render_artifact(spec)

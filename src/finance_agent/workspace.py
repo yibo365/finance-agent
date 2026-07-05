@@ -130,9 +130,9 @@ class Workspace:
             raise WorkspaceError(f"非法文件名：{name!r}")
         return self._guarded(self.dir / subdir / candidate)
 
-    def _write_text(self, path: Path, content: str, *, overwrite: bool = False) -> None:
+    def _write_text(self, path: Path, content: str | bytes, *, overwrite: bool = False) -> None:
         path = self._guarded(path)
-        data = content.encode("utf-8")
+        data = content.encode("utf-8") if isinstance(content, str) else content
         if len(data) > self.max_file_bytes:
             raise WorkspaceError(
                 f"文件超出大小上限（{len(data)} > {self.max_file_bytes} bytes）：{path.name}"
@@ -222,25 +222,32 @@ class Workspace:
 
     # ---------- 产物操作（render / update / read / list） ----------
 
-    def _render(self, spec: ArtifactSpec) -> str:
-        """spec → 产物内容字符串。按 kind 分派渲染器；数据与 evidence 由本层解析注入。"""
-        if spec.kind == "html":
-            from finance_agent.artifacts.renderers.html import render_html
-            from finance_agent.skills.loader import scan_skills
+    def _render(self, spec: ArtifactSpec) -> str | bytes:
+        """spec → 产物内容。按 kind 分派渲染器；数据与 evidence 由本层解析注入。"""
+        from finance_agent.artifacts.renderers.docx import render_docx
+        from finance_agent.artifacts.renderers.html import render_html
+        from finance_agent.artifacts.renderers.pptx import render_pptx
+        from finance_agent.artifacts.renderers.xlsx import render_xlsx
+        from finance_agent.skills.loader import scan_skills
 
-            skills = scan_skills()
-            skill_name = spec.skill or "kline-html-report"
-            if skill_name not in skills:
-                raise WorkspaceError(f"skill 不存在：{skill_name}")
-            data_refs = {
-                block.data_ref for block in spec.blocks if getattr(block, "data_ref", None)
-            }
-            datasets = {ref: self.load_dataset(ref) for ref in data_refs}
-            evidence = {ev.id: ev for ev in self.evidence.items()}
-            return render_html(
-                spec, datasets=datasets, evidence=evidence, skill=skills[skill_name]
-            )
-        raise WorkspaceError(f"暂不支持的产物类型：{spec.kind}（office 渲染器于 M6 接入）")
+        renderers = {"html": render_html, "xlsx": render_xlsx,
+                     "pptx": render_pptx, "docx": render_docx}
+        default_skills = {"html": "kline-html-report", "xlsx": "xlsx-backtest",
+                          "pptx": "pptx-framework", "docx": "docx-strategy-report"}
+        skills = scan_skills()
+        skill_name = spec.skill or default_skills[spec.kind]
+        if skill_name not in skills:
+            raise WorkspaceError(f"skill 不存在：{skill_name}")
+        data_refs: set[str] = set()
+        for block in spec.blocks:
+            if getattr(block, "data_ref", None):
+                data_refs.add(block.data_ref)
+            data_refs.update(getattr(block, "data_refs", []) or [])
+        datasets = {ref: self.load_dataset(ref) for ref in data_refs}
+        evidence = {ev.id: ev for ev in self.evidence.items()}
+        return renderers[spec.kind](
+            spec, datasets=datasets, evidence=evidence, skill=skills[skill_name]
+        )
 
     def render_artifact(self, spec: ArtifactSpec, *, change_summary: str = "初版") -> ArtifactVersion:
         """新建产物（v1）。同 id 已存在时应走 update_artifact。"""

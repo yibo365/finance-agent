@@ -90,8 +90,50 @@ class ChangepointTableBlock(BaseModel):
     changepoints: list[ChangepointMarker]
 
 
+class DataSheetBlock(BaseModel):
+    """xlsx：一个原始数据 sheet（OHLCV 原样落表，供公式引用与人工复核）。"""
+
+    type: Literal["data_sheet"] = "data_sheet"
+    sheet_name: str
+    data_ref: str
+    ticker: str = ""
+    evidence_refs: list[str] = Field(default_factory=list)
+
+
+class MetricsSheetBlock(BaseModel):
+    """xlsx：公式驱动的指标区（收益/回撤/滚动波动率/相关性）。
+
+    对齐（多资产按日期内连接）由渲染器代码完成（确定性）；指标全部用
+    Excel 公式表达并引用"参数"sheet 的单元格——修改窗口参数即联动重算。
+    """
+
+    type: Literal["metrics_sheet"] = "metrics_sheet"
+    data_refs: list[str] = Field(min_length=1, max_length=2)
+    labels: list[str] = Field(default_factory=list, description="资产显示名，与 data_refs 对应")
+    rolling_window: int = Field(default=30, ge=5, le=250)
+    annualization: int = Field(default=252, ge=1)
+    evidence_refs: list[str] = Field(default_factory=list)
+
+
+class SlideBlock(BaseModel):
+    """pptx：一页幻灯片。页面构成完全由 spec 决定，渲染器不预设页数。"""
+
+    type: Literal["slide"] = "slide"
+    layout: Literal["title", "section", "bullets", "table"] = "bullets"
+    title: str
+    subtitle: str = ""
+    bullets: list[str] = Field(default_factory=list)
+    table_headers: list[str] = Field(default_factory=list)
+    table_rows: list[list[str]] = Field(default_factory=list)
+    notes: str = ""
+    evidence_refs: list[str] = Field(default_factory=list)
+
+
 Block = Annotated[
-    Union[HeadingBlock, NarrativeBlock, TableBlock, KlineChartBlock, ChangepointTableBlock],
+    Union[
+        HeadingBlock, NarrativeBlock, TableBlock, KlineChartBlock, ChangepointTableBlock,
+        DataSheetBlock, MetricsSheetBlock, SlideBlock,
+    ],
     Field(discriminator="type"),
 ]
 
